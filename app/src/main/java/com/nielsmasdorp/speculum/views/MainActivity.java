@@ -1,5 +1,6 @@
 package com.nielsmasdorp.speculum.views;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -50,8 +51,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        String location = intent.getExtras().getString("location");
+
         mMainPresenter = new MainPresenter(this);
-        mMainPresenter.loadWeather();
+        mMainPresenter.loadWeather(location);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class MainPresenter {
         mYahooWeatherService = new YahooWeatherService();
     }
 
-    public void loadWeather() {
+    public void loadWeather(String location) {
 
         Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions();
         observable
