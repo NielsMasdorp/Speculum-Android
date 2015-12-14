@@ -9,9 +9,9 @@ public interface IMainView {
 
     void displayCurrentWeather(CurrentWeatherConditions conditions);
 
-    void showLoading();
+    void displayLatestCalendarEvent(String title, String details);
 
-    void hideLoading();
+    void setProgressBarVisibility(int visibility);
 
     void onError(String message);
 }

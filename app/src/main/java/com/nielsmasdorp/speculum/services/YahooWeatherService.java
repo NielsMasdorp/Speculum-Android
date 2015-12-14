@@ -1,15 +1,13 @@
 package com.nielsmasdorp.speculum.services;
 
-import android.net.Uri;
-
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
-
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Query;
+
 import rx.Observable;
 
 /**
