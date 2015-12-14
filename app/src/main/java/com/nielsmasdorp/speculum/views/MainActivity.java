@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.loadWeather();
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     @Override
@@ -76,15 +81,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
         hideLoading();
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
+
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "℃, " +
                 currentConditions.query.results.channel.item.condition.text);
+
         this.mWeatherAtmosphere.setText("humidity: " + currentConditions.query.results.channel.atmosphere.humidity + "%, pressure: " +
                 currentConditions.query.results.channel.atmosphere.pressure + "mb, visibility: " +
                 currentConditions.query.results.channel.atmosphere.visibility + "km");
+
         this.mWeatherAstronomy.setText("sunrise: " + currentConditions.query.results.channel.astronomy.sunrise + ", sunset: " +
                 currentConditions.query.results.channel.astronomy.sunset);
+
         this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "℃, wind speed: " +
                 currentConditions.query.results.channel.wind.speed + "km/h");
+
         this.mWeatherLayout.setVisibility(View.VISIBLE);
     }
 
