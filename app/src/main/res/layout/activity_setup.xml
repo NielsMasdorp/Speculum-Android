@@ -23,7 +23,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/btn_launch"
