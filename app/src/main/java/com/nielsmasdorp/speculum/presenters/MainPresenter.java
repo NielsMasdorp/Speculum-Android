@@ -25,7 +25,10 @@ public class MainPresenter {
 
     public void loadWeather(String location) {
 
-        Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions();
+        String query = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"" +
+                location + "\") and u=\"c\"";
+
+        Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions(query, "json");
         observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())

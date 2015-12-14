@@ -9,6 +9,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
+import retrofit.http.Query;
 import rx.Observable;
 
 /**
@@ -36,7 +37,7 @@ public class YahooWeatherService {
 
     public interface YahooWeatherApi {
 
-        @GET("yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22amsterdam%22)%20and%20u=%22c%22&format=json")
-        Observable<CurrentWeatherConditions> getCurrentWeatherConditions();
+        @GET("yql")
+        Observable<CurrentWeatherConditions> getCurrentWeatherConditions(@Query("q") String query, @Query("format") String format);
     }
 }
