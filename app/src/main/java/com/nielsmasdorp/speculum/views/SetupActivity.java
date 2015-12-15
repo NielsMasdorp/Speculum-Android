@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +27,15 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
 
     @Bind(R.id.et_subreddit)
     EditText mEditTextSubreddit;
+
+    @Bind(R.id.cb_atmosphere)
+    CheckBox mCbAtmosphere;
+
+    @Bind(R.id.cb_wind)
+    CheckBox mCbWind;
+
+    @Bind(R.id.cb_sun)
+    CheckBox mCbSun;
 
     SetupPresenter mSetupPresenter;
 
@@ -59,15 +69,19 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @OnClick(R.id.btn_launch)
     @SuppressWarnings("unused")
     public void launch() {
-        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString());
+        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
+                mCbWind.isChecked(), mCbAtmosphere.isChecked(), mCbSun.isChecked());
     }
 
     @Override
-    public void onSuccess(String location, String subreddit) {
+    public void onSuccess(String location, String subreddit, boolean wind, boolean atmosphere, boolean sun) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.LOCATION_IDENTIFIER, location);
         intent.putExtra(Constants.SUBREDDIT_IDENTIFIER, subreddit);
+        intent.putExtra(Constants.WIND_IDENTIFIER, wind);
+        intent.putExtra(Constants.SUN_IDENTIFIER, sun);
+        intent.putExtra(Constants.ATMOSPHERE_IDENTIFIER, atmosphere);
         startActivity(intent);
         finish();
     }

@@ -19,6 +19,9 @@ public class Constants {
 
     public static final String LOCATION_IDENTIFIER = "location";
     public static final String SUBREDDIT_IDENTIFIER = "subreddit";
+    public static final String WIND_IDENTIFIER = "wind";
+    public static final String SUN_IDENTIFIER = "sun";
+    public static final String ATMOSPHERE_IDENTIFIER = "atmosphere";
 
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
     public static final String SIMPLEDATEFORMAT_HHMMSSDDMMYY = "hh:mm:ss dd/MM/yy";
