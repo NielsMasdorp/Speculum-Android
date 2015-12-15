@@ -8,4 +8,14 @@
     <!--Setup activity-->
     <string name="no_permission_for_calendar">You will not see your latest event, you can change this in the system settings on your device</string>
 
+    <!--Main Activity-->
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="visibility">Visibility</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind_temp">Wind temperature</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="next_event">Next event</string>
+
 </resources>

@@ -95,28 +95,33 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
+        
+        //TODO proper string formatting
 
-        String distance = mCelsius ? "km" : "mi";
-        String pressure = mCelsius ? "mb" : "in";
-        String speed = mCelsius ? "km/h" : "mph";
-        String temperature = mCelsius ? "C" : "F";
+        String distance = mCelsius ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
+        String pressure = mCelsius ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
+        String speed = mCelsius ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
+        String temperature = mCelsius ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
                 currentConditions.query.results.channel.item.condition.text);
         if (mShowAtmosphere) {
-            this.mWeatherAtmosphere.setText("humidity: " + currentConditions.query.results.channel.atmosphere.humidity + "%, pressure: " +
-                    currentConditions.query.results.channel.atmosphere.pressure + pressure + ", visibility: " +
+            this.mWeatherAtmosphere.setText(getString(R.string.humidity) + " : " + currentConditions.query.results.channel.atmosphere.humidity + "%, " +
+                    getString(R.string.pressure) + ": " +
+                    currentConditions.query.results.channel.atmosphere.pressure + pressure + ", " + getString(R.string.visibility) + ": " +
                     currentConditions.query.results.channel.atmosphere.visibility + distance);
         }
         if (mShowSun) {
-            this.mWeatherAstronomy.setText("sunrise: " + currentConditions.query.results.channel.astronomy.sunrise + ", sunset: " +
+            this.mWeatherAstronomy.setText(getString(R.string.sunrise) + ": " + currentConditions.query.results.channel.astronomy.sunrise +
+                    ", " + getString(R.string.sunset) + ": " +
                     currentConditions.query.results.channel.astronomy.sunset);
         }
 
         if (mShowWind) {
-            this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "º" + temperature + ", wind speed: " +
+            this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + currentConditions.query.results.channel.wind.chill +
+                    "º" + temperature + ", " + getString(R.string.wind_speed) + ": " +
                     currentConditions.query.results.channel.wind.speed + speed);
         }
 
