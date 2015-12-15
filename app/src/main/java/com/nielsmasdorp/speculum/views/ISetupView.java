@@ -6,6 +6,4 @@ package com.nielsmasdorp.speculum.views;
 public interface ISetupView {
 
     void onSuccess(String location);
-
-    void onError(String message);
 }

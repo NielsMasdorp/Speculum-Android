@@ -1,8 +1,10 @@
 package com.nielsmasdorp.speculum.presenters;
 
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.services.YahooWeatherService;
+import com.nielsmasdorp.speculum.views.MainActivity;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -22,6 +24,18 @@ public class MainPresenter {
         mMainView = view;
         mYahooWeatherService = new YahooWeatherService();
     }
+
+    public void loadLatestCalendarEvent() {
+        GoogleCalendarService.getCalendarEvents((MainActivity) mMainView, mCalendarListener);
+    }
+
+    private GoogleCalendarService.CalendarListener mCalendarListener = new GoogleCalendarService.CalendarListener() {
+        @Override
+        public void onCalendarUpdate(String title, String details) {
+
+            mMainView.displayLatestCalendarEvent(title, details);
+        }
+    };
 
     public void loadWeather(String location) {
 
