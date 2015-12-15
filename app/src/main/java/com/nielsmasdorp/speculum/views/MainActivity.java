@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
                 currentConditions.query.results.channel.item.condition.text);
+
         if (mShowAtmosphere) {
             this.mWeatherAtmosphere.setText(getString(R.string.humidity) + " : " + currentConditions.query.results.channel.atmosphere.humidity + "%, " +
                     getString(R.string.pressure) + ": " +
