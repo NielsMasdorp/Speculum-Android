@@ -91,6 +91,25 @@
             android:text="Show wind information"
             android:textColor="@color/white" />
 
+        <TextView
+            android:id="@+id/tv_configuration_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configuration"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/et_polling_delay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Polling delay in minutes"
+            android:inputType="number"
+            android:maxLength="2"
+            android:text="30"
+            android:textColor="@color/white" />
+
         <Button
             android:id="@+id/btn_launch"
             android:layout_width="wrap_content"

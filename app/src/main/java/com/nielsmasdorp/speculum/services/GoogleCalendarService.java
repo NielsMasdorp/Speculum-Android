@@ -3,7 +3,6 @@ package com.nielsmasdorp.speculum.services;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,10 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
-import rx.Subscription;
-import rx.subscriptions.Subscriptions;
 
 /**
  * Created by Niels on 12/14/2015.
@@ -39,8 +35,7 @@ public class GoogleCalendarService {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                String title = "";
-                String details = "";
+                String details, title;
                 Cursor cursor;
                 ContentResolver contentResolver = mContext.getContentResolver();
                 final String[] colsToQuery = new String[]{
