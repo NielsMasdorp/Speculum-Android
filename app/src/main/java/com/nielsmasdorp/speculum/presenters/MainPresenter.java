@@ -9,6 +9,8 @@ import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.services.YahooWeatherService;
 import com.nielsmasdorp.speculum.views.MainActivity;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -67,7 +69,8 @@ public class MainPresenter {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<CurrentWeatherConditions>() {
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {

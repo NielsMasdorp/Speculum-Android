@@ -82,13 +82,14 @@ public class GoogleCalendarService {
                         if (!TextUtils.isEmpty(cursor.getString(3))) {
                             details += " ~ " + cursor.getString(3);
                         }
+                        cursor.close();
+                        subscriber.onNext(title + ", " + details);
+                        subscriber.onCompleted();
                     } else {
+                        cursor.close();
                         subscriber.onNext(mContext.getString(R.string.no_events_today));
                         subscriber.onCompleted();
                     }
-                    cursor.close();
-                    subscriber.onNext(title + ", " + details);
-                    subscriber.onCompleted();
                 } else {
                     subscriber.onError(new RuntimeException(mContext.getString(R.string.no_events_error)));
                 }

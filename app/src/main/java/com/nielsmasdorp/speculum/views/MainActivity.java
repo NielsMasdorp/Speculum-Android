@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +16,9 @@ import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
 import com.nielsmasdorp.speculum.util.Constants;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         mDecorView = getWindow().getDecorView();
         hideSystemUI();
 
+        //never sleep
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         Intent intent = getIntent();
         String location = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
         String subreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         }
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
+
     }
 
     private void hideSystemUI() {
@@ -101,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = mCelsius ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = mCelsius ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
-        //TODO proper string formatting
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
@@ -130,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void displayTopRedditPost(RedditResponse redditResponse) {
-        
+
         Toast.makeText(this, redditResponse.data.children.get(0).data.title, Toast.LENGTH_SHORT).show();
     }
 
@@ -158,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     protected void onResume() {
         super.onResume();
+
         // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);
     }
@@ -165,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     protected void onPause() {
         super.onPause();
+
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
@@ -172,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
+
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
             hideSystemUI();
         }
