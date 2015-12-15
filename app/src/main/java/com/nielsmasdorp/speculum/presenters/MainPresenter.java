@@ -32,6 +32,7 @@ public class MainPresenter {
     }
 
     public void loadLatestCalendarEvent() {
+
         Observable<String> observable = mGoogleCalendarService.getLatestCalendarEvent();
         observable
                 .observeOn(AndroidSchedulers.mainThread())
