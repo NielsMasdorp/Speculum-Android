@@ -71,7 +71,6 @@ public class MainPresenter {
                 }));
     }
 
-
     public void loadWeather(final String location, boolean celsius, int updateDelay) {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;

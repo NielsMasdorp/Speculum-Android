@@ -14,9 +14,12 @@ import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
 import com.nielsmasdorp.speculum.util.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -43,6 +46,30 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_weather_wind)
     TextView mWeatherWind;
 
+    @Bind(R.id.tv_forecast_day_one_date)
+    TextView mDayOneDate;
+
+    @Bind(R.id.tv_forecast_day_one_condition)
+    TextView mDayOneCondition;
+
+    @Bind(R.id.tv_forecast_day_two_date)
+    TextView mDayTwoDate;
+
+    @Bind(R.id.tv_forecast_day_two_condition)
+    TextView mDayTwoCondition;
+
+    @Bind(R.id.tv_forecast_day_three_date)
+    TextView mDayThreeDate;
+
+    @Bind(R.id.tv_forecast_day_three_condition)
+    TextView mDayThreeCondition;
+
+    @Bind(R.id.tv_forecast_day_four_date)
+    TextView mDayFourDate;
+
+    @Bind(R.id.tv_forecast_day_four_condition)
+    TextView mDayFourCondition;
+
     @Bind(R.id.tv_next_event)
     TextView mNextEvent;
 
@@ -54,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     private View mDecorView;
 
     // Configuration variables
-    private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius;
+    private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius, mShowForecast;
     private String mLocation, mSubreddit;
     private int mPollingDelay;
 
@@ -78,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
         mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
         mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
+        mShowForecast = intent.getExtras().getBoolean(Constants.FORECAST_IDENTIFIER);
         mPollingDelay = intent.getExtras().getInt(Constants.POLLING_IDENTIFIER);
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
@@ -100,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
 
+        //TODO string formatting from strings.xml
         String distance = mCelsius ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressure = mCelsius ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
         String speed = mCelsius ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
@@ -126,6 +155,20 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + currentConditions.query.results.channel.wind.chill +
                     "º" + temperature + ", " + getString(R.string.wind_speed) + ": " +
                     currentConditions.query.results.channel.wind.speed + speed);
+        }
+
+        if (mShowForecast) {
+
+            List<Forecast> forecast = currentConditions.query.results.channel.item.forecast;
+
+            this.mDayOneDate.setText(forecast.get(0).date);
+            this.mDayOneCondition.setText(forecast.get(0).text + " " + forecast.get(0).low + "/" + forecast.get(0).high + "º" + temperature);
+            this.mDayTwoDate.setText(forecast.get(1).date);
+            this.mDayTwoCondition.setText(forecast.get(1).text + " " + forecast.get(1).low + "/" + forecast.get(1).high + "º" + temperature);
+            this.mDayThreeDate.setText(forecast.get(2).date);
+            this.mDayThreeCondition.setText(forecast.get(2).text + " " + forecast.get(2).low + "/" + forecast.get(2).high + "º" + temperature);
+            this.mDayFourDate.setText(forecast.get(3).date);
+            this.mDayFourCondition.setText(forecast.get(3).text + " " + forecast.get(3).low + "/" + forecast.get(3).high + "º" + temperature);
         }
 
         setProgressBarVisibility(View.GONE);
