@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Bind(R.id.tv_weather_wind)
     TextView mWeatherWind;
 
+    @Bind(R.id.tv_next_event)
+    TextView mNextEvent;
+
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
 
@@ -52,12 +56,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Assent.setActivity(this, this);
+
+        mDecorView = getWindow().getDecorView();
+        hideSystemUI();
 
         Intent intent = getIntent();
         String location = intent.getExtras().getString("location");
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.loadWeather(location);
+
+        if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
+            mMainPresenter.loadLatestCalendarEvent();
+        }
 
         mDecorView = getWindow().getDecorView();
         hideSystemUI();
@@ -117,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
-        hideLoading();
+
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "℃, " +
@@ -133,25 +145,42 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "℃, wind speed: " +
                 currentConditions.query.results.channel.wind.speed + "km/h");
 
+        setProgressBarVisibility(View.GONE);
         this.mWeatherLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showLoading() {
-
-        this.mProgressLoading.setVisibility(View.VISIBLE);
+    public void displayLatestCalendarEvent(String title, String details) {
+        this.mNextEvent.setText("Next event: " + title + ", " + details);
     }
 
     @Override
-    public void hideLoading() {
+    public void setProgressBarVisibility(int visibility) {
 
-        this.mProgressLoading.setVisibility(View.GONE);
+        if (this.mProgressLoading.getVisibility() != visibility) {
+            this.mProgressLoading.setVisibility(visibility);
+        }
     }
 
     @Override
     public void onError(String message) {
 
-        hideLoading();
+        setProgressBarVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Updates the activity every time the Activity becomes visible again
+        Assent.setActivity(this, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Cleans up references of the Activity to avoid memory leaks
+        if (isFinishing())
+            Assent.setActivity(this, null);
     }
 }

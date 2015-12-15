@@ -2,20 +2,18 @@ package com.nielsmasdorp.speculum.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.assent.Assent;
+import com.afollestad.assent.AssentCallback;
+import com.afollestad.assent.PermissionResultSet;
+import com.nielsmasdorp.speculum.BuildConfig;
 import com.nielsmasdorp.speculum.R;
-import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
-import com.nielsmasdorp.speculum.presenters.MainPresenter;
 import com.nielsmasdorp.speculum.presenters.SetupPresenter;
 
 import butterknife.Bind;
@@ -34,26 +32,26 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
         ButterKnife.bind(this);
+        Assent.setActivity(this, this);
 
-        mSetupPresenter = new SetupPresenter(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
+        if (!Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
+            Assent.requestPermissions(new AssentCallback() {
+                @Override
+                public void onPermissionResult(PermissionResultSet result) {
+                    // Permission granted or denied
+                    if (!result.allPermissionsGranted()) {
+                        Toast.makeText(SetupActivity.this, "You will not see your latest event," +
+                                " you can change this in the system settings on your device.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, 1, Assent.READ_CALENDAR);
         }
 
-        return super.onOptionsItemSelected(item);
+        if (BuildConfig.DEBUG) {
+            mEditTextLocation.setText("Amsterdam");
+        }
+
+        mSetupPresenter = new SetupPresenter(this);
     }
 
     @OnClick(R.id.btn_launch)
@@ -72,8 +70,24 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     }
 
     @Override
-    public void onError(String message) {
+    protected void onResume() {
+        super.onResume();
+        // Updates the activity every time the Activity becomes visible again
+        Assent.setActivity(this, this);
+    }
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Cleans up references of the Activity to avoid memory leaks
+        if (isFinishing())
+            Assent.setActivity(this, null);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Lets Assent handle permission results and contact your callbacks
+        Assent.handleResult(permissions, grantResults);
     }
 }
