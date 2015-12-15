@@ -3,20 +3,16 @@ package com.nielsmasdorp.speculum.views;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
-import com.nielsmasdorp.speculum.services.YahooWeatherService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     @Override
-    public void displayLatestCalendarEvent(String title, String details) {
-        this.mNextEvent.setText("Next event: " + title + ", " + details);
+    public void displayLatestCalendarEvent(String event) {
+        this.mNextEvent.setText("Next event: " + event);
     }
 
     @Override

@@ -14,29 +14,31 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.subscriptions.Subscriptions;
+
 /**
  * Created by Niels on 12/14/2015.
  */
 public class GoogleCalendarService {
 
-    public interface CalendarListener {
-        void onCalendarUpdate(String title, String details);
+    Context mContext;
+
+    public GoogleCalendarService(Context context) {
+        this.mContext = context;
     }
 
-    public static void getCalendarEvents(final Context context, final CalendarListener calendarListener) {
-        new AsyncTask<Void, Void, Void>() {
-            String title = null;
-            String details = null;
-
+    public Observable<String> getLatestCalendarEvent() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            protected void onPostExecute(Void aVoid) {
-                calendarListener.onCalendarUpdate(title, details);
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
+            public void call(Subscriber<? super String> subscriber) {
+                String title = "";
+                String details = "";
                 Cursor cursor;
-                ContentResolver contentResolver = context.getContentResolver();
+                ContentResolver contentResolver = mContext.getContentResolver();
                 final String[] colsToQuery = new String[]{
                         CalendarContract.EventsEntity.TITLE,
                         CalendarContract.EventsEntity.DTSTART,
@@ -55,6 +57,7 @@ public class GoogleCalendarService {
                     endofDayDate = endFormat.parse("23:59:59 " + dateString);
                     endOfDay.setTime(endofDayDate);
                 } catch (ParseException e) {
+                    subscriber.onError(e);
                     Log.e("CalendarModule", e.toString());
                 }
 
@@ -75,12 +78,17 @@ public class GoogleCalendarService {
                         if (!TextUtils.isEmpty(cursor.getString(3))) {
                             details += " ~ " + cursor.getString(3);
                         }
+                    } else {
+                        subscriber.onNext("No events today.");
+                        subscriber.onCompleted();
                     }
-
                     cursor.close();
+                    subscriber.onNext(title + ", " + details);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new RuntimeException("Could not get events from calendar."));
                 }
-                return null;
             }
-        }.execute();
+        });
     }
 }
