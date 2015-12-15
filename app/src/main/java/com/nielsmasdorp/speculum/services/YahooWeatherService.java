@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.util.Constants;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -20,7 +21,7 @@ public class YahooWeatherService {
     public YahooWeatherService() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://query.yahooapis.com/v1/public/")
+                .baseUrl(Constants.YAHOO_WEATHER_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

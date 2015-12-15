@@ -13,6 +13,7 @@ import com.afollestad.assent.PermissionResultSet;
 import com.nielsmasdorp.speculum.BuildConfig;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.presenters.SetupPresenter;
+import com.nielsmasdorp.speculum.util.Constants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,16 +42,15 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
                 public void onPermissionResult(PermissionResultSet result) {
                     // Permission granted or denied
                     if (!result.allPermissionsGranted()) {
-                        Toast.makeText(SetupActivity.this, "You will not see your latest event," +
-                                " you can change this in the system settings on your device.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_calendar), Toast.LENGTH_SHORT).show();
                     }
                 }
             }, 1, Assent.READ_CALENDAR);
         }
 
         if (BuildConfig.DEBUG) {
-            mEditTextLocation.setText("Amsterdam");
-            mEditTextSubreddit.setText("news");
+            mEditTextLocation.setText(Constants.LOCATION_DEFAULT);
+            mEditTextSubreddit.setText(Constants.SUBREDDIT_DEFAULT);
         }
 
         mSetupPresenter = new SetupPresenter(this);
@@ -66,8 +66,8 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     public void onSuccess(String location, String subreddit) {
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("location", location);
-        intent.putExtra("subreddit", subreddit);
+        intent.putExtra(Constants.LOCATION_IDENTIFIER, location);
+        intent.putExtra(Constants.SUBREDDIT_IDENTIFIER, subreddit);
         startActivity(intent);
         finish();
     }

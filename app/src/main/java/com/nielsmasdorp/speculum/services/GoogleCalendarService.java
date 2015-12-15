@@ -8,11 +8,15 @@ import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.nielsmasdorp.speculum.R;
+import com.nielsmasdorp.speculum.util.Constants;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import rx.Observable;
 import rx.Observer;
@@ -46,24 +50,24 @@ public class GoogleCalendarService {
                         CalendarContract.EventsEntity.EVENT_LOCATION};
 
                 Calendar now = Calendar.getInstance();
-                SimpleDateFormat startFormat = new SimpleDateFormat("dd/MM/yy");
+                SimpleDateFormat startFormat = new SimpleDateFormat(Constants.SIMPLEDATEFORMAT_DDMMYY, Locale.getDefault());
                 String dateString = startFormat.format(now.getTime());
                 long start = now.getTimeInMillis();
 
-                SimpleDateFormat endFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yy");
+                SimpleDateFormat endFormat = new SimpleDateFormat(Constants.SIMPLEDATEFORMAT_HHMMSSDDMMYY, Locale.getDefault());
                 Calendar endOfDay = Calendar.getInstance();
-                Date endofDayDate;
+                Date endOfDayDate;
                 try {
-                    endofDayDate = endFormat.parse("23:59:59 " + dateString);
-                    endOfDay.setTime(endofDayDate);
+                    endOfDayDate = endFormat.parse(Constants.END_OF_DAY_TIME + dateString);
+                    endOfDay.setTime(endOfDayDate);
                 } catch (ParseException e) {
                     subscriber.onError(e);
-                    Log.e("CalendarModule", e.toString());
+                    Log.e(GoogleCalendarService.class.getSimpleName(), e.toString());
                 }
 
                 cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, colsToQuery,
-                        "( dtstart >" + start + ") and (dtend  <" + endOfDay.getTimeInMillis() + ")",
-                        null, "dtstart ASC");
+                        Constants.CALENDAR_QUERY_FIRST + start + Constants.CALENDAR_QUERY_SECOND + endOfDay.getTimeInMillis() + Constants.CALENDAR_QUERY_THIRD,
+                        null, Constants.CALENDAR_QUERY_FOURTH);
 
                 if (cursor != null) {
                     if (cursor.getCount() > 0) {
@@ -79,14 +83,14 @@ public class GoogleCalendarService {
                             details += " ~ " + cursor.getString(3);
                         }
                     } else {
-                        subscriber.onNext("No events today.");
+                        subscriber.onNext(mContext.getString(R.string.no_events_today));
                         subscriber.onCompleted();
                     }
                     cursor.close();
                     subscriber.onNext(title + ", " + details);
                     subscriber.onCompleted();
                 } else {
-                    subscriber.onError(new RuntimeException("Could not get events from calendar."));
+                    subscriber.onError(new RuntimeException(mContext.getString(R.string.no_events_error)));
                 }
             }
         });

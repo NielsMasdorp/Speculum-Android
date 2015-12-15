@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Speculum</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!--Google calendar events-->
+    <string name="no_events_today">No events today</string>
+    <string name="no_events_error">Could not get events from calendar</string>
+
+    <!--Setup activity-->
+    <string name="no_permission_for_calendar">You will not see your latest event, you can change this in the system settings on your device</string>
+
 </resources>
