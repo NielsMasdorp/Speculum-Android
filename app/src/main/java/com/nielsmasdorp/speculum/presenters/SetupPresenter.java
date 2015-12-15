@@ -1,5 +1,6 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.ISetupView;
 
 /**
@@ -15,6 +16,6 @@ public class SetupPresenter {
     }
 
     public void launch(String location, String subreddit) {
-        mSetupView.onSuccess(location.length() == 0 ? "New York" : location, subreddit.length() == 0 ? "news" : subreddit);
+        mSetupView.onSuccess(location.length() == 0 ? Constants.LOCATION_DEFAULT : location, subreddit.length() == 0 ? Constants.SUBREDDIT_DEFAULT : subreddit);
     }
 }

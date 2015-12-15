@@ -2,6 +2,7 @@ package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.util.Constants;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -21,7 +22,7 @@ public class RedditService {
     public RedditService() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.reddit.com/r/")
+                .baseUrl(Constants.REDDIT_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -14,6 +14,7 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
+import com.nielsmasdorp.speculum.util.Constants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         hideSystemUI();
 
         Intent intent = getIntent();
-        String location = intent.getExtras().getString("location");
-        String subreddit = intent.getExtras().getString("subreddit");
+        String location = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
+        String subreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.loadWeather(location);

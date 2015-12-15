@@ -4,6 +4,7 @@ import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
+import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.services.YahooWeatherService;
 import com.nielsmasdorp.speculum.views.MainActivity;
@@ -57,10 +58,8 @@ public class MainPresenter {
 
     public void loadWeather(String location) {
 
-        String query = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"" +
-                location + "\") and u=\"c\"";
-
-        Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions(query, "json");
+        Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
+                location + Constants.WEATHER_QUERY_SECOND, Constants.WEATHER_QUERY_FORMAT);
         observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -83,7 +82,7 @@ public class MainPresenter {
 
     public void loadTopRedditPost(String subreddit) {
 
-        Observable<RedditResponse> observable = mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, 1);
+        Observable<RedditResponse> observable = mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT);
         observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
