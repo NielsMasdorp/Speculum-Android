@@ -71,13 +71,13 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         Intent intent = getIntent();
         String location = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
         String subreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
+        boolean celsius = mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
         mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
         mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
         mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
-        mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
 
         mMainPresenter = new MainPresenter(this);
-        mMainPresenter.loadWeather(location, mCelsius);
+        mMainPresenter.loadWeather(location, celsius);
         mMainPresenter.loadTopRedditPost(subreddit);
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
