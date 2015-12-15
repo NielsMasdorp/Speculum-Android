@@ -11,13 +11,14 @@ import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
+import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements IMainView {
+public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener {
 
     @Bind(R.id.ll_weather_layout)
     LinearLayout mWeatherLayout;
@@ -59,37 +60,17 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
         Intent intent = getIntent();
         String location = intent.getExtras().getString("location");
+        String subreddit = intent.getExtras().getString("subreddit");
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.loadWeather(location);
+        mMainPresenter.loadTopRedditPost(subreddit);
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             mMainPresenter.loadLatestCalendarEvent();
         }
 
-        mDecorView = getWindow().getDecorView();
-        hideSystemUI();
-
-        mDecorView.setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        // Note that system bars will only be "visible" if none of the
-                        // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
-                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                            // TODO: The system bars are visible. Make any desired
-                            // adjustments to your UI, such as showing the action bar or
-                            // other navigational controls.
-
-                            hideSystemUI();
-
-                        } else {
-                            // TODO: The system bars are NOT visible. Make any desired
-                            // adjustments to your UI, such as hiding the action bar or
-                            // other navigational controls.
-                        }
-                    }
-                });
+        mDecorView.setOnSystemUiVisibilityChangeListener(this);
     }
 
     private void hideSystemUI() {
@@ -128,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     @Override
+    public void displayTopRedditPost(RedditResponse redditResponse) {
+        Toast.makeText(this, redditResponse.data.children.get(0).data.title, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void displayLatestCalendarEvent(String event) {
         this.mNextEvent.setText("Next event: " + event);
     }
@@ -160,5 +146,12 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
+    }
+
+    @Override
+    public void onSystemUiVisibilityChange(int visibility) {
+        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+            hideSystemUI();
+        }
     }
 }

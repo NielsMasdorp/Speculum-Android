@@ -12,27 +12,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/et_location"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
+            android:hint="Enter your location"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/et_subreddit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your subreddit of choice"
             android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/btn_launch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/et_location"
-            android:layout_centerHorizontal="true"
-            android:text="Launch" />
+            android:text="Launch"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
