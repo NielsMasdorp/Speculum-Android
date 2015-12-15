@@ -15,9 +15,9 @@ public class SetupPresenter {
         mSetupView = view;
     }
 
-    public void launch(String location, String subreddit, boolean wind, boolean atmosphere, boolean sun) {
+    public void launch(String location, String subreddit, boolean wind, boolean atmosphere, boolean sun, boolean celsius) {
         mSetupView.onSuccess(location.length() == 0 ? Constants.LOCATION_DEFAULT : location,
                 subreddit.length() == 0 ? Constants.SUBREDDIT_DEFAULT : subreddit,
-                wind, atmosphere, sun);
+                wind, atmosphere, sun, celsius);
     }
 }

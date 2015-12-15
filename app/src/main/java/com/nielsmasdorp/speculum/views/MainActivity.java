@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     private View mDecorView;
 
-    private boolean mShowSun, mShowAtmosphere, mShowWind;
+    private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,10 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
         mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
         mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
+        mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
 
         mMainPresenter = new MainPresenter(this);
-        mMainPresenter.loadWeather(location);
+        mMainPresenter.loadWeather(location, mCelsius);
         mMainPresenter.loadTopRedditPost(subreddit);
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
@@ -95,14 +96,19 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
 
+        String distance = mCelsius ? "km" : "mi";
+        String pressure = mCelsius ? "mb" : "in";
+        String speed = mCelsius ? "km/h" : "mph";
+        String temperature = mCelsius ? "C" : "F";
+
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
-        this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "℃, " +
+        this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
                 currentConditions.query.results.channel.item.condition.text);
         if (mShowAtmosphere) {
             this.mWeatherAtmosphere.setText("humidity: " + currentConditions.query.results.channel.atmosphere.humidity + "%, pressure: " +
-                    currentConditions.query.results.channel.atmosphere.pressure + "mb, visibility: " +
-                    currentConditions.query.results.channel.atmosphere.visibility + "km");
+                    currentConditions.query.results.channel.atmosphere.pressure + pressure + ", visibility: " +
+                    currentConditions.query.results.channel.atmosphere.visibility + distance);
         }
         if (mShowSun) {
             this.mWeatherAstronomy.setText("sunrise: " + currentConditions.query.results.channel.astronomy.sunrise + ", sunset: " +
@@ -110,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         }
 
         if (mShowWind) {
-            this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "℃, wind speed: " +
-                    currentConditions.query.results.channel.wind.speed + "km/h");
+            this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "º" + temperature + ", wind speed: " +
+                    currentConditions.query.results.channel.wind.speed + speed);
         }
 
         setProgressBarVisibility(View.GONE);
