@@ -95,14 +95,13 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
-        
-        //TODO proper string formatting
 
         String distance = mCelsius ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressure = mCelsius ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
         String speed = mCelsius ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = mCelsius ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
+        //TODO proper string formatting
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
@@ -131,12 +130,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void displayTopRedditPost(RedditResponse redditResponse) {
+        
         Toast.makeText(this, redditResponse.data.children.get(0).data.title, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayLatestCalendarEvent(String event) {
-        this.mNextEvent.setText("Next event: " + event);
+
+        this.mNextEvent.setText(getString(R.string.next_event) + ": " + event);
     }
 
     @Override
