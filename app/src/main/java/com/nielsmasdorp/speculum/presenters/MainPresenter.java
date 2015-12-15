@@ -17,25 +17,38 @@ import rx.schedulers.Schedulers;
 public class MainPresenter {
 
     YahooWeatherService mYahooWeatherService;
+    GoogleCalendarService mGoogleCalendarService;
     IMainView mMainView;
 
     public MainPresenter(IMainView view) {
 
         mMainView = view;
         mYahooWeatherService = new YahooWeatherService();
+        mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView);
     }
 
     public void loadLatestCalendarEvent() {
-        GoogleCalendarService.getCalendarEvents((MainActivity) mMainView, mCalendarListener);
+        Observable<String> observable = mGoogleCalendarService.getLatestCalendarEvent();
+        observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() { }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mMainView.onError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(String event) {
+
+                        mMainView.displayLatestCalendarEvent(event);
+                    }
+                });
     }
 
-    private GoogleCalendarService.CalendarListener mCalendarListener = new GoogleCalendarService.CalendarListener() {
-        @Override
-        public void onCalendarUpdate(String title, String details) {
-
-            mMainView.displayLatestCalendarEvent(title, details);
-        }
-    };
 
     public void loadWeather(String location) {
 
@@ -48,9 +61,7 @@ public class MainPresenter {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<CurrentWeatherConditions>() {
                     @Override
-                    public void onCompleted() {
-                        // handle completed
-                    }
+                    public void onCompleted() { }
 
                     @Override
                     public void onError(Throwable e) {
