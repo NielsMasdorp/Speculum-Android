@@ -91,11 +91,19 @@
             android:text="Show wind information"
             android:textColor="@color/white" />
 
+        <CheckBox
+            android:id="@+id/cb_forecast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Show 4 day forecast"
+            android:textColor="@color/white" />
+
         <TextView
             android:id="@+id/tv_configuration_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Configuration"
+            android:text="Set update interval (minutes)"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white" />
 

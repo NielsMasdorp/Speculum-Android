@@ -26,6 +26,7 @@ public class Constants {
     public static final String SUN_IDENTIFIER = "sun";
     public static final String ATMOSPHERE_IDENTIFIER = "atmosphere";
     public static final String CELSIUS_IDENTIFIER = "celsius";
+    public static final String FORECAST_IDENTIFIER = "forecast";
     public static final String POLLING_IDENTIFIER = "pollingDelay";
 
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
