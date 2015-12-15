@@ -14,7 +14,7 @@ public class SetupPresenter {
         mSetupView = view;
     }
 
-    public void launch(String location) {
-        mSetupView.onSuccess(location);
+    public void launch(String location, String subreddit) {
+        mSetupView.onSuccess(location, subreddit);
     }
 }

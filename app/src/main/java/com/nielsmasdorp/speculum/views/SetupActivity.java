@@ -23,6 +23,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @Bind(R.id.et_location)
     EditText mEditTextLocation;
 
+    @Bind(R.id.et_subreddit)
+    EditText mEditTextSubreddit;
+
     SetupPresenter mSetupPresenter;
 
     @Override
@@ -47,6 +50,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
 
         if (BuildConfig.DEBUG) {
             mEditTextLocation.setText("Amsterdam");
+            mEditTextSubreddit.setText("news");
         }
 
         mSetupPresenter = new SetupPresenter(this);
@@ -55,14 +59,15 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @OnClick(R.id.btn_launch)
     @SuppressWarnings("unused")
     public void launch() {
-        mSetupPresenter.launch(mEditTextLocation.getText().toString());
+        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString());
     }
 
     @Override
-    public void onSuccess(String location) {
+    public void onSuccess(String location, String subreddit) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("location", location);
+        intent.putExtra("subreddit", subreddit);
         startActivity(intent);
         finish();
     }

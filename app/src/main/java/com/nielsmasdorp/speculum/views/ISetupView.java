@@ -5,5 +5,5 @@ package com.nielsmasdorp.speculum.views;
  */
 public interface ISetupView {
 
-    void onSuccess(String location);
+    void onSuccess(String location, String subreddit);
 }
