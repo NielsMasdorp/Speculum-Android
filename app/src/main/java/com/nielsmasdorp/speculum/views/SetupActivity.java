@@ -29,6 +29,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @Bind(R.id.et_subreddit)
     EditText mEditTextSubreddit;
 
+    @Bind(R.id.et_polling_delay)
+    EditText mEditTextPollingDelay;
+
     @Bind(R.id.cb_atmosphere)
     CheckBox mCbAtmosphere;
 
@@ -40,9 +43,6 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
 
     @Bind(R.id.rb_celsius)
     RadioButton mRbCelsius;
-
-    @Bind(R.id.rb_fahrenheit)
-    RadioButton mRbFahrenheit;
 
     SetupPresenter mSetupPresenter;
 
@@ -77,11 +77,12 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @SuppressWarnings("unused")
     public void launch() {
         mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
-                mCbWind.isChecked(), mCbAtmosphere.isChecked(), mCbSun.isChecked(), mRbCelsius.isChecked());
+                Integer.parseInt(mEditTextPollingDelay.getText().toString()), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
+                mCbSun.isChecked(), mRbCelsius.isChecked());
     }
 
     @Override
-    public void onSuccess(String location, String subreddit, boolean wind, boolean atmosphere, boolean sun, boolean celsius) {
+    public void onSuccess(String location, String subreddit, int pollingDelay, boolean wind, boolean atmosphere, boolean sun, boolean celsius) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.LOCATION_IDENTIFIER, location);
@@ -90,6 +91,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
         intent.putExtra(Constants.SUN_IDENTIFIER, sun);
         intent.putExtra(Constants.ATMOSPHERE_IDENTIFIER, atmosphere);
         intent.putExtra(Constants.CELSIUS_IDENTIFIER, celsius);
+        intent.putExtra(Constants.POLLING_IDENTIFIER, pollingDelay);
         startActivity(intent);
         finish();
     }

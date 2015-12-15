@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     private View mDecorView;
 
+    // Configuration variables
     private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius;
+    private String mLocation, mSubreddit;
+    private int mPollingDelay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,23 +72,16 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Intent intent = getIntent();
-        String location = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
-        String subreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
-        boolean celsius = mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
+        mLocation = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
+        mSubreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
+        mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
         mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
         mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
         mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
-
-        mMainPresenter = new MainPresenter(this);
-        mMainPresenter.loadWeather(location, celsius);
-        mMainPresenter.loadTopRedditPost(subreddit);
-
-        if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
-            mMainPresenter.loadLatestCalendarEvent();
-        }
+        mPollingDelay = intent.getExtras().getInt(Constants.POLLING_IDENTIFIER);
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
-
+        mMainPresenter = new MainPresenter(this);
     }
 
     private void hideSystemUI() {
@@ -167,13 +163,28 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     protected void onResume() {
         super.onResume();
 
+        startPolling();
+
         // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);
+    }
+
+    private void startPolling() {
+
+        mMainPresenter.loadWeather(mLocation, mCelsius, mPollingDelay);
+        mMainPresenter.loadTopRedditPost(mSubreddit, mPollingDelay);
+
+        if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
+            mMainPresenter.loadLatestCalendarEvent(mPollingDelay);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        //stop polling
+        mMainPresenter.unSubscribe();
 
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())

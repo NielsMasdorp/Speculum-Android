@@ -15,6 +15,7 @@ public class Constants {
 
     public static final String LOCATION_DEFAULT = "New York";
     public static final String SUBREDDIT_DEFAULT = "news";
+    public static final int POLLING_DEFAULT = 30;
 
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
     public static final String YAHOO_WEATHER_BASE_URL = "https://query.yahooapis.com/v1/public/";
@@ -25,6 +26,7 @@ public class Constants {
     public static final String SUN_IDENTIFIER = "sun";
     public static final String ATMOSPHERE_IDENTIFIER = "atmosphere";
     public static final String CELSIUS_IDENTIFIER = "celsius";
+    public static final String POLLING_IDENTIFIER = "pollingDelay";
 
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
     public static final String SIMPLEDATEFORMAT_HHMMSSDDMMYY = "hh:mm:ss dd/MM/yy";

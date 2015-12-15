@@ -9,11 +9,15 @@ import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.services.YahooWeatherService;
 import com.nielsmasdorp.speculum.views.MainActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -24,7 +28,10 @@ public class MainPresenter {
     YahooWeatherService mYahooWeatherService;
     GoogleCalendarService mGoogleCalendarService;
     RedditService mRedditService;
+
     IMainView mMainView;
+
+    List<Subscription> mSubscriptions;
 
     public MainPresenter(IMainView view) {
 
@@ -32,17 +39,24 @@ public class MainPresenter {
         mYahooWeatherService = new YahooWeatherService();
         mRedditService = new RedditService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView);
+        mSubscriptions = new ArrayList<>();
     }
 
-    public void loadLatestCalendarEvent() {
+    public void loadLatestCalendarEvent(int updateDelay) {
 
-        Observable<String> observable = mGoogleCalendarService.getLatestCalendarEvent();
-        observable
+        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+                .flatMap(new Func1<Long, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(Long ignore) {
+                        return mGoogleCalendarService.getLatestCalendarEvent();
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<String>() {
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -54,17 +68,22 @@ public class MainPresenter {
 
                         mMainView.displayLatestCalendarEvent(event);
                     }
-                });
+                }));
     }
 
 
-    public void loadWeather(String location, boolean celsius) {
+    public void loadWeather(final String location, boolean celsius, int updateDelay) {
 
-        String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
+        final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
-        Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
-                location + query, Constants.WEATHER_QUERY_FORMAT);
-        observable
+        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+                .flatMap(new Func1<Long, Observable<CurrentWeatherConditions>>() {
+                    @Override
+                    public Observable<CurrentWeatherConditions> call(Long ignore) {
+                        return mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
+                                location + query, Constants.WEATHER_QUERY_FORMAT);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<CurrentWeatherConditions>() {
@@ -82,18 +101,24 @@ public class MainPresenter {
 
                         mMainView.displayCurrentWeather(conditions);
                     }
-                });
+                }));
     }
 
-    public void loadTopRedditPost(String subreddit) {
+    public void loadTopRedditPost(final String subreddit, int updateDelay) {
 
-        Observable<RedditResponse> observable = mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT);
-        observable
+        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+                .flatMap(new Func1<Long, Observable<RedditResponse>>() {
+                    @Override
+                    public Observable<RedditResponse> call(Long ignore) {
+                        return mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<RedditResponse>() {
                     @Override
-                    public void onCompleted() { }
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -105,6 +130,15 @@ public class MainPresenter {
 
                         mMainView.displayTopRedditPost(redditResponse);
                     }
-                });
+                }));
+    }
+
+    public void unSubscribe() {
+        for (Subscription subscription : mSubscriptions) {
+            if (!subscription.isUnsubscribed()) {
+                subscription.unsubscribe();
+            }
+        }
+        mSubscriptions.clear();
     }
 }
