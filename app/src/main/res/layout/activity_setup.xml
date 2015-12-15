@@ -14,26 +14,66 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_location"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_reddit_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter your location(New York if left blank)"
-            android:textColor="@color/white"/>
+            android:text="Reddit"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/et_subreddit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your subreddit of choice (news if left blank)"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_yahoo_weather_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weather"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/et_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your location(New York if left blank)"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/cb_sun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Show sunset/sunrise information"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/cb_atmosphere"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Show atmosphere information"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/cb_wind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Show wind information"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_launch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Launch"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:text="Launch" />
 
     </LinearLayout>
 

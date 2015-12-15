@@ -5,5 +5,5 @@ package com.nielsmasdorp.speculum.views;
  */
 public interface ISetupView {
 
-    void onSuccess(String location, String subreddit);
+    void onSuccess(String location, String subreddit, boolean wind, boolean atmosphere, boolean sun);
 }

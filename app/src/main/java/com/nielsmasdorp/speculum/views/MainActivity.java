@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     private View mDecorView;
 
+    private boolean mShowSun, mShowAtmosphere, mShowWind;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         Intent intent = getIntent();
         String location = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
         String subreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
+        mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
+        mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
+        mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.loadWeather(location);
@@ -94,16 +99,20 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "℃, " +
                 currentConditions.query.results.channel.item.condition.text);
+        if (mShowAtmosphere) {
+            this.mWeatherAtmosphere.setText("humidity: " + currentConditions.query.results.channel.atmosphere.humidity + "%, pressure: " +
+                    currentConditions.query.results.channel.atmosphere.pressure + "mb, visibility: " +
+                    currentConditions.query.results.channel.atmosphere.visibility + "km");
+        }
+        if (mShowSun) {
+            this.mWeatherAstronomy.setText("sunrise: " + currentConditions.query.results.channel.astronomy.sunrise + ", sunset: " +
+                    currentConditions.query.results.channel.astronomy.sunset);
+        }
 
-        this.mWeatherAtmosphere.setText("humidity: " + currentConditions.query.results.channel.atmosphere.humidity + "%, pressure: " +
-                currentConditions.query.results.channel.atmosphere.pressure + "mb, visibility: " +
-                currentConditions.query.results.channel.atmosphere.visibility + "km");
-
-        this.mWeatherAstronomy.setText("sunrise: " + currentConditions.query.results.channel.astronomy.sunrise + ", sunset: " +
-                currentConditions.query.results.channel.astronomy.sunset);
-
-        this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "℃, wind speed: " +
-                currentConditions.query.results.channel.wind.speed + "km/h");
+        if (mShowWind) {
+            this.mWeatherWind.setText("wind temp: " + currentConditions.query.results.channel.wind.chill + "℃, wind speed: " +
+                    currentConditions.query.results.channel.wind.speed + "km/h");
+        }
 
         setProgressBarVisibility(View.GONE);
         this.mWeatherLayout.setVisibility(View.VISIBLE);
