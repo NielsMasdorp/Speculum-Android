@@ -18,14 +18,14 @@
             android:id="@+id/et_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your location"
+            android:hint="Enter your location(New York if left blank)"
             android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/et_subreddit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your subreddit of choice"
+            android:hint="Enter your subreddit of choice (news if left blank)"
             android:textColor="@color/white"/>
 
         <Button
