@@ -56,10 +56,12 @@ public class MainPresenter {
     }
 
 
-    public void loadWeather(String location) {
+    public void loadWeather(String location, boolean celsius) {
+
+        String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
         Observable<CurrentWeatherConditions> observable = mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
-                location + Constants.WEATHER_QUERY_SECOND, Constants.WEATHER_QUERY_FORMAT);
+                location + query, Constants.WEATHER_QUERY_FORMAT);
         observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())

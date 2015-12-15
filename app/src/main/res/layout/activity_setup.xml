@@ -44,6 +44,29 @@
             android:hint="Enter your location(New York if left blank)"
             android:textColor="@color/white" />
 
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rb_celsius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Celsius"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb_fahrenheit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="Fahrenheit"
+                android:textColor="@color/white" />
+
+        </RadioGroup>
+
         <CheckBox
             android:id="@+id/cb_sun"
             android:layout_width="match_parent"

@@ -6,7 +6,9 @@ package com.nielsmasdorp.speculum.util;
 public class Constants {
 
     public static final String WEATHER_QUERY_FIRST = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"";
-    public static final String WEATHER_QUERY_SECOND = "\") and u=\"c\"";
+    public static final String WEATHER_QUERY_SECOND_CELSIUS = "\") and u=\"c\"";
+    public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "\")";
+
     public static final String WEATHER_QUERY_FORMAT = "json";
 
     public static final int REDDIT_LIMIT = 1;
@@ -22,6 +24,7 @@ public class Constants {
     public static final String WIND_IDENTIFIER = "wind";
     public static final String SUN_IDENTIFIER = "sun";
     public static final String ATMOSPHERE_IDENTIFIER = "atmosphere";
+    public static final String CELSIUS_IDENTIFIER = "celsius";
 
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
     public static final String SIMPLEDATEFORMAT_HHMMSSDDMMYY = "hh:mm:ss dd/MM/yy";
