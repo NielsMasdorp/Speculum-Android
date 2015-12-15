@@ -33,5 +33,17 @@ public class Constants {
     public static final String CALENDAR_QUERY_FIRST = "( dtstart >";
     public static final String CALENDAR_QUERY_SECOND = ") and (dtend  <";
     public static final String CALENDAR_QUERY_THIRD= ")";
-    public static final String CALENDAR_QUERY_FOURTH= "dtstart ASC";
+    public static final String CALENDAR_QUERY_FOURTH = "dtstart ASC";
+
+    public static final String PRESSURE_IMPERIAL = "in";
+    public static final String PRESSURE_METRIC = "mb";
+
+    public static final String SPEED_IMPERIAL = "mph";
+    public static final String SPEED_METRIC = "km/h";
+
+    public static final String DISTANCE_IMPERIAL = "mi";
+    public static final String DISTANCE_METRIC = "km";
+
+    public static final String TEMPERATURE_IMPERIAL = "F";
+    public static final String TEMPERATURE_METRIC = "C";
 }
