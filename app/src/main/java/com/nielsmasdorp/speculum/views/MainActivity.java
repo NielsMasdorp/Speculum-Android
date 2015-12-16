@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
+import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
@@ -79,12 +80,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     private View mDecorView;
 
-    // Configuration variables
-    private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius, mShowForecast;
-
-    private String mLocation, mSubreddit;
-
-    private int mPollingDelay;
+    private Configuration mConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,14 +105,17 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         //Initiate configuration from Intent
         Intent intent = getIntent();
-        mLocation = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
-        mSubreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
-        mCelsius = intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER);
-        mShowAtmosphere = intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER);
-        mShowSun = intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER);
-        mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
-        mShowForecast = intent.getExtras().getBoolean(Constants.FORECAST_IDENTIFIER);
-        mPollingDelay = intent.getExtras().getInt(Constants.POLLING_IDENTIFIER);
+
+        mConfiguration = new Configuration.Builder()
+                .sun(intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER))
+                .atmosphere(intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER))
+                .wind(intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER))
+                .celsius(intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER))
+                .forecast(intent.getExtras().getBoolean(Constants.FORECAST_IDENTIFIER))
+                .location(intent.getExtras().getString(Constants.LOCATION_IDENTIFIER))
+                .subreddit(intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER))
+                .pollingDelay(intent.getExtras().getInt(Constants.POLLING_IDENTIFIER))
+                .build();
     }
 
     private void hideSystemUI() {
@@ -135,36 +134,37 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
 
-        //TODO string formatting from strings.xml
-        String distance = mCelsius ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
-        String pressure = mCelsius ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
-        String speed = mCelsius ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
-        String temperature = mCelsius ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
+        //TODO improve this
+        boolean metric = mConfiguration.isCelsius();
+        String distance = metric ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
+        String pressure = metric ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
+        String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
+        String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
         this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
 
         this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
                 currentConditions.query.results.channel.item.condition.text);
 
-        if (mShowAtmosphere) {
+        if (mConfiguration.isAtmosphere()) {
             this.mWeatherAtmosphere.setText(getString(R.string.humidity) + " : " + currentConditions.query.results.channel.atmosphere.humidity + "%, " +
                     getString(R.string.pressure) + ": " +
                     currentConditions.query.results.channel.atmosphere.pressure + pressure + ", " + getString(R.string.visibility) + ": " +
                     currentConditions.query.results.channel.atmosphere.visibility + distance);
         }
-        if (mShowSun) {
+        if (mConfiguration.isSun()) {
             this.mWeatherAstronomy.setText(getString(R.string.sunrise) + ": " + currentConditions.query.results.channel.astronomy.sunrise +
                     ", " + getString(R.string.sunset) + ": " +
                     currentConditions.query.results.channel.astronomy.sunset);
         }
 
-        if (mShowWind) {
+        if (mConfiguration.isWind()) {
             this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + currentConditions.query.results.channel.wind.chill +
                     "º" + temperature + ", " + getString(R.string.wind_speed) + ": " +
                     currentConditions.query.results.channel.wind.speed + speed);
         }
 
-        if (mShowForecast) {
+        if (mConfiguration.isForecast()) {
 
             List<Forecast> forecast = currentConditions.query.results.channel.item.forecast;
 
@@ -225,11 +225,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     private void startPolling() {
 
-        mMainPresenter.loadWeather(mLocation, mCelsius, mPollingDelay);
-        mMainPresenter.loadTopRedditPost(mSubreddit, mPollingDelay);
+        mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
+        mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
-            mMainPresenter.loadLatestCalendarEvent(mPollingDelay);
+            mMainPresenter.loadLatestCalendarEvent(mConfiguration.getPollingDelay());
         }
     }
 
