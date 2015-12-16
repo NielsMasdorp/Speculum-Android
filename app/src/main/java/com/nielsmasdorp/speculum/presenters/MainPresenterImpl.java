@@ -23,7 +23,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Niels on 12/14/2015.
  */
-public class MainPresenter {
+public class MainPresenterImpl implements IMainPresenter {
 
     YahooWeatherService mYahooWeatherService;
     GoogleCalendarService mGoogleCalendarService;
@@ -33,7 +33,7 @@ public class MainPresenter {
 
     List<Subscription> mSubscriptions;
 
-    public MainPresenter(IMainView view) {
+    public MainPresenterImpl(IMainView view) {
 
         mMainView = view;
         mYahooWeatherService = new YahooWeatherService();
@@ -42,6 +42,7 @@ public class MainPresenter {
         mSubscriptions = new ArrayList<>();
     }
 
+    @Override
     public void loadLatestCalendarEvent(int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
@@ -71,6 +72,7 @@ public class MainPresenter {
                 }));
     }
 
+    @Override
     public void loadWeather(final String location, boolean celsius, int updateDelay) {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
@@ -103,6 +105,7 @@ public class MainPresenter {
                 }));
     }
 
+    @Override
     public void loadTopRedditPost(final String subreddit, int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
@@ -132,6 +135,7 @@ public class MainPresenter {
                 }));
     }
 
+    @Override
     public void unSubscribe() {
         for (Subscription subscription : mSubscriptions) {
             if (!subscription.isUnsubscribed()) {
