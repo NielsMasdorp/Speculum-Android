@@ -15,13 +15,11 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
-import com.nielsmasdorp.speculum.presenters.MainPresenter;
+import com.nielsmasdorp.speculum.presenters.IMainPresenter;
+import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
 
-    MainPresenter mMainPresenter;
+    IMainPresenter mMainPresenter;
 
     private View mDecorView;
 
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         mPollingDelay = intent.getExtras().getInt(Constants.POLLING_IDENTIFIER);
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
-        mMainPresenter = new MainPresenter(this);
+        mMainPresenter = new MainPresenterImpl(this);
     }
 
     private void hideSystemUI() {

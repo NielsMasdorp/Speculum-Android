@@ -14,7 +14,8 @@ import com.afollestad.assent.AssentCallback;
 import com.afollestad.assent.PermissionResultSet;
 import com.nielsmasdorp.speculum.BuildConfig;
 import com.nielsmasdorp.speculum.R;
-import com.nielsmasdorp.speculum.presenters.SetupPresenter;
+import com.nielsmasdorp.speculum.presenters.ISetupPresenter;
+import com.nielsmasdorp.speculum.presenters.SetupPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
 
 import butterknife.Bind;
@@ -47,7 +48,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @Bind(R.id.rb_celsius)
     RadioButton mRbCelsius;
 
-    SetupPresenter mSetupPresenter;
+    ISetupPresenter mSetupPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +74,20 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
             mEditTextSubreddit.setText(Constants.SUBREDDIT_DEFAULT);
         }
 
-        mSetupPresenter = new SetupPresenter(this);
+        mSetupPresenter = new SetupPresenterImpl(this);
     }
 
     @OnClick(R.id.btn_launch)
     @SuppressWarnings("unused")
     public void launch() {
+
         mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
                 Integer.parseInt(mEditTextPollingDelay.getText().toString()), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
                 mCbSun.isChecked(), mRbCelsius.isChecked(), mCbForecast.isChecked());
     }
 
     @Override
-    public void onSuccess(String location, String subreddit, int pollingDelay, boolean wind, boolean atmosphere,
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean wind, boolean atmosphere,
                           boolean sun, boolean celsius, boolean forecast) {
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -98,12 +100,12 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
         intent.putExtra(Constants.FORECAST_IDENTIFIER, forecast);
         intent.putExtra(Constants.POLLING_IDENTIFIER, pollingDelay);
         startActivity(intent);
-        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);
     }
@@ -111,6 +113,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @Override
     protected void onPause() {
         super.onPause();
+
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
@@ -119,6 +122,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         // Lets Assent handle permission results and contact your callbacks
         Assent.handleResult(permissions, grantResults);
     }
