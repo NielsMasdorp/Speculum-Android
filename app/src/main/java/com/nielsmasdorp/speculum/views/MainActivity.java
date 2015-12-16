@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener {
 
-    @Bind(R.id.ll_weather_layout)
-    LinearLayout mWeatherLayout;
+    @Bind(R.id.main_content)
+    ScrollView mMainContent;
 
     @Bind(R.id.tv_weather_title)
     TextView mWeatherTitle;
@@ -80,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     // Configuration variables
     private boolean mShowSun, mShowAtmosphere, mShowWind, mCelsius, mShowForecast;
+
     private String mLocation, mSubreddit;
+
     private int mPollingDelay;
 
     @Override
@@ -96,6 +99,15 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        initConfiguration();
+
+        mDecorView.setOnSystemUiVisibilityChangeListener(this);
+        mMainPresenter = new MainPresenterImpl(this);
+    }
+
+    private void initConfiguration() {
+
+        //Initiate configuration from Intent
         Intent intent = getIntent();
         mLocation = intent.getExtras().getString(Constants.LOCATION_IDENTIFIER);
         mSubreddit = intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER);
@@ -105,9 +117,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         mShowWind = intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER);
         mShowForecast = intent.getExtras().getBoolean(Constants.FORECAST_IDENTIFIER);
         mPollingDelay = intent.getExtras().getInt(Constants.POLLING_IDENTIFIER);
-
-        mDecorView.setOnSystemUiVisibilityChangeListener(this);
-        mMainPresenter = new MainPresenterImpl(this);
     }
 
     private void hideSystemUI() {
@@ -169,34 +178,37 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             this.mDayFourCondition.setText(forecast.get(3).text + " " + forecast.get(3).low + "/" + forecast.get(3).high + "º" + temperature);
         }
 
-        setProgressBarVisibility(View.GONE);
-        this.mWeatherLayout.setVisibility(View.VISIBLE);
+        hideProgressbar();
     }
 
     @Override
     public void displayTopRedditPost(RedditResponse redditResponse) {
 
+        //TODO insert in view
         Toast.makeText(this, redditResponse.data.children.get(0).data.title, Toast.LENGTH_SHORT).show();
+        hideProgressbar();
     }
 
     @Override
     public void displayLatestCalendarEvent(String event) {
 
         this.mNextEvent.setText(getString(R.string.next_event) + ": " + event);
+        hideProgressbar();
     }
 
     @Override
-    public void setProgressBarVisibility(int visibility) {
+    public void hideProgressbar() {
 
-        if (this.mProgressLoading.getVisibility() != visibility) {
-            this.mProgressLoading.setVisibility(visibility);
+        if (this.mProgressLoading.getVisibility() == View.VISIBLE) {
+            this.mProgressLoading.setVisibility(View.GONE);
+            this.mMainContent.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onError(String message) {
 
-        setProgressBarVisibility(View.GONE);
+        hideProgressbar();
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -204,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     protected void onResume() {
         super.onResume();
 
+        //Start polling
         startPolling();
 
         // Updates the activity every time the Activity becomes visible again

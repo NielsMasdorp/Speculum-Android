@@ -7,15 +7,15 @@
     tools:context=".MainActivity">
 
     <ScrollView
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
-            android:id="@+id/ll_weather_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <TextClock
                 android:id="@+id/textClock"
@@ -167,7 +167,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/white"
-        android:visibility="gone" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>
