@@ -77,10 +77,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     ProgressBar mProgressLoading;
 
     IMainPresenter mMainPresenter;
-
-    private View mDecorView;
-
-    private Configuration mConfiguration;
+    View mDecorView;
+    Configuration mConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
