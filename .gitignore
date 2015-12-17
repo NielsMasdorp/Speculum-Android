@@ -27,6 +27,7 @@ proguard/
 #IDE
 .idea/
 *.iml
+app/app.iml
 
 #Private Keys
 app/fabric.properties
