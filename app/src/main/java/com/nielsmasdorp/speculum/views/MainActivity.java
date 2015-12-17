@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -14,8 +13,9 @@ import android.widget.Toast;
 import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
+import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
-    public void displayCurrentWeather(CurrentWeatherConditions currentConditions) {
+    public void displayCurrentWeather(CurrentWeather weather) {
 
         //TODO improve this
         boolean metric = mConfiguration.isCelsius();
@@ -139,32 +139,32 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
-        this.mWeatherTitle.setText(currentConditions.query.results.channel.item.title);
+        this.mWeatherTitle.setText(weather.getTitle());
 
-        this.mWeatherCondition.setText(currentConditions.query.results.channel.item.condition.temp + "º" + temperature + ", " +
-                currentConditions.query.results.channel.item.condition.text);
+        this.mWeatherCondition.setText(weather.getTemperature() + "º" + temperature + ", " +
+                weather.getCondition());
 
         if (mConfiguration.isAtmosphere()) {
-            this.mWeatherAtmosphere.setText(getString(R.string.humidity) + " : " + currentConditions.query.results.channel.atmosphere.humidity + "%, " +
+            this.mWeatherAtmosphere.setText(getString(R.string.humidity) + " : " + weather.getHumidity() + "%, " +
                     getString(R.string.pressure) + ": " +
-                    currentConditions.query.results.channel.atmosphere.pressure + pressure + ", " + getString(R.string.visibility) + ": " +
-                    currentConditions.query.results.channel.atmosphere.visibility + distance);
+                    weather.getPressure() + pressure + ", " + getString(R.string.visibility) + ": " +
+                    weather.getVisibility() + distance);
         }
         if (mConfiguration.isSun()) {
-            this.mWeatherAstronomy.setText(getString(R.string.sunrise) + ": " + currentConditions.query.results.channel.astronomy.sunrise +
+            this.mWeatherAstronomy.setText(getString(R.string.sunrise) + ": " + weather.getSunrise() +
                     ", " + getString(R.string.sunset) + ": " +
-                    currentConditions.query.results.channel.astronomy.sunset);
+                    weather.getSunset());
         }
 
         if (mConfiguration.isWind()) {
-            this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + currentConditions.query.results.channel.wind.chill +
+            this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + weather.getWindTemperature() +
                     "º" + temperature + ", " + getString(R.string.wind_speed) + ": " +
-                    currentConditions.query.results.channel.wind.speed + speed);
+                    weather.getWindSpeed() + speed);
         }
 
         if (mConfiguration.isForecast()) {
 
-            List<Forecast> forecast = currentConditions.query.results.channel.item.forecast;
+            List<Forecast> forecast = weather.getForecast();
 
             this.mDayOneDate.setText(forecast.get(0).date);
             this.mDayOneCondition.setText(forecast.get(0).text + " " + forecast.get(0).low + "/" + forecast.get(0).high + "º" + temperature);

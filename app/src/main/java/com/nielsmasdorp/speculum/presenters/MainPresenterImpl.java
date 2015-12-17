@@ -1,7 +1,8 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
+import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -78,16 +79,22 @@ public class MainPresenterImpl implements IMainPresenter {
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(new Func1<Long, Observable<CurrentWeatherConditions>>() {
+                .flatMap(new Func1<Long, Observable<YahooWeatherResponse>>() {
                     @Override
-                    public Observable<CurrentWeatherConditions> call(Long ignore) {
+                    public Observable<YahooWeatherResponse> call(Long ignore) {
                         return mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
                                 location + query, Constants.WEATHER_QUERY_FORMAT);
                     }
                 })
+                .flatMap(new Func1<YahooWeatherResponse, Observable<CurrentWeather>>() {
+                    @Override
+                    public Observable<CurrentWeather> call(YahooWeatherResponse response) {
+                        return mYahooWeatherService.getCurrentWeather(response);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<CurrentWeatherConditions>() {
+                .subscribe(new Subscriber<CurrentWeather>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -98,9 +105,9 @@ public class MainPresenterImpl implements IMainPresenter {
                     }
 
                     @Override
-                    public void onNext(CurrentWeatherConditions conditions) {
+                    public void onNext(CurrentWeather weather) {
 
-                        mMainView.displayCurrentWeather(conditions);
+                        mMainView.displayCurrentWeather(weather);
                     }
                 }));
     }

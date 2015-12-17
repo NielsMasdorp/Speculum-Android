@@ -1,7 +1,6 @@
 package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.CurrentWeatherConditions;
 import com.nielsmasdorp.speculum.util.Constants;
 
 import retrofit.GsonConverterFactory;

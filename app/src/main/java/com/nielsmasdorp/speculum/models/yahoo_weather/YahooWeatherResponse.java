@@ -1,6 +1,6 @@
 package com.nielsmasdorp.speculum.models.yahoo_weather;
 
-public class CurrentWeatherConditions {
+public class YahooWeatherResponse {
 
     public Query query;
 }
