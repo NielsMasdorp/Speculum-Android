@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.yahoo_weather.Channel;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
@@ -31,18 +32,20 @@ public class YahooWeatherService {
     }
 
     public Observable<CurrentWeather> getCurrentWeather(YahooWeatherResponse response) {
+
+        Channel weatherData = response.getQuery().getResults().getChannel();
         return Observable.just(new CurrentWeather.Builder()
-                .title(response.query.results.channel.item.title)
-                .condition(response.query.results.channel.item.condition.text)
-                .temperature(response.query.results.channel.item.condition.temp)
-                .humidity(response.query.results.channel.atmosphere.humidity)
-                .pressure(response.query.results.channel.atmosphere.pressure)
-                .visibility(response.query.results.channel.atmosphere.visibility)
-                .sunrise(response.query.results.channel.astronomy.sunrise)
-                .sunset(response.query.results.channel.astronomy.sunset)
-                .windSpeed(response.query.results.channel.wind.speed)
-                .windTemperature(response.query.results.channel.wind.chill)
-                .forecast(response.query.results.channel.item.forecast)
+                .title(weatherData.getTitle())
+                .condition(weatherData.getItem().getCondition().getText())
+                .temperature(weatherData.getItem().getCondition().getTemp())
+                .humidity(weatherData.getAtmosphere().getHumidity())
+                .pressure(weatherData.getAtmosphere().getPressure())
+                .visibility(weatherData.getAtmosphere().getVisibility())
+                .sunrise(weatherData.getAstronomy().getSunrise())
+                .sunset(weatherData.getAstronomy().getSunset())
+                .windSpeed(weatherData.getWind().getSpeed())
+                .windTemperature(weatherData.getWind().getChill())
+                .forecast(weatherData.getItem().getForecast())
                 .build());
     }
 

@@ -2,6 +2,7 @@ package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.reddit.Data_;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -33,9 +34,10 @@ public class RedditService {
     }
 
     public Observable<RedditPost> getRedditPost(RedditResponse response) {
-        return Observable.just(new RedditPost(response.data.children.get(0).data.title,
-                response.data.children.get(0).data.author,
-                response.data.children.get(0).data.ups));
+
+        Data_ postData = response.getData().getChildren().get(0).getData();
+        return Observable.just(new RedditPost(postData.getTitle(), postData.getAuthor(),
+                postData.getUps()));
     }
 
     public RedditApi getApi() {
