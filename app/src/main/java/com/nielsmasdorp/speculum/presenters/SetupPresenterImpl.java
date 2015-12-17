@@ -4,7 +4,7 @@ import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.ISetupView;
 
 /**
- * Created by Niels on 12/14/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class SetupPresenterImpl implements ISetupPresenter {
 

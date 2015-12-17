@@ -1,7 +1,7 @@
 package com.nielsmasdorp.speculum.util;
 
 /**
- * Created by Niels on 12/15/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class Constants {
 

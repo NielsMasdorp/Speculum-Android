@@ -1,7 +1,7 @@
 package com.nielsmasdorp.speculum.models;
 
 /**
- * Created by Niels on 12/17/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class RedditPost {
 

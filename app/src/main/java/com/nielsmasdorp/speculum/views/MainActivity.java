@@ -15,8 +15,6 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
@@ -27,6 +25,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
+/**
+ * @author Niels Masdorp (NielsMasdorp)
+ */
 public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener {
 
     @Bind(R.id.main_content)

@@ -21,7 +21,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Created by Niels on 12/14/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class GoogleCalendarService {
 

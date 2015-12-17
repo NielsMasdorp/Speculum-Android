@@ -1,7 +1,7 @@
 package com.nielsmasdorp.speculum.presenters;
 
 /**
- * Created by Niels on 12/16/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public interface ISetupPresenter {
 
