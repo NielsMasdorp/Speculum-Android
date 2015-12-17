@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -25,7 +26,7 @@ import butterknife.OnClick;
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class SetupActivity extends AppCompatActivity implements ISetupView {
+public class SetupActivity extends AppCompatActivity implements ISetupView, View.OnSystemUiVisibilityChangeListener {
 
     @Bind(R.id.et_location)
     EditText mEditTextLocation;
@@ -52,6 +53,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     RadioButton mRbCelsius;
 
     ISetupPresenter mSetupPresenter;
+    View mDecorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
         setContentView(R.layout.activity_setup);
         ButterKnife.bind(this);
         Assent.setActivity(this, this);
+
+        mDecorView = getWindow().getDecorView();
+        hideSystemUI();
 
         if (!Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             Assent.requestPermissions(new AssentCallback() {
@@ -72,12 +77,21 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
             }, 1, Assent.READ_CALENDAR);
         }
 
-        if (BuildConfig.DEBUG) {
-            mEditTextLocation.setText(Constants.LOCATION_DEFAULT);
-            mEditTextSubreddit.setText(Constants.SUBREDDIT_DEFAULT);
-        }
-
+        mDecorView.setOnSystemUiVisibilityChangeListener(this);
         mSetupPresenter = new SetupPresenterImpl(this);
+    }
+
+    private void hideSystemUI() {
+        // Set the IMMERSIVE flag.
+        // Set the content to appear under the system bars so that the content
+        // doesn't resize when the system bars hide and show.
+        mDecorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     @OnClick(R.id.btn_launch)
@@ -85,7 +99,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
     public void launch() {
 
         mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
-                Integer.parseInt(mEditTextPollingDelay.getText().toString()), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
+                mEditTextPollingDelay.getText().toString(), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
                 mCbSun.isChecked(), mRbCelsius.isChecked(), mCbForecast.isChecked());
     }
 
@@ -128,5 +142,13 @@ public class SetupActivity extends AppCompatActivity implements ISetupView {
 
         // Lets Assent handle permission results and contact your callbacks
         Assent.handleResult(permissions, grantResults);
+    }
+
+    @Override
+    public void onSystemUiVisibilityChange(int visibility) {
+
+        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+            hideSystemUI();
+        }
     }
 }
