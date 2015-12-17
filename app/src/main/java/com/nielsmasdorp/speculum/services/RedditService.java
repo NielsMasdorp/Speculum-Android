@@ -1,6 +1,9 @@
 package com.nielsmasdorp.speculum.services;
 
+import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
+import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
 import retrofit.GsonConverterFactory;
@@ -27,6 +30,12 @@ public class RedditService {
                 .build();
 
         mRedditApi = retrofit.create(RedditApi.class);
+    }
+
+    public Observable<RedditPost> getRedditPost(RedditResponse response) {
+        return Observable.just(new RedditPost(response.data.children.get(0).data.title,
+                response.data.children.get(0).data.author,
+                response.data.children.get(0).data.ups));
     }
 
     public RedditApi getApi() {

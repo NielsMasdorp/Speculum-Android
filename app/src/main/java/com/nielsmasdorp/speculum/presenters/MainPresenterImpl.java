@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.presenters;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
@@ -122,9 +123,15 @@ public class MainPresenterImpl implements IMainPresenter {
                         return mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT);
                     }
                 })
+                .flatMap(new Func1<RedditResponse, Observable<RedditPost>>() {
+                    @Override
+                    public Observable<RedditPost> call(RedditResponse response) {
+                        return mRedditService.getRedditPost(response);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<RedditResponse>() {
+                .subscribe(new Subscriber<RedditPost>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -135,9 +142,9 @@ public class MainPresenterImpl implements IMainPresenter {
                     }
 
                     @Override
-                    public void onNext(RedditResponse redditResponse) {
+                    public void onNext(RedditPost redditPost) {
 
-                        mMainView.displayTopRedditPost(redditResponse);
+                        mMainView.displayTopRedditPost(redditPost);
                     }
                 }));
     }
