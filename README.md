@@ -1,29 +1,19 @@
-# README #
+# Speculum
+This is an Android application for a smart mirror
 
-This README would normally document whatever steps are necessary to get your application up and running.
+It is inspired by [HomeMirror by Hannah Mitt](https://github.com/HannahMitt/HomeMirror)
 
-### What is this repository for? ###
+Features
+====
+* Date and time
+* Weather powered by Yahoo Weather (customizable)
+* Your upcoming Google Calendar event
+* The top post of your favorite subreddit
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+How do I use this
+====
+//TODO
 
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+How to make a mirror
+====
+//TODO
