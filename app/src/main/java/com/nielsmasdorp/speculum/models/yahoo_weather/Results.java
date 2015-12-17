@@ -2,5 +2,16 @@ package com.nielsmasdorp.speculum.models.yahoo_weather;
 
 public class Results {
 
-    public Channel channel;
+    private Channel channel;
+
+    public Results() {
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
 }

@@ -167,14 +167,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
             List<Forecast> forecast = weather.getForecast();
 
-            this.mDayOneDate.setText(forecast.get(0).date);
-            this.mDayOneCondition.setText(forecast.get(0).text + " " + forecast.get(0).low + "/" + forecast.get(0).high + "º" + temperature);
-            this.mDayTwoDate.setText(forecast.get(1).date);
-            this.mDayTwoCondition.setText(forecast.get(1).text + " " + forecast.get(1).low + "/" + forecast.get(1).high + "º" + temperature);
-            this.mDayThreeDate.setText(forecast.get(2).date);
-            this.mDayThreeCondition.setText(forecast.get(2).text + " " + forecast.get(2).low + "/" + forecast.get(2).high + "º" + temperature);
-            this.mDayFourDate.setText(forecast.get(3).date);
-            this.mDayFourCondition.setText(forecast.get(3).text + " " + forecast.get(3).low + "/" + forecast.get(3).high + "º" + temperature);
+            this.mDayOneDate.setText(forecast.get(0).getDate());
+            this.mDayOneCondition.setText(forecast.get(0).getText() + " " + forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
+            this.mDayTwoDate.setText(forecast.get(1).getDate());
+            this.mDayTwoCondition.setText(forecast.get(1).getText() + " " + forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
+            this.mDayThreeDate.setText(forecast.get(2).getDate());
+            this.mDayThreeCondition.setText(forecast.get(2).getText() + " " + forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
+            this.mDayFourDate.setText(forecast.get(3).getDate());
+            this.mDayFourCondition.setText(forecast.get(3).getText() + " " + forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
         }
 
         hideProgressbar();

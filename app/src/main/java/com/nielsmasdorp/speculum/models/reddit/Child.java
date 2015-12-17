@@ -2,6 +2,25 @@ package com.nielsmasdorp.speculum.models.reddit;
 
 public class Child {
 
-    public String kind;
-    public Data_ data;
+    private String kind;
+    private Data_ data;
+
+    public Child() {
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public Data_ getData() {
+        return data;
+    }
+
+    public void setData(Data_ data) {
+        this.data = data;
+    }
 }
