@@ -22,6 +22,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * @author Niels Masdorp (NielsMasdorp)
+ */
 public class SetupActivity extends AppCompatActivity implements ISetupView {
 
     @Bind(R.id.et_location)

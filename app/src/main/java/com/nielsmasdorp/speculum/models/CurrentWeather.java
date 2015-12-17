@@ -5,7 +5,7 @@ import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import java.util.List;
 
 /**
- * Created by Niels on 12/17/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class CurrentWeather {
 

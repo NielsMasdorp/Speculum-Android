@@ -1,8 +1,7 @@
 package com.nielsmasdorp.speculum.models;
 
 /**
- * Created by Niels on 12/17/2015.
- * Class which holds the configuration for a session
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class Configuration {
 

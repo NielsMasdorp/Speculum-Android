@@ -1,10 +1,8 @@
 package com.nielsmasdorp.speculum.services;
 
-import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.reddit.Data_;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
 import retrofit.GsonConverterFactory;
@@ -16,7 +14,7 @@ import retrofit.http.Query;
 import rx.Observable;
 
 /**
- * Created by Niels on 12/14/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class RedditService {
 

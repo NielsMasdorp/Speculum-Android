@@ -14,7 +14,7 @@ import retrofit.http.Query;
 import rx.Observable;
 
 /**
- * Created by Niels on 12/14/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class YahooWeatherService {
 

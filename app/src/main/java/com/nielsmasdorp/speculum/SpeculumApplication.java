@@ -5,7 +5,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 /**
- * Created by Niels on 12/15/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public class SpeculumApplication extends Application {
 

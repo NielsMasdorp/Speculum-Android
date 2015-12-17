@@ -1,7 +1,7 @@
 package com.nielsmasdorp.speculum.views;
 
 /**
- * Created by Niels on 12/14/2015.
+ * @author Niels Masdorp (NielsMasdorp)
  */
 public interface ISetupView {
 
