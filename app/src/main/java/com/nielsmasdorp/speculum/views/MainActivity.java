@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_next_event)
     TextView mNextEvent;
 
+    @Bind(R.id.tv_reddit_post)
+    TextView mRedditPost;
+
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
 
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void displayCurrentWeather(CurrentWeather weather) {
 
-        //TODO improve this
+        // Determine if user requested metric or imperial values and adjust units accordingly
         boolean metric = mConfiguration.isCelsius();
         String distance = metric ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressure = metric ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
@@ -185,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void displayTopRedditPost(RedditPost redditPost) {
 
-        //TODO insert in view
-        Toast.makeText(this, redditPost.getTitle(), Toast.LENGTH_SHORT).show();
+        mRedditPost.setText(redditPost.getTitle());
         hideProgressbar();
     }
 

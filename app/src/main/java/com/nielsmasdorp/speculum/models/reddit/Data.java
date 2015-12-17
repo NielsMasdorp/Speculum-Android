@@ -3,6 +3,9 @@ package com.nielsmasdorp.speculum.models.reddit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generated class ("org.jsonschema2pojo")
+ */
 public class Data {
 
     private String modhash;

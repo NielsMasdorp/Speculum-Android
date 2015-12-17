@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -15,39 +14,93 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_config_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Configure"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/tv_general_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="General"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/InputLayout">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_polling_delay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Update interval in minutes"
+                android:inputType="number"
+                android:maxLength="2"
+                android:singleLine="true"
+                android:textColor="@color/white" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
             android:id="@+id/tv_reddit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reddit"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/et_subreddit"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your subreddit of choice (news if left blank)"
-            android:textColor="@color/white" />
+            android:theme="@style/InputLayout">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_subreddit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Choose a subreddit"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/white" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
-            android:id="@+id/tv_yahoo_weather_title"
+            android:id="@+id/tv_weather_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weather"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/et_location"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your location(New York if left blank)"
-            android:textColor="@color/white" />
+            android:theme="@style/InputLayout">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Choose a city"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/white" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_celsius"
@@ -99,32 +152,13 @@
             android:text="Show 4 day forecast"
             android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/tv_configuration_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set update interval (minutes)"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/white" />
-
-        <EditText
-            android:id="@+id/et_polling_delay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Polling delay in minutes"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="30"
-            android:textColor="@color/white" />
-
         <Button
             android:id="@+id/btn_launch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Launch" />
+            android:text="Start" />
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

@@ -1,5 +1,8 @@
 package com.nielsmasdorp.speculum.models.yahoo_weather;
 
+/**
+ * Generated class ("org.jsonschema2pojo")
+ */
 public class Location {
 
     private String city;

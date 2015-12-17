@@ -3,6 +3,9 @@ package com.nielsmasdorp.speculum.models.yahoo_weather;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generated class ("org.jsonschema2pojo")
+ */
 public class Item {
 
     private String title;

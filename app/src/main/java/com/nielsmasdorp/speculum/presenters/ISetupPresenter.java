@@ -5,6 +5,6 @@ package com.nielsmasdorp.speculum.presenters;
  */
 public interface ISetupPresenter {
 
-    void launch(String location, String subreddit, int pollingDelay, boolean wind,
+    void launch(String location, String subreddit, String pollingDelay, boolean wind,
                 boolean atmosphere, boolean sun, boolean celsius, boolean forecast);
 }

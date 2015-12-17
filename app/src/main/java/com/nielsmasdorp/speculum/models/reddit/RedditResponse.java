@@ -1,5 +1,8 @@
 package com.nielsmasdorp.speculum.models.reddit;
 
+/**
+ * Generated class ("org.jsonschema2pojo")
+ */
 public class RedditResponse {
 
     private String kind;
