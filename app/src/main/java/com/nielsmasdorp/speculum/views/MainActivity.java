@@ -14,6 +14,7 @@ import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
@@ -180,10 +181,10 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
-    public void displayTopRedditPost(RedditResponse redditResponse) {
+    public void displayTopRedditPost(RedditPost redditPost) {
 
         //TODO insert in view
-        Toast.makeText(this, redditResponse.data.children.get(0).data.title, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, redditPost.getTitle(), Toast.LENGTH_SHORT).show();
         hideProgressbar();
     }
 

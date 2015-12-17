@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.views;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 
@@ -13,7 +14,7 @@ public interface IMainView {
 
     void displayLatestCalendarEvent(String event);
 
-    void displayTopRedditPost(RedditResponse redditResponse);
+    void displayTopRedditPost(RedditPost redditPost);
 
     void hideProgressbar();
 
