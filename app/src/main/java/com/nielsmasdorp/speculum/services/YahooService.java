@@ -45,6 +45,7 @@ public class YahooService {
         return Observable.just(new CurrentWeather.Builder()
                 .title(weatherData.getTitle())
                 .condition(weatherData.getItem().getCondition().getText())
+                .statusCode(weatherData.getItem().getCondition().getCode())
                 .temperature(weatherData.getItem().getCondition().getTemp())
                 .humidity(weatherData.getAtmosphere().getHumidity())
                 .pressure(weatherData.getAtmosphere().getPressure())
