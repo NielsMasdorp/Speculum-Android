@@ -1,6 +1,9 @@
 package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.StockInformation;
+import com.nielsmasdorp.speculum.models.yahoo_finance.Quote;
+import com.nielsmasdorp.speculum.models.yahoo_finance.YahooFinanceResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Channel;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -10,17 +13,16 @@ import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Query;
-
 import rx.Observable;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class YahooWeatherService {
+public class YahooService {
 
-    private YahooWeatherApi mYahooWeatherApi;
+    private YahooApi mYahooApi;
 
-    public YahooWeatherService() {
+    public YahooService() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.YAHOO_BASE_URL)
@@ -28,7 +30,13 @@ public class YahooWeatherService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mYahooWeatherApi = retrofit.create(YahooWeatherApi.class);
+        mYahooApi = retrofit.create(YahooApi.class);
+    }
+
+    public Observable<StockInformation> getStockInformation(YahooFinanceResponse response) {
+
+        Quote quote = response.getQuery().getResults().getQuote();
+        return Observable.just(new StockInformation(quote.getSymbol(), quote.getChange(), quote.getName(), quote.getStockExchange()));
     }
 
     public Observable<CurrentWeather> getCurrentWeather(YahooWeatherResponse response) {
@@ -49,12 +57,15 @@ public class YahooWeatherService {
                 .build());
     }
 
-    public YahooWeatherApi getApi() {
+    public YahooApi getApi() {
 
-        return mYahooWeatherApi;
+        return mYahooApi;
     }
 
-    public interface YahooWeatherApi {
+    public interface YahooApi {
+
+        @GET("yql")
+        Observable<YahooFinanceResponse> getStockQuote(@Query("q") String query, @Query("format") String format, @Query("env") String env);
 
         @GET("yql")
         Observable<YahooWeatherResponse> getCurrentWeatherConditions(@Query("q") String query, @Query("format") String format);

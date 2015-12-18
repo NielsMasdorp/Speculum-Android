@@ -8,10 +8,9 @@ import com.nielsmasdorp.speculum.models.yahoo_finance.YahooFinanceResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
-import com.nielsmasdorp.speculum.services.YahooFinanceService;
+import com.nielsmasdorp.speculum.services.YahooService;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
-import com.nielsmasdorp.speculum.services.YahooWeatherService;
 import com.nielsmasdorp.speculum.views.MainActivity;
 
 import java.util.ArrayList;
@@ -30,8 +29,7 @@ import rx.schedulers.Schedulers;
  */
 public class MainPresenterImpl implements IMainPresenter {
 
-    YahooWeatherService mYahooWeatherService;
-    YahooFinanceService mYahooFinanceService;
+    YahooService mYahooService;
     GoogleCalendarService mGoogleCalendarService;
     RedditService mRedditService;
 
@@ -42,8 +40,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public MainPresenterImpl(IMainView view) {
 
         mMainView = view;
-        mYahooWeatherService = new YahooWeatherService();
-        mYahooFinanceService = new YahooFinanceService();
+        mYahooService = new YahooService();
         mRedditService = new RedditService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView);
         mSubscriptions = new ArrayList<>();
@@ -88,14 +85,14 @@ public class MainPresenterImpl implements IMainPresenter {
                 .flatMap(new Func1<Long, Observable<YahooWeatherResponse>>() {
                     @Override
                     public Observable<YahooWeatherResponse> call(Long ignore) {
-                        return mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
+                        return mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
                                 location + query, Constants.YAHOO_QUERY_FORMAT);
                     }
                 })
                 .flatMap(new Func1<YahooWeatherResponse, Observable<CurrentWeather>>() {
                     @Override
                     public Observable<CurrentWeather> call(YahooWeatherResponse response) {
-                        return mYahooWeatherService.getCurrentWeather(response);
+                        return mYahooService.getCurrentWeather(response);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,14 +122,14 @@ public class MainPresenterImpl implements IMainPresenter {
                 .flatMap(new Func1<Long, Observable<YahooFinanceResponse>>() {
                     @Override
                     public Observable<YahooFinanceResponse> call(Long ignore) {
-                        return mYahooFinanceService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
+                        return mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
                                 stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV);
                     }
                 })
                 .flatMap(new Func1<YahooFinanceResponse, Observable<StockInformation>>() {
                     @Override
                     public Observable<StockInformation> call(YahooFinanceResponse response) {
-                        return mYahooFinanceService.getStockInformation(response);
+                        return mYahooService.getStockInformation(response);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
