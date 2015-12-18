@@ -17,5 +17,6 @@
     <string name="wind_temp">Wind temperature</string>
     <string name="wind_speed">Wind speed</string>
     <string name="next_event">Next event</string>
+    <string name="stock_info">Stock change for</string>
 
 </resources>

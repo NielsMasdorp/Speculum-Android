@@ -41,9 +41,34 @@
                 android:id="@+id/et_polling_delay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Update interval in minutes"
+                android:hint="Update interval in minutes (default is 30 minutes)"
                 android:inputType="number"
                 android:maxLength="2"
+                android:singleLine="true"
+                android:textColor="@color/white" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Finance"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/InputLayout">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_stock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Stock symbol (default is 'MSFT')"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/white" />
 
@@ -66,7 +91,7 @@
                 android:id="@+id/et_subreddit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Choose a subreddit"
+                android:hint="Choose a subreddit (default is 'news')"
                 android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/white" />
@@ -90,7 +115,7 @@
                 android:id="@+id/et_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Choose a city"
+                android:hint="Choose a city (default is 'New York')"
                 android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/white" />

@@ -2,10 +2,13 @@ package com.nielsmasdorp.speculum.presenters;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.StockInformation;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
+import com.nielsmasdorp.speculum.models.yahoo_finance.YahooFinanceResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
+import com.nielsmasdorp.speculum.services.YahooFinanceService;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.services.YahooWeatherService;
@@ -28,6 +31,7 @@ import rx.schedulers.Schedulers;
 public class MainPresenterImpl implements IMainPresenter {
 
     YahooWeatherService mYahooWeatherService;
+    YahooFinanceService mYahooFinanceService;
     GoogleCalendarService mGoogleCalendarService;
     RedditService mRedditService;
 
@@ -39,6 +43,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
         mMainView = view;
         mYahooWeatherService = new YahooWeatherService();
+        mYahooFinanceService = new YahooFinanceService();
         mRedditService = new RedditService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView);
         mSubscriptions = new ArrayList<>();
@@ -84,7 +89,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     @Override
                     public Observable<YahooWeatherResponse> call(Long ignore) {
                         return mYahooWeatherService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
-                                location + query, Constants.WEATHER_QUERY_FORMAT);
+                                location + query, Constants.YAHOO_QUERY_FORMAT);
                     }
                 })
                 .flatMap(new Func1<YahooWeatherResponse, Observable<CurrentWeather>>() {
@@ -109,6 +114,43 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onNext(CurrentWeather weather) {
 
                         mMainView.displayCurrentWeather(weather);
+                    }
+                }));
+    }
+
+    @Override
+    public void loadStockInformation(final String stock, int updateDelay) {
+
+        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+                .flatMap(new Func1<Long, Observable<YahooFinanceResponse>>() {
+                    @Override
+                    public Observable<YahooFinanceResponse> call(Long ignore) {
+                        return mYahooFinanceService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
+                                stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV);
+                    }
+                })
+                .flatMap(new Func1<YahooFinanceResponse, Observable<StockInformation>>() {
+                    @Override
+                    public Observable<StockInformation> call(YahooFinanceResponse response) {
+                        return mYahooFinanceService.getStockInformation(response);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<StockInformation>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mMainView.onError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(StockInformation stockInformation) {
+
+                        mMainView.displayStockInformation(stockInformation);
                     }
                 }));
     }

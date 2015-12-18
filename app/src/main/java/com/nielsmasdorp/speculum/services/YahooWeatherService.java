@@ -23,7 +23,7 @@ public class YahooWeatherService {
     public YahooWeatherService() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.YAHOO_WEATHER_BASE_URL)
+                .baseUrl(Constants.YAHOO_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

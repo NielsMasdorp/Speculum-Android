@@ -1,11 +1,9 @@
 package com.nielsmasdorp.speculum.views;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,6 +14,7 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.StockInformation;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
@@ -77,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_next_event)
     TextView mNextEvent;
 
+    @Bind(R.id.tv_stock_info)
+    TextView mStockInfo;
+
     @Bind(R.id.tv_reddit_post)
     TextView mRedditPost;
 
@@ -100,27 +102,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initConfiguration();
+        //get configuration from Intent
+        mConfiguration = (Configuration) getIntent().getSerializableExtra(Constants.CONFIGURATION_IDENTIFIER);
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
         mMainPresenter = new MainPresenterImpl(this);
-    }
-
-    private void initConfiguration() {
-
-        //Initiate configuration from Intent
-        Intent intent = getIntent();
-
-        mConfiguration = new Configuration.Builder()
-                .sun(intent.getExtras().getBoolean(Constants.SUN_IDENTIFIER))
-                .atmosphere(intent.getExtras().getBoolean(Constants.ATMOSPHERE_IDENTIFIER))
-                .wind(intent.getExtras().getBoolean(Constants.WIND_IDENTIFIER))
-                .celsius(intent.getExtras().getBoolean(Constants.CELSIUS_IDENTIFIER))
-                .forecast(intent.getExtras().getBoolean(Constants.FORECAST_IDENTIFIER))
-                .location(intent.getExtras().getString(Constants.LOCATION_IDENTIFIER))
-                .subreddit(intent.getExtras().getString(Constants.SUBREDDIT_IDENTIFIER))
-                .pollingDelay(intent.getExtras().getInt(Constants.POLLING_IDENTIFIER))
-                .build();
     }
 
     private void hideSystemUI() {
@@ -207,6 +193,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
+    public void displayStockInformation(StockInformation stockInformation) {
+
+        this.mStockInfo.setText(getString(R.string.stock_info) + " " + stockInformation.getName()
+                + ": " + stockInformation.getChange() + "%");
+        hideProgressbar();
+    }
+
+    @Override
     public void hideProgressbar() {
 
         if (this.mProgressLoading.getVisibility() == View.VISIBLE) {
@@ -237,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
         mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
+        mMainPresenter.loadStockInformation("MSFT", mConfiguration.getPollingDelay());
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             mMainPresenter.loadLatestCalendarEvent(mConfiguration.getPollingDelay());
