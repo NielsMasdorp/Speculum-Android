@@ -16,7 +16,8 @@ public class SetupPresenterImpl implements ISetupPresenter {
     }
 
     @Override
-    public void launch(String location, String stock, String subreddit, String pollingDelay, boolean wind, boolean atmosphere, boolean sun, boolean celsius, boolean forecast) {
+    public void launch(String location, String stock, String subreddit, String pollingDelay,
+                       boolean wind, boolean atmosphere, boolean sun, boolean celsius, boolean forecast) {
 
         if (pollingDelay.equals("") || pollingDelay.equals("0")) {
             pollingDelay = "30";

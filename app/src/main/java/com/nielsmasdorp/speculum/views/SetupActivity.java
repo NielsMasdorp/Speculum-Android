@@ -102,7 +102,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @SuppressWarnings("unused")
     public void launch() {
 
-        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(), mEditTextSubreddit.getText().toString(),
+        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextStock.getText().toString(), mEditTextSubreddit.getText().toString(),
                 mEditTextPollingDelay.getText().toString(), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
                 mCbSun.isChecked(), mRbCelsius.isChecked(), mCbForecast.isChecked());
     }
