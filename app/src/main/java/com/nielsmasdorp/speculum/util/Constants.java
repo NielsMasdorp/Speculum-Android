@@ -15,7 +15,7 @@ public class Constants {
 
     public static final String YAHOO_QUERY_FORMAT = "json";
 
-    public static final int REDDIT_LIMIT = 1;
+    public static final int REDDIT_LIMIT = 5;
 
     public static final String LOCATION_DEFAULT = "New York";
     public static final String SUBREDDIT_DEFAULT = "news";
