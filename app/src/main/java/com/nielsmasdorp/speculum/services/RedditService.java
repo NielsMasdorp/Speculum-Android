@@ -5,6 +5,8 @@ import com.nielsmasdorp.speculum.models.reddit.Data_;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
+import java.util.Random;
+
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
@@ -33,7 +35,11 @@ public class RedditService {
 
     public Observable<RedditPost> getRedditPost(RedditResponse response) {
 
-        Data_ postData = response.getData().getChildren().get(0).getData();
+        //Get random post from list of top reddit posts
+        Random r = new Random();
+        int randomNumber = r.nextInt(Constants.REDDIT_LIMIT - 0);
+        Data_ postData = response.getData().getChildren().get(randomNumber).getData();
+
         return Observable.just(new RedditPost(postData.getTitle(), postData.getAuthor(),
                 postData.getUps()));
     }
