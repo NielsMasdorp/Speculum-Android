@@ -15,6 +15,7 @@ import com.afollestad.assent.AssentCallback;
 import com.afollestad.assent.PermissionResultSet;
 import com.nielsmasdorp.speculum.BuildConfig;
 import com.nielsmasdorp.speculum.R;
+import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.presenters.ISetupPresenter;
 import com.nielsmasdorp.speculum.presenters.SetupPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -30,6 +31,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
 
     @Bind(R.id.et_location)
     EditText mEditTextLocation;
+
+    @Bind(R.id.et_stock)
+    EditText mEditTextStock;
 
     @Bind(R.id.et_subreddit)
     EditText mEditTextSubreddit;
@@ -98,24 +102,30 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @SuppressWarnings("unused")
     public void launch() {
 
-        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
+        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(), mEditTextSubreddit.getText().toString(),
                 mEditTextPollingDelay.getText().toString(), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
                 mCbSun.isChecked(), mRbCelsius.isChecked(), mCbForecast.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean wind, boolean atmosphere,
+    public void navigateToMainActivity(String location, String stock, String subreddit, int pollingDelay, boolean wind, boolean atmosphere,
                           boolean sun, boolean celsius, boolean forecast) {
 
+        //Create configuration and pass in Intent
+        Configuration configuration = new Configuration.Builder()
+                .sun(sun)
+                .atmosphere(atmosphere)
+                .wind(wind)
+                .celsius(celsius)
+                .forecast(forecast)
+                .location(location)
+                .stock(stock)
+                .subreddit(subreddit)
+                .pollingDelay(pollingDelay)
+                .build();
+
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.LOCATION_IDENTIFIER, location);
-        intent.putExtra(Constants.SUBREDDIT_IDENTIFIER, subreddit);
-        intent.putExtra(Constants.WIND_IDENTIFIER, wind);
-        intent.putExtra(Constants.SUN_IDENTIFIER, sun);
-        intent.putExtra(Constants.ATMOSPHERE_IDENTIFIER, atmosphere);
-        intent.putExtra(Constants.CELSIUS_IDENTIFIER, celsius);
-        intent.putExtra(Constants.FORECAST_IDENTIFIER, forecast);
-        intent.putExtra(Constants.POLLING_IDENTIFIER, pollingDelay);
+        intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, configuration);
         startActivity(intent);
     }
 

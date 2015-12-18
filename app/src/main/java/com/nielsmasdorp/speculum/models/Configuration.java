@@ -1,9 +1,11 @@
 package com.nielsmasdorp.speculum.models;
 
+import java.io.Serializable;
+
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class Configuration {
+public class Configuration implements Serializable {
 
     private boolean sun;
     private boolean atmosphere;
@@ -11,6 +13,7 @@ public class Configuration {
     private boolean celsius;
     private boolean forecast;
     private String location;
+    private String stock;
     private String subreddit;
     private int pollingDelay;
 
@@ -22,6 +25,7 @@ public class Configuration {
         private boolean celsius;
         private boolean forecast;
         private String location;
+        private String stock;
         private String subreddit;
         private int pollingDelay;
 
@@ -32,6 +36,7 @@ public class Configuration {
         public Builder forecast(boolean forecast){this.forecast = forecast; return this; }
         public Builder location(String location){this.location = location; return this; }
         public Builder subreddit(String subreddit){this.subreddit = subreddit; return this; }
+        public Builder stock(String stock){this.stock = stock; return this; }
         public Builder pollingDelay(int pollingDelay){this.pollingDelay = pollingDelay; return this; }
 
         public Configuration build() {
@@ -48,6 +53,7 @@ public class Configuration {
         this.celsius = builder.celsius;
         this.forecast = builder.forecast;
         this.location = builder.location;
+        this.stock = builder.stock;
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
     }
@@ -74,6 +80,10 @@ public class Configuration {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getStock() {
+        return stock;
     }
 
     public String getSubreddit() {
