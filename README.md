@@ -9,6 +9,7 @@ Features
 * Weather powered by Yahoo Weather (customizable)
 * Your upcoming Google Calendar event
 * The top post of your favorite subreddit
+* Stock information powered by Yahoo Finance
 
 How do I use this
 ====
