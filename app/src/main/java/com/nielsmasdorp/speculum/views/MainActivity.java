@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
         mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
-        mMainPresenter.loadStockInformation("MSFT", mConfiguration.getPollingDelay());
+        mMainPresenter.loadStockInformation(mConfiguration.getStock(), mConfiguration.getPollingDelay());
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             mMainPresenter.loadLatestCalendarEvent(mConfiguration.getPollingDelay());
