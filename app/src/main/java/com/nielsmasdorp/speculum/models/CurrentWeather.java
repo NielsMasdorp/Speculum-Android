@@ -10,6 +10,7 @@ import java.util.List;
 public class CurrentWeather {
 
     private String title;
+    private String statusCode;
     private String condition;
     private String temperature;
     private String humidity;
@@ -24,6 +25,7 @@ public class CurrentWeather {
     public static class Builder {
 
         private String title;
+        private String statusCode;
         private String condition;
         private String temperature;
         private String humidity;
@@ -36,6 +38,7 @@ public class CurrentWeather {
         private List<Forecast> forecast;
 
         public Builder title(String title) { this.title = title; return this; }
+        public Builder statusCode(String statusCode) { this.statusCode = statusCode; return this; }
         public Builder condition(String condition) { this.condition = condition; return this; }
         public Builder temperature(String temperature) { this.temperature = temperature; return this; }
         public Builder humidity(String humidity) { this.humidity = humidity; return this; }
@@ -56,6 +59,7 @@ public class CurrentWeather {
     private CurrentWeather(Builder builder) {
 
         this.title = builder.title;
+        this.statusCode = builder.statusCode;
         this.condition = builder.condition;
         this.temperature = builder.temperature;
         this.humidity = builder.humidity;
@@ -70,6 +74,10 @@ public class CurrentWeather {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
     }
 
     public String getCondition() {

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -145,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
+        //this.mCurrentWeatherIcon.setImageResource(getResources().getIdentifier(weather.getStatusCode(), "drawable", getPackageName()));
+
         this.mWeatherTitle.setText(weather.getTitle());
 
         this.mWeatherCondition.setText(weather.getTemperature() + "º" + temperature + ", " +
@@ -174,12 +177,16 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
             this.mDayOneDate.setText(forecast.get(0).getDate());
             this.mDayOneCondition.setText(forecast.get(0).getText() + " " + forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
+            //this.mDayOneIcon.setImageResource(getResources().getIdentifier(forecast.get(0).getCode(), "drawable", getPackageName()));
             this.mDayTwoDate.setText(forecast.get(1).getDate());
             this.mDayTwoCondition.setText(forecast.get(1).getText() + " " + forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
+            //this.mDayTwoIcon.setImageResource(getResources().getIdentifier(forecast.get(1).getCode(), "drawable", getPackageName()));
             this.mDayThreeDate.setText(forecast.get(2).getDate());
             this.mDayThreeCondition.setText(forecast.get(2).getText() + " " + forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
+            //this.mDayThreeIcon.setImageResource(getResources().getIdentifier(forecast.get(2).getCode(), "drawable", getPackageName()));
             this.mDayFourDate.setText(forecast.get(3).getDate());
             this.mDayFourCondition.setText(forecast.get(3).getText() + " " + forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
+            //this.mDayFourIcon.setImageResource(getResources().getIdentifier(forecast.get(3).getCode(), "drawable", getPackageName()));
         }
 
         hideProgressbar();
