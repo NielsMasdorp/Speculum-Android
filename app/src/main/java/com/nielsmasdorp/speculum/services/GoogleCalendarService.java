@@ -25,7 +25,7 @@ import rx.Subscriber;
  */
 public class GoogleCalendarService {
 
-    Context mContext;
+    private Context mContext;
 
     public GoogleCalendarService(Context context) {
         this.mContext = context;

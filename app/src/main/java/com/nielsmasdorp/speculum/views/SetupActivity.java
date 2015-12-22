@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.afollestad.assent.Assent;
 import com.afollestad.assent.AssentCallback;
 import com.afollestad.assent.PermissionResultSet;
-import com.nielsmasdorp.speculum.BuildConfig;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.presenters.ISetupPresenter;
