@@ -29,13 +29,13 @@ import rx.schedulers.Schedulers;
  */
 public class MainPresenterImpl implements IMainPresenter {
 
-    YahooService mYahooService;
-    GoogleCalendarService mGoogleCalendarService;
-    RedditService mRedditService;
+    private YahooService mYahooService;
+    private GoogleCalendarService mGoogleCalendarService;
+    private RedditService mRedditService;
 
-    IMainView mMainView;
+    private IMainView mMainView;
 
-    List<Subscription> mSubscriptions;
+    private List<Subscription> mSubscriptions;
 
     public MainPresenterImpl(IMainView view) {
 
@@ -50,12 +50,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public void loadLatestCalendarEvent(int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(new Func1<Long, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(Long ignore) {
-                        return mGoogleCalendarService.getLatestCalendarEvent();
-                    }
-                })
+                .flatMap(ignore -> mGoogleCalendarService.getLatestCalendarEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<String>() {
@@ -82,19 +77,9 @@ public class MainPresenterImpl implements IMainPresenter {
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(new Func1<Long, Observable<YahooWeatherResponse>>() {
-                    @Override
-                    public Observable<YahooWeatherResponse> call(Long ignore) {
-                        return mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
-                                location + query, Constants.YAHOO_QUERY_FORMAT);
-                    }
-                })
-                .flatMap(new Func1<YahooWeatherResponse, Observable<CurrentWeather>>() {
-                    @Override
-                    public Observable<CurrentWeather> call(YahooWeatherResponse response) {
-                        return mYahooService.getCurrentWeather(response);
-                    }
-                })
+                .flatMap(ignore -> mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
+                        location + query, Constants.YAHOO_QUERY_FORMAT))
+                .flatMap(response -> mYahooService.getCurrentWeather(response))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<CurrentWeather>() {
@@ -119,19 +104,9 @@ public class MainPresenterImpl implements IMainPresenter {
     public void loadStockInformation(final String stock, int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(new Func1<Long, Observable<YahooFinanceResponse>>() {
-                    @Override
-                    public Observable<YahooFinanceResponse> call(Long ignore) {
-                        return mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
-                                stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV);
-                    }
-                })
-                .flatMap(new Func1<YahooFinanceResponse, Observable<StockInformation>>() {
-                    @Override
-                    public Observable<StockInformation> call(YahooFinanceResponse response) {
-                        return mYahooService.getStockInformation(response);
-                    }
-                })
+                .flatMap(l -> mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
+                        stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV))
+                .flatMap(response -> mYahooService.getStockInformation(response))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<StockInformation>() {
@@ -156,18 +131,8 @@ public class MainPresenterImpl implements IMainPresenter {
     public void loadTopRedditPost(final String subreddit, int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(new Func1<Long, Observable<RedditResponse>>() {
-                    @Override
-                    public Observable<RedditResponse> call(Long ignore) {
-                        return mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT);
-                    }
-                })
-                .flatMap(new Func1<RedditResponse, Observable<RedditPost>>() {
-                    @Override
-                    public Observable<RedditPost> call(RedditResponse response) {
-                        return mRedditService.getRedditPost(response);
-                    }
-                })
+                .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
+                .flatMap(response -> mRedditService.getRedditPost(response))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<RedditPost>() {

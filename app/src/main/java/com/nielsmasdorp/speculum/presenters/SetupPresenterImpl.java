@@ -8,7 +8,7 @@ import com.nielsmasdorp.speculum.views.ISetupView;
  */
 public class SetupPresenterImpl implements ISetupPresenter {
 
-    ISetupView mSetupView;
+    private ISetupView mSetupView;
 
     public SetupPresenterImpl(ISetupView view) {
 
