@@ -1,5 +1,10 @@
 package com.nielsmasdorp.speculum.util;
 
+import com.nielsmasdorp.speculum.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
