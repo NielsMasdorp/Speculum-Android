@@ -13,6 +13,7 @@ import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.views.MainActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,16 +34,17 @@ public class MainPresenterImpl implements IMainPresenter {
     private GoogleCalendarService mGoogleCalendarService;
     private RedditService mRedditService;
 
-    private IMainView mMainView;
+    private WeakReference<IMainView> mMainView;
 
     private List<Subscription> mSubscriptions;
 
+
     public MainPresenterImpl(IMainView view) {
 
-        mMainView = view;
+        mMainView = new WeakReference<>(view);
         mYahooService = new YahooService();
         mRedditService = new RedditService();
-        mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView);
+        mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
         mSubscriptions = new ArrayList<>();
     }
 
@@ -60,13 +62,13 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mMainView.onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(String event) {
 
-                        mMainView.displayLatestCalendarEvent(event);
+                        if (mMainView.get() != null) mMainView.get().displayLatestCalendarEvent(event);
                     }
                 }));
     }
@@ -89,13 +91,13 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mMainView.onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(CurrentWeather weather) {
 
-                        mMainView.displayCurrentWeather(weather);
+                        if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
                     }
                 }));
     }
@@ -104,7 +106,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public void loadStockInformation(final String stock, int updateDelay) {
 
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(l -> mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
+                .flatMap(ignore -> mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
                         stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV))
                 .flatMap(response -> mYahooService.getStockInformation(response))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,13 +118,13 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mMainView.onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(StockInformation stockInformation) {
 
-                        mMainView.displayStockInformation(stockInformation);
+                        if (mMainView.get() != null) mMainView.get().displayStockInformation(stockInformation);
                     }
                 }));
     }
@@ -142,13 +144,13 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mMainView.onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(RedditPost redditPost) {
 
-                        mMainView.displayTopRedditPost(redditPost);
+                        if (mMainView.get() != null) mMainView.get().displayTopRedditPost(redditPost);
                     }
                 }));
     }
