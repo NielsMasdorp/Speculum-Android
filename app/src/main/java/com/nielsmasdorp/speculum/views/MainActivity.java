@@ -152,9 +152,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         }
 
         if (mConfiguration.isWind()) {
-            this.mWeatherWind.setText(getString(R.string.wind_temp) + ": " + weather.getWindTemperature() +
-                    "º" + temperature + ", " + getString(R.string.wind_speed) + ": " +
-                    weather.getWindSpeed() + speed);
+            this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
         }
 
         if (mConfiguration.isForecast()) {
