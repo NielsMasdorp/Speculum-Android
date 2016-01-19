@@ -19,13 +19,13 @@
             <TextClock
                 android:id="@+id/tc_time"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="280dp"
                 android:layout_marginBottom="-60dp"
-                android:layout_marginTop="-60dp"
+                android:layout_marginTop="-64dp"
                 android:format12Hour="@null"
                 android:format24Hour="kk:mm"
                 android:textColor="@color/white"
-                android:textSize="220dp" />
+                android:textSize="200dp" />
 
             <TextClock
                 android:id="@+id/tc_date"
@@ -230,37 +230,15 @@
                         android:id="@+id/iv_stats_wind"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="8dp"
                         android:paddingBottom="4dp"
                         android:paddingRight="4dp"
                         android:paddingTop="4dp"
                         android:src="@drawable/ic_wind_stats"
                         android:tint="@color/white" />
 
-                    <ImageView
-                        android:id="@+id/iv_stats_humidity"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/iv_stats_wind"
-                        android:layout_marginBottom="16dp"
-                        android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingTop="4dp"
-                        android:src="@drawable/ic_water_percent"
-                        android:tint="@color/white" />
 
-                    <ImageView
-                        android:id="@+id/iv_stats_pressure"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/iv_stats_humidity"
-                        android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingTop="4dp"
-                        android:src="@drawable/ic_gauge"
-                        android:tint="@color/white" />
+
 
                     <TextView
                         android:id="@+id/tv_stats_wind"
@@ -276,6 +254,20 @@
                         android:textColor="@color/white"
                         android:textSize="24dp" />
 
+                    <ImageView
+                        android:id="@+id/iv_stats_humidity"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/iv_stats_wind"
+                        android:layout_marginBottom="8dp"
+                        android:paddingBottom="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp"
+                        android:src="@drawable/ic_water_percent"
+                        android:tint="@color/white" />
+
+
                     <TextView
                         android:id="@+id/tv_stats_humidity"
                         android:layout_width="wrap_content"
@@ -290,6 +282,19 @@
                         android:textColor="@color/white"
                         android:textSize="24dp" />
 
+                    <ImageView
+                        android:id="@+id/iv_stats_pressure"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/iv_stats_humidity"
+                        android:paddingBottom="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp"
+                        android:src="@drawable/ic_gauge"
+                        android:tint="@color/white" />
+
                     <TextView
                         android:id="@+id/tv_stats_pressure"
                         android:layout_width="wrap_content"
@@ -301,6 +306,32 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:text="Pressure in mb"
+                        android:textColor="@color/white"
+                        android:textSize="24dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_stats_visibility"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/iv_stats_pressure"
+                        android:paddingBottom="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="4dp"
+                        android:src="@drawable/ic_visibility"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_stats_visibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/iv_stats_visibility"
+                        android:layout_below="@+id/iv_stats_pressure"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toEndOf="@+id/iv_stats_visibility"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:text="Visibility in km"
                         android:textColor="@color/white"
                         android:textSize="24dp" />
 
@@ -336,27 +367,27 @@
                         android:id="@+id/tv_sunrise_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/iv_sunrise"
-                        android:layout_alignStart="@+id/iv_sunrise"
-                        android:layout_centerVertical="true"
                         android:gravity="center_horizontal"
                         android:text="08:42"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:textSize="26dp" />
+                        android:textSize="26dp"
+                        android:layout_below="@+id/iv_sunrise"
+                        android:layout_alignStart="@+id/iv_sunrise"
+                        android:layout_alignEnd="@+id/iv_sunrise" />
 
                     <TextView
                         android:id="@+id/tv_sunset_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/iv_sunset"
-                        android:layout_alignStart="@+id/iv_sunset"
                         android:layout_alignTop="@+id/tv_sunrise_time"
                         android:gravity="center_horizontal"
                         android:text="17:42"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:textSize="26dp" />
+                        android:textSize="26dp"
+                        android:layout_alignStart="@+id/iv_sunset" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -389,13 +420,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:maxLines="3"
                     android:ellipsize="end"
                     android:text="Very important stuff ya know, Very important stuff ya know, Very important stuff ya know, Very important stuff ya know"
                     android:textColor="@color/white"
-                    android:textSize="30dp" />
+                    android:textSize="28dp" />
             </LinearLayout>
 
             <View
@@ -433,7 +463,7 @@
                     android:maxLines="3"
                     android:text="Butte man arrested after calling cops to complain he was ripped off in meth deal to complain he was ripped off in meth deal"
                     android:textColor="@color/white"
-                    android:textSize="30dp" />
+                    android:textSize="28dp" />
 
                 <TextView
                     android:id="@+id/tv_reddit_post_votes"
@@ -443,7 +473,7 @@
                     android:layout_below="@+id/iv_reddit_post"
                     android:layout_toStartOf="@+id/tv_reddit_post_title"
                     android:gravity="center_horizontal"
-                    android:text="999"
+                    android:text="9999"
                     android:textColor="@color/white"
                     android:textSize="26dp" />
             </RelativeLayout>
