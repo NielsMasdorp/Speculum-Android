@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +33,17 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener {
 
-    @Bind(R.id.main_content)
-    ScrollView mMainContent;
+    @Bind(R.id.weather_layout)
+    LinearLayout mWeatherLayout;
+
+    @Bind(R.id.weather_stats_layout)
+    LinearLayout mWeatherStatsLayout;
+
+    @Bind(R.id.calendar_layout)
+    LinearLayout mCalendarLayout;
+
+    @Bind(R.id.reddit_layout)
+    RelativeLayout mRedditLayout;
 
     @Bind(R.id.iv_current_weather)
     ImageView mWeatherCondition;
@@ -175,33 +186,47 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
         this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(3).getCode())));
 
-        showContent();
+        showContent(0);
     }
 
     @Override
     public void displayTopRedditPost(RedditPost redditPost) {
         mRedditPostTitle.setText(redditPost.getTitle());
         mRedditPostVotes.setText(redditPost.getUps() + "");
-        showContent();
+        showContent(1);
     }
 
     @Override
     public void displayLatestCalendarEvent(String event) {
         this.mCalendarEvent.setText(event);
-        showContent();
+        showContent(2);
     }
 
     @Override
-    public void showContent() {
-        if (this.mMainContent.getVisibility() != View.VISIBLE) {
-            this.mMainContent.setVisibility(View.VISIBLE);
+    public void showContent(int which) {
+        switch (which) {
+            case 0:
+                if (this.mWeatherLayout.getVisibility() != View.VISIBLE) {
+                    this.mWeatherLayout.setVisibility(View.VISIBLE);
+                    this.mWeatherStatsLayout.setVisibility(View.VISIBLE);
+                }
+                break;
+            case 1:
+                if (this.mRedditLayout.getVisibility() != View.VISIBLE) {
+                    this.mRedditLayout.setVisibility(View.VISIBLE);
+                }
+                break;
+            case 2:
+                if (this.mCalendarLayout.getVisibility() != View.VISIBLE) {
+                    this.mCalendarLayout.setVisibility(View.VISIBLE);
+                }
+                break;
         }
     }
 
     @Override
     public void onError(String message) {
 
-        showContent();
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
