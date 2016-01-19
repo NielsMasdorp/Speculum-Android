@@ -12,7 +12,7 @@ Setup            |  Running
 Features
 ====
 * Date and time
-* Weather powered by Yahoo Weather (Celsius and Fahrenheit)
+* Weather powered by Yahoo Weather (Metric and Imperial units)
 * Your upcoming Google Calendar event
 * The top post of your favorite subreddit
 
