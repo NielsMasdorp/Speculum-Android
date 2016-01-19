@@ -11,7 +11,6 @@ public class CurrentWeather {
 
     private String title;
     private String statusCode;
-    private String condition;
     private String temperature;
     private String humidity;
     private String pressure;
@@ -20,13 +19,13 @@ public class CurrentWeather {
     private String sunset;
     private String windSpeed;
     private String windTemperature;
+    private String windDirection;
     private List<Forecast> forecast;
 
     public static class Builder {
 
         private String title;
         private String statusCode;
-        private String condition;
         private String temperature;
         private String humidity;
         private String pressure;
@@ -35,11 +34,11 @@ public class CurrentWeather {
         private String sunset;
         private String windSpeed;
         private String windTemperature;
+        private String windDirection;
         private List<Forecast> forecast;
 
         public Builder title(String title) { this.title = title; return this; }
         public Builder statusCode(String statusCode) { this.statusCode = statusCode; return this; }
-        public Builder condition(String condition) { this.condition = condition; return this; }
         public Builder temperature(String temperature) { this.temperature = temperature; return this; }
         public Builder humidity(String humidity) { this.humidity = humidity; return this; }
         public Builder pressure(String pressure) { this.pressure = pressure; return this; }
@@ -48,6 +47,7 @@ public class CurrentWeather {
         public Builder sunset(String sunset) { this.sunset = sunset; return this; }
         public Builder windSpeed(String windSpeed) { this.windSpeed = windSpeed; return this; }
         public Builder windTemperature(String windTemperature) { this.windTemperature = windTemperature; return this; }
+        public Builder windDirection(String windDirection) { this.windDirection = windDirection; return this; }
         public Builder forecast(List<Forecast> forecast) { this.forecast = forecast; return this; }
 
         public CurrentWeather build() {
@@ -60,7 +60,6 @@ public class CurrentWeather {
 
         this.title = builder.title;
         this.statusCode = builder.statusCode;
-        this.condition = builder.condition;
         this.temperature = builder.temperature;
         this.humidity = builder.humidity;
         this.pressure = builder.pressure;
@@ -69,6 +68,7 @@ public class CurrentWeather {
         this.sunset = builder.sunset;
         this.windSpeed = builder.windSpeed;
         this.windTemperature = builder.windTemperature;
+        this.windDirection = builder.windDirection;
         this.forecast = builder.forecast;
     }
 
@@ -78,10 +78,6 @@ public class CurrentWeather {
 
     public String getStatusCode() {
         return statusCode;
-    }
-
-    public String getCondition() {
-        return condition;
     }
 
     public String getTemperature() {
@@ -114,6 +110,10 @@ public class CurrentWeather {
 
     public String getWindTemperature() {
         return windTemperature;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
     }
 
     public List<Forecast> getForecast() {
