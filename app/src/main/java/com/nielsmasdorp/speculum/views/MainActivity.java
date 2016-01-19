@@ -108,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_stats_pressure)
     TextView mWeatherPressure;
 
+    @Bind(R.id.tv_stats_visibility)
+    TextView mWeatherVisibility;
+
 
     //Sunrise/Sunset times
 
@@ -198,8 +201,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
 
         if (mConfiguration.isAtmosphere()) {
-            this.mWeatherPressure.setText(getString(R.string.pressure) + ": " + weather.getPressure() + pressure);
-            this.mWeatherHumidity.setText(getString(R.string.humidity) + ": " + weather.getHumidity() + "%");
+            this.mWeatherPressure.setText(weather.getPressure() + pressure);
+            this.mWeatherHumidity.setText(weather.getHumidity() + "%");
+            this.mWeatherVisibility.setText(weather.getVisibility() + distance);
         }
 
         if (mConfiguration.isSun()) {
@@ -227,25 +231,22 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
             //this.mDayThreeIcon.setImageResource(getResources().getIdentifier(forecast.get(2).getCode(), "drawable", getPackageName()));
 
-            this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length()- 5));
+            this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length() - 5));
             this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
             //this.mDayFourIcon.setImageResource(getResources().getIdentifier(forecast.get(3).getCode(), "drawable", getPackageName()));
         }
-
         hideProgressbar();
     }
 
     @Override
     public void displayTopRedditPost(RedditPost redditPost) {
-
         mRedditPostTitle.setText(redditPost.getTitle());
         hideProgressbar();
     }
 
     @Override
     public void displayLatestCalendarEvent(String event) {
-
-        this.mCalendarEvent.setText(getString(R.string.next_event) + ": " + event);
+        this.mCalendarEvent.setText(event);
         hideProgressbar();
     }
 
@@ -259,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void hideProgressbar() {
-
         if (this.mProgressLoading.getVisibility() == View.VISIBLE) {
             this.mProgressLoading.setVisibility(View.GONE);
             this.mMainContent.setVisibility(View.VISIBLE);
