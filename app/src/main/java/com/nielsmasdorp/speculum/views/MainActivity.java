@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,26 +34,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.main_content)
     ScrollView mMainContent;
 
-
-    //Time and date
-
-    @Bind(R.id.tc_time)
-    TextClock mTime;
-
-    @Bind(R.id.tc_date)
-    TextClock mDate;
-
-
-    //Weather current conditions
-
     @Bind(R.id.iv_current_weather)
     ImageView mWeatherCondition;
 
     @Bind(R.id.tv_current_temp)
     TextView mWeatherTemp;
-
-
-    //Weather forecast 4 days
 
     @Bind(R.id.iv_forecast_weather1)
     ImageView mDayOneCondition;
@@ -65,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_forecast_date1)
     TextView mDayOneDate;
 
-
     @Bind(R.id.iv_forecast_weather2)
     ImageView mDayTwoCondition;
 
@@ -74,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Bind(R.id.tv_forecast_date2)
     TextView mDayTwoDate;
-
 
     @Bind(R.id.iv_forecast_weather3)
     ImageView mDayThreeCondition;
@@ -85,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_forecast_date3)
     TextView mDayThreeDate;
 
-
     @Bind(R.id.iv_forecast_weather4)
     ImageView mDayFourCondition;
 
@@ -94,9 +75,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Bind(R.id.tv_forecast_date4)
     TextView mDayFourDate;
-
-
-    //Weather stats (wind speed+temp, humidity, pressure)
 
     @Bind(R.id.tv_stats_wind)
     TextView mWeatherWind;
@@ -107,30 +85,20 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_stats_pressure)
     TextView mWeatherPressure;
 
-
-    //Sunrise/Sunset times
-
     @Bind(R.id.tv_sunrise_time)
     TextView mSunriseTime;
 
     @Bind(R.id.tv_sunset_time)
     TextView mSunsetTime;
 
-
-    //Calendar event
-
     @Bind(R.id.tv_calendar_event)
     TextView mCalendarEvent;
-
-
-    //reddit post
 
     @Bind(R.id.tv_reddit_post_title)
     TextView mRedditPostTitle;
 
     @Bind(R.id.tv_reddit_post_votes)
     TextView mRedditPostVotes;
-
 
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
@@ -219,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     public void displayTopRedditPost(RedditPost redditPost) {
 
         mRedditPostTitle.setText(redditPost.getTitle());
-        //mRedditPostVotes.setText(redditPost.getUps());
+        mRedditPostVotes.setText(redditPost.getUps());
         hideProgressbar();
     }
 
