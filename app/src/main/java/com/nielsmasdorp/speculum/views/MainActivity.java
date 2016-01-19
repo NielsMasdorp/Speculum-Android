@@ -16,7 +16,6 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.StockInformation;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
@@ -133,15 +132,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     TextView mRedditPostVotes;
 
 
-    //Stocks (name, value)
-
-//    @Bind(R.id.tv_stock_name)
-//    TextView mStockName;
-//
-//    @Bind(R.id.tv_stock_value)
-//    TextView mStockValue;
-
-
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
 
@@ -196,41 +186,31 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
 
+        this.mWeatherPressure.setText(getString(R.string.pressure) + ": " + weather.getPressure() + pressure);
+        this.mWeatherHumidity.setText(getString(R.string.humidity) + ": " + weather.getHumidity() + "%");
 
-        if (mConfiguration.isAtmosphere()) {
-            this.mWeatherPressure.setText(getString(R.string.pressure) + ": " + weather.getPressure() + pressure);
-            this.mWeatherHumidity.setText(getString(R.string.humidity) + ": " + weather.getHumidity() + "%");
-        }
+        this.mSunriseTime.setText(weather.getSunrise());
+        this.mSunsetTime.setText(weather.getSunset());
 
-        if (mConfiguration.isSun()) {
-            this.mSunriseTime.setText(weather.getSunrise());
-            this.mSunsetTime.setText(weather.getSunset());
-        }
+        this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
 
-        if (mConfiguration.isWind()) {
-            this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
-        }
+        List<Forecast> forecast = weather.getForecast();
 
-        if (mConfiguration.isForecast()) {
+        this.mDayOneDate.setText(forecast.get(0).getDate().substring(0, forecast.get(0).getDate().length() - 5));
+        this.mDayOneTemp.setText(forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
+        //this.mDayOneIcon.setImageResource(getResources().getIdentifier(forecast.get(0).getCode(), "drawable", getPackageName()));
 
-            List<Forecast> forecast = weather.getForecast();
+        this.mDayTwoDate.setText(forecast.get(1).getDate().substring(0, forecast.get(1).getDate().length() - 5));
+        this.mDayTwoTemp.setText(forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
+        //this.mDayTwoIcon.setImageResource(getResources().getIdentifier(forecast.get(1).getCode(), "drawable", getPackageName()));
 
-            this.mDayOneDate.setText(forecast.get(0).getDate().substring(0, forecast.get(0).getDate().length() - 5));
-            this.mDayOneTemp.setText(forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
-            //this.mDayOneIcon.setImageResource(getResources().getIdentifier(forecast.get(0).getCode(), "drawable", getPackageName()));
+        this.mDayThreeDate.setText(forecast.get(2).getDate().substring(0, forecast.get(2).getDate().length() - 5));
+        this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
+        //this.mDayThreeIcon.setImageResource(getResources().getIdentifier(forecast.get(2).getCode(), "drawable", getPackageName()));
 
-            this.mDayTwoDate.setText(forecast.get(1).getDate().substring(0, forecast.get(1).getDate().length() - 5));
-            this.mDayTwoTemp.setText(forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
-            //this.mDayTwoIcon.setImageResource(getResources().getIdentifier(forecast.get(1).getCode(), "drawable", getPackageName()));
-
-            this.mDayThreeDate.setText(forecast.get(2).getDate().substring(0, forecast.get(2).getDate().length() - 5));
-            this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
-            //this.mDayThreeIcon.setImageResource(getResources().getIdentifier(forecast.get(2).getCode(), "drawable", getPackageName()));
-
-            this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length()- 5));
-            this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
-            //this.mDayFourIcon.setImageResource(getResources().getIdentifier(forecast.get(3).getCode(), "drawable", getPackageName()));
-        }
+        this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length() - 5));
+        this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
+        //this.mDayFourIcon.setImageResource(getResources().getIdentifier(forecast.get(3).getCode(), "drawable", getPackageName()));
 
         hideProgressbar();
     }
@@ -239,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     public void displayTopRedditPost(RedditPost redditPost) {
 
         mRedditPostTitle.setText(redditPost.getTitle());
+        //mRedditPostVotes.setText(redditPost.getUps());
         hideProgressbar();
     }
 
@@ -247,14 +228,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mCalendarEvent.setText(getString(R.string.next_event) + ": " + event);
         hideProgressbar();
-    }
-
-    @Override
-    public void displayStockInformation(StockInformation stockInformation) {
-
-//        this.mStockName.setText(getString(R.string.stock_info) + " " + stockInformation.getName()
-//                + ": " + stockInformation.getChange() + "%");
-//        hideProgressbar();
     }
 
     @Override
@@ -288,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
         mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
-        mMainPresenter.loadStockInformation(mConfiguration.getStock(), mConfiguration.getPollingDelay());
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             mMainPresenter.loadLatestCalendarEvent(mConfiguration.getPollingDelay());

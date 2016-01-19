@@ -50,31 +50,6 @@
         </android.support.design.widget.TextInputLayout>
 
         <TextView
-            android:id="@+id/tv_finance_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Finance"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/InputLayout">
-
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/et_stock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Stock symbol (default is 'MSFT')"
-                android:inputType="text"
-                android:singleLine="true"
-                android:textColor="@color/white" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <TextView
             android:id="@+id/tv_reddit_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,38 +119,6 @@
                 android:textColor="@color/white" />
 
         </RadioGroup>
-
-        <CheckBox
-            android:id="@+id/cb_sun"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Show sunset/sunrise information"
-            android:textColor="@color/white" />
-
-        <CheckBox
-            android:id="@+id/cb_atmosphere"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Show atmosphere information"
-            android:textColor="@color/white" />
-
-        <CheckBox
-            android:id="@+id/cb_wind"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Show wind information"
-            android:textColor="@color/white" />
-
-        <CheckBox
-            android:id="@+id/cb_forecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Show 4 day forecast"
-            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_launch"
