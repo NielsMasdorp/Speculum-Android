@@ -156,39 +156,31 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
+
         this.mWeatherCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(weather.getStatusCode())));
-
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
-
         this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
         this.mWeatherHumidity.setText(weather.getHumidity() + "%");
         this.mWeatherPressure.setText(weather.getPressure() + pressure);
         this.mWeatherVisibility.setText(weather.getVisibility() + distance);
-
         this.mSunriseTime.setText(weather.getSunrise());
         this.mSunsetTime.setText(weather.getSunset());
 
-
         List<Forecast> forecast = weather.getForecast();
-
         this.mDayOneDate.setText(forecast.get(0).getDate().substring(0, forecast.get(0).getDate().length() - 5));
         this.mDayOneTemp.setText(forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
         this.mDayOneCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(0).getCode())));
-
         this.mDayTwoDate.setText(forecast.get(1).getDate().substring(0, forecast.get(1).getDate().length() - 5));
         this.mDayTwoTemp.setText(forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
         this.mDayTwoCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(1).getCode())));
-
         this.mDayThreeDate.setText(forecast.get(2).getDate().substring(0, forecast.get(2).getDate().length() - 5));
         this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
         this.mDayThreeCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(2).getCode())));
-
         this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length() - 5));
         this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
         this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(3).getCode())));
 
         hideProgressbar();
-
     }
 
     @Override

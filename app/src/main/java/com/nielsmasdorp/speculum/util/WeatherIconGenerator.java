@@ -13,8 +13,7 @@ public class WeatherIconGenerator {
 
     private HashMap<Integer, Integer> iconMap;
 
-    public synchronized static WeatherIconGenerator getInstance()
-    {
+    public synchronized static WeatherIconGenerator getInstance() {
         if (_instance == null) {
             _instance = new WeatherIconGenerator();
         }
@@ -23,7 +22,7 @@ public class WeatherIconGenerator {
 
     private WeatherIconGenerator() {
         iconMap = new HashMap<>();
-        //iconMap.put(0, R.drawable.ic_weather_to);
+        iconMap.put(0, R.drawable.ic_weather_tornado);
         iconMap.put(1, R.drawable.ic_weather_lightning);
         iconMap.put(2, R.drawable.ic_weather_windy);
         iconMap.put(3, R.drawable.ic_weather_lightning);
@@ -71,7 +70,7 @@ public class WeatherIconGenerator {
         iconMap.put(45, R.drawable.ic_weather_lightning);
         iconMap.put(46, R.drawable.ic_weather_snowy);
         iconMap.put(47, R.drawable.ic_weather_pouring);
-        iconMap.put(3200, R.drawable.ic_alarm);
+        iconMap.put(3200, R.drawable.ic_not_available);
     }
 
     public Integer getIcon(Integer weatherCode) {
