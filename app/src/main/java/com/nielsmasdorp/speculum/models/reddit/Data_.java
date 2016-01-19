@@ -34,7 +34,6 @@ public class Data_ {
     private String thumbnail;
     private String subredditId;
     private Boolean hideScore;
-    private Boolean edited;
     private Object linkFlairCssClass;
     private Object authorFlairCssClass;
     private Integer downs;
@@ -268,14 +267,6 @@ public class Data_ {
 
     public void setHideScore(Boolean hideScore) {
         this.hideScore = hideScore;
-    }
-
-    public Boolean getEdited() {
-        return edited;
-    }
-
-    public void setEdited(Boolean edited) {
-        this.edited = edited;
     }
 
     public Object getLinkFlairCssClass() {
