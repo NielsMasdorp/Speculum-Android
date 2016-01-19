@@ -4,12 +4,12 @@ I had an old Nexus 7 (2012) lying around collecting dust and got the idea from [
 
 However, I deciced to make my own. Feel free to make this code neat for your own device (it was designed for the Nexus 7). Have any great idea's? submit a pull request!
 
-Setup             |  Setup
+Setup             |  Running
 :-------------------------:|:-------------------------:
 ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-04_framed.png)  |  ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
 
 
-
+![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-04_framed.png ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
 
 Features
 ====
