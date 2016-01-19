@@ -38,7 +38,7 @@ How I made my mirror
 ====
 //TODO
 
-Licence
+License
 ====
 ```
 The MIT License (MIT)
