@@ -8,9 +8,6 @@ Setup             |  Running
 :-------------------------:|:-------------------------:
 ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-04_framed.png)  |  ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
 
-
-![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-04_framed.png ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
-
 Features
 ====
 * Date and time
@@ -20,7 +17,10 @@ Features
 
 How do I use this
 ====
-//TODO
+
+1. Clone project in Android Studio
+2. Make nescessary adjustments for your device
+3. Run on device or generate .APK
 
 How to make a mirror
 ====
