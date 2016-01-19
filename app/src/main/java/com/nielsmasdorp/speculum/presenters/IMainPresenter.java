@@ -11,7 +11,5 @@ public interface IMainPresenter {
 
     void loadTopRedditPost(final String subreddit, int updateDelay);
 
-    void loadStockInformation(final String stock, int updateDelay);
-
     void unSubscribe();
 }
