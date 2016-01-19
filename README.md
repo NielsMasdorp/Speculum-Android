@@ -2,7 +2,7 @@
 This is an Android application for a magic mirror.
 I had an old Nexus 7 (2012) lying around collecting dust and got the idea from [HomeMirror by Hannah Mitt](https://github.com/HannahMitt/HomeMirror).
 
-Since I wanted to explore the MVP pattern for Android and Hannah's app did not have the functionality I wanted I deciced to make my own. Feel free to make this application look good on your own device (it was designed for the Nexus 7). Have any great idea's? 
+I started this project because I wanted to explore the MVP pattern for Android and Hannah's app did not have all the functionality I needed. Feel free to make this application look good on your own device (it was designed for the Nexus 7). Have any great idea's to make this more configurable or usable on more devices? 
 Submit a pull request!
 
 Setup            |  Running
