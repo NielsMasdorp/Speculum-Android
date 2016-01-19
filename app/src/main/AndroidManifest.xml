@@ -11,7 +11,7 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppThemeFullscreen">
+        android:theme="@style/AppTheme.Base">
         <activity
             android:name=".views.SetupActivity"
             android:label="@string/app_name">

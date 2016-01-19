@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_reddit_post_votes)
     TextView mRedditPostVotes;
 
-    @Bind(R.id.pb_loading_spinner)
-    ProgressBar mProgressLoading;
-
     IMainPresenter mMainPresenter;
     View mDecorView;
     Configuration mConfiguration;
@@ -179,26 +175,25 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
         this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(3).getCode())));
 
-        hideProgressbar();
+        showContent();
     }
 
     @Override
     public void displayTopRedditPost(RedditPost redditPost) {
         mRedditPostTitle.setText(redditPost.getTitle());
         mRedditPostVotes.setText(redditPost.getUps() + "");
-        hideProgressbar();
+        showContent();
     }
 
     @Override
     public void displayLatestCalendarEvent(String event) {
         this.mCalendarEvent.setText(event);
-        hideProgressbar();
+        showContent();
     }
 
     @Override
-    public void hideProgressbar() {
-        if (this.mProgressLoading.getVisibility() == View.VISIBLE) {
-            this.mProgressLoading.setVisibility(View.GONE);
+    public void showContent() {
+        if (this.mMainContent.getVisibility() != View.VISIBLE) {
             this.mMainContent.setVisibility(View.VISIBLE);
         }
     }
@@ -206,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     public void onError(String message) {
 
-        hideProgressbar();
+        showContent();
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 

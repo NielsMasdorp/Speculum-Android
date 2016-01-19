@@ -14,7 +14,7 @@ public interface IMainView {
 
     void displayTopRedditPost(RedditPost redditPost);
 
-    void hideProgressbar();
+    void showContent();
 
     void onError(String message);
 }

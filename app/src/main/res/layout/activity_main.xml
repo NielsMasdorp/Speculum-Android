@@ -489,12 +489,4 @@
 
     </ScrollView>
 
-    <ProgressBar
-        android:id="@+id/pb_loading_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/white" />
-
 </RelativeLayout>
