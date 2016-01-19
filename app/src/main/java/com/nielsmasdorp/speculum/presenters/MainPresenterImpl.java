@@ -33,7 +33,6 @@ public class MainPresenterImpl implements IMainPresenter {
 
     private List<Subscription> mSubscriptions;
 
-
     public MainPresenterImpl(IMainView view) {
 
         mMainView = new WeakReference<>(view);

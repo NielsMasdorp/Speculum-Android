@@ -31,7 +31,7 @@
                 android:id="@+id/tc_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:format12Hour="@null"
                 android:format24Hour="dd MMM yyyy"
                 android:textColor="@color/white"
@@ -62,9 +62,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="6ºC"
                         android:textColor="@color/white"
-                        android:textSize="50dp" />
+                        android:textSize="50dp"
+                        tools:text="6ºC" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -87,18 +87,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="10/10ºC"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="10/10ºC" />
 
                     <TextView
                         android:id="@+id/tv_forecast_date1"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="5 jan"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="5 jan" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -121,18 +122,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="10/10ºC"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="10/10ºC" />
 
                     <TextView
                         android:id="@+id/tv_forecast_date2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="6 jan"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="6 jan" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -155,25 +156,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="10/10ºC"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="10/10ºC" />
 
                     <TextView
                         android:id="@+id/tv_forecast_date3"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="7 jan"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="7 jan" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -183,26 +185,27 @@
                         android:layout_width="72dp"
                         android:layout_height="72dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_weather_partlycloudy"
-                        android:tint="@color/white" />
+                        android:tint="@color/white"
+                        tools:src="@drawable/ic_weather_partlycloudy" />
 
                     <TextView
                         android:id="@+id/tv_forecast_temp4"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="10/10ºC"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="10/10ºC" />
 
                     <TextView
                         android:id="@+id/tv_forecast_date4"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:text="8 jan"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:text="8 jan" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -230,7 +233,8 @@
                         android:layout_height="64dp"
                         android:layout_marginBottom="8dp"
                         android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="0dp"
                         android:paddingTop="4dp"
                         android:src="@drawable/ic_wind_stats"
                         android:tint="@color/white" />
@@ -241,13 +245,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iv_stats_wind"
                         android:layout_alignParentTop="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/iv_stats_wind"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="Wind stats (speed and temp)"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        tools:text="Wind stats (speed and temp)" />
 
                     <ImageView
                         android:id="@+id/iv_stats_humidity"
@@ -257,7 +261,8 @@
                         android:layout_below="@+id/iv_stats_wind"
                         android:layout_marginBottom="8dp"
                         android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="0dp"
                         android:paddingTop="4dp"
                         android:src="@drawable/ic_water_percent"
                         android:tint="@color/white" />
@@ -268,13 +273,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iv_stats_humidity"
                         android:layout_alignTop="@+id/iv_stats_humidity"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/iv_stats_humidity"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="Humidity"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        tools:text="Humidity" />
 
                     <ImageView
                         android:id="@+id/iv_stats_pressure"
@@ -284,7 +289,8 @@
                         android:layout_below="@+id/iv_stats_humidity"
                         android:layout_marginBottom="8dp"
                         android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="0dp"
                         android:paddingTop="4dp"
                         android:src="@drawable/ic_gauge"
                         android:tint="@color/white" />
@@ -295,13 +301,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iv_stats_pressure"
                         android:layout_below="@+id/iv_stats_humidity"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/iv_stats_pressure"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="Pressure in mb"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        tools:text="Pressure in mb" />
 
                     <ImageView
                         android:id="@+id/iv_stats_visibility"
@@ -310,7 +316,8 @@
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/iv_stats_pressure"
                         android:paddingBottom="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="0dp"
                         android:paddingTop="4dp"
                         android:src="@drawable/ic_visibility"
                         android:tint="@color/white" />
@@ -321,13 +328,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iv_stats_visibility"
                         android:layout_below="@+id/iv_stats_pressure"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_toEndOf="@+id/iv_stats_visibility"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="Visibility in km"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        tools:text="Visibility in km" />
 
                 </RelativeLayout>
 
@@ -365,10 +372,10 @@
                         android:layout_alignStart="@+id/iv_sunrise"
                         android:layout_below="@+id/iv_sunrise"
                         android:gravity="center_horizontal"
-                        android:text="08:42"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:textSize="26dp" />
+                        android:textSize="26dp"
+                        tools:text="08:42" />
 
                     <TextView
                         android:id="@+id/tv_sunset_time"
@@ -378,10 +385,10 @@
                         android:layout_alignStart="@+id/iv_sunset"
                         android:layout_alignTop="@+id/tv_sunrise_time"
                         android:gravity="center_horizontal"
-                        android:text="17:42"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white"
-                        android:textSize="26dp" />
+                        android:textSize="26dp"
+                        tools:text="17:42" />
 
                 </RelativeLayout>
 
@@ -406,7 +413,8 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:paddingBottom="4dp"
-                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="0dp"
                     android:paddingTop="4dp"
                     android:src="@drawable/ic_calendar"
                     android:tint="@color/white" />
@@ -415,13 +423,14 @@
                     android:id="@+id/tv_calendar_event"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="3"
-                    android:text="Very important stuff ya know, Very important stuff ya know, Very important stuff ya know, Very important stuff ya know"
                     android:textColor="@color/white"
-                    android:textSize="28dp" />
+                    android:textSize="28dp"
+                    tools:text="Very important stuff ya know, Very important stuff ya know, Very important stuff ya know, Very important stuff ya know" />
+
             </LinearLayout>
 
             <View
@@ -442,7 +451,8 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:paddingBottom="4dp"
-                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="0dp"
                     android:paddingTop="4dp"
                     android:src="@drawable/ic_reddit"
                     android:tint="@color/white" />
@@ -452,14 +462,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_toEndOf="@+id/iv_reddit_post"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="3"
-                    android:text="Butte man arrested after calling cops to complain he was ripped off in meth deal to complain he was ripped off in meth deal"
                     android:textColor="@color/white"
-                    android:textSize="28dp" />
+                    android:textSize="28dp"
+                    tools:text="Butte man arrested after calling cops to complain he was ripped off in meth deal to complain he was ripped off in meth deal" />
 
                 <TextView
                     android:id="@+id/tv_reddit_post_votes"
@@ -469,9 +479,9 @@
                     android:layout_below="@+id/iv_reddit_post"
                     android:layout_toStartOf="@+id/tv_reddit_post_title"
                     android:gravity="center_horizontal"
-                    android:text="9999"
                     android:textColor="@color/white"
-                    android:textSize="26dp" />
+                    android:textSize="26dp"
+                    tools:text="9999" />
 
             </RelativeLayout>
 

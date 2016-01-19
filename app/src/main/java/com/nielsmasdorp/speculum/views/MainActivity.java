@@ -156,10 +156,9 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
-
         this.mWeatherCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(weather.getStatusCode())));
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
-        this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
+        this.mWeatherWind.setText(weather.getWindSpeed() + speed + " " + weather.getWindDirection() + " | " + weather.getWindTemperature() + "º" + temperature);
         this.mWeatherHumidity.setText(weather.getHumidity() + "%");
         this.mWeatherPressure.setText(weather.getPressure() + pressure);
         this.mWeatherVisibility.setText(weather.getVisibility() + distance);
