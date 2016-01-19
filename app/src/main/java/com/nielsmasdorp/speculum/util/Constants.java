@@ -1,10 +1,5 @@
 package com.nielsmasdorp.speculum.util;
 
-import com.nielsmasdorp.speculum.R;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
@@ -18,10 +13,6 @@ public class Constants {
     public static final String WEATHER_QUERY_SECOND_CELSIUS = "\") and u=\"c\"";
     public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "\")";
 
-    public static final String FINANCE_QUERY_FIRST = "select * from yahoo.finance.quote where symbol in (\"";
-    public static final String FINANCE_QUERY_SECOND = "\")";
-    public static final String FINANCE_QUERY_ENV = "store://datatables.org/alltableswithkeys";
-
     public static final String CALENDAR_QUERY_FIRST = "( dtstart >";
     public static final String CALENDAR_QUERY_SECOND = ") and (dtend  <";
     public static final String CALENDAR_QUERY_THIRD= ")";
@@ -34,7 +25,6 @@ public class Constants {
     //Defaults
     public static final String LOCATION_DEFAULT = "New York";
     public static final String SUBREDDIT_DEFAULT = "news";
-    public static final String STOCK_DEFAULT = "MSFT";
 
     //Intent identifiers
     public static final String CONFIGURATION_IDENTIFIER = "conf";

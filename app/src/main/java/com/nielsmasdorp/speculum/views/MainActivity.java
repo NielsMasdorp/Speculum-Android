@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +15,11 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.StockInformation;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
+import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 
 import java.util.List;
 
@@ -36,26 +35,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.main_content)
     ScrollView mMainContent;
 
-
-    //Time and date
-
-    @Bind(R.id.tc_time)
-    TextClock mTime;
-
-    @Bind(R.id.tc_date)
-    TextClock mDate;
-
-
-    //Weather current conditions
-
     @Bind(R.id.iv_current_weather)
     ImageView mWeatherCondition;
 
     @Bind(R.id.tv_current_temp)
     TextView mWeatherTemp;
-
-
-    //Weather forecast 4 days
 
     @Bind(R.id.iv_forecast_weather1)
     ImageView mDayOneCondition;
@@ -66,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_forecast_date1)
     TextView mDayOneDate;
 
-
     @Bind(R.id.iv_forecast_weather2)
     ImageView mDayTwoCondition;
 
@@ -75,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Bind(R.id.tv_forecast_date2)
     TextView mDayTwoDate;
-
 
     @Bind(R.id.iv_forecast_weather3)
     ImageView mDayThreeCondition;
@@ -86,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_forecast_date3)
     TextView mDayThreeDate;
 
-
     @Bind(R.id.iv_forecast_weather4)
     ImageView mDayFourCondition;
 
@@ -95,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Bind(R.id.tv_forecast_date4)
     TextView mDayFourDate;
-
-
-    //Weather stats (wind speed+temp, humidity, pressure)
 
     @Bind(R.id.tv_stats_wind)
     TextView mWeatherWind;
@@ -111,23 +89,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_stats_visibility)
     TextView mWeatherVisibility;
 
-
-    //Sunrise/Sunset times
-
     @Bind(R.id.tv_sunrise_time)
     TextView mSunriseTime;
 
     @Bind(R.id.tv_sunset_time)
     TextView mSunsetTime;
 
-
-    //Calendar event
-
     @Bind(R.id.tv_calendar_event)
     TextView mCalendarEvent;
-
-
-    //reddit post
 
     @Bind(R.id.tv_reddit_post_title)
     TextView mRedditPostTitle;
@@ -135,22 +104,13 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_reddit_post_votes)
     TextView mRedditPostVotes;
 
-
-    //Stocks (name, value)
-
-//    @Bind(R.id.tv_stock_name)
-//    TextView mStockName;
-//
-//    @Bind(R.id.tv_stock_value)
-//    TextView mStockValue;
-
-
     @Bind(R.id.pb_loading_spinner)
     ProgressBar mProgressLoading;
 
     IMainPresenter mMainPresenter;
     View mDecorView;
     Configuration mConfiguration;
+    WeatherIconGenerator mIconGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
         mMainPresenter = new MainPresenterImpl(this);
+        mIconGenerator = WeatherIconGenerator.getInstance();
     }
 
     private void hideSystemUI() {
@@ -195,52 +156,45 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         String speed = metric ? Constants.SPEED_METRIC : Constants.SPEED_IMPERIAL;
         String temperature = metric ? Constants.TEMPERATURE_METRIC : Constants.TEMPERATURE_IMPERIAL;
 
-        //this.mCurrentWeatherIcon.setImageResource(getResources().getIdentifier(weather.getStatusCode(), "drawable", getPackageName()));
+        this.mWeatherCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(weather.getStatusCode())));
 
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
 
+        this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
+        this.mWeatherHumidity.setText(weather.getHumidity() + "%");
+        this.mWeatherPressure.setText(weather.getPressure() + pressure);
+        this.mWeatherVisibility.setText(weather.getVisibility() + distance);
 
-        if (mConfiguration.isAtmosphere()) {
-            this.mWeatherPressure.setText(weather.getPressure() + pressure);
-            this.mWeatherHumidity.setText(weather.getHumidity() + "%");
-            this.mWeatherVisibility.setText(weather.getVisibility() + distance);
-        }
+        this.mSunriseTime.setText(weather.getSunrise());
+        this.mSunsetTime.setText(weather.getSunset());
 
-        if (mConfiguration.isSun()) {
-            this.mSunriseTime.setText(weather.getSunrise());
-            this.mSunsetTime.setText(weather.getSunset());
-        }
 
-        if (mConfiguration.isWind()) {
-            this.mWeatherWind.setText(weather.getWindSpeed() + speed + " | " + weather.getWindTemperature() + "º" + temperature);
-        }
+        List<Forecast> forecast = weather.getForecast();
 
-        if (mConfiguration.isForecast()) {
+        this.mDayOneDate.setText(forecast.get(0).getDate().substring(0, forecast.get(0).getDate().length() - 5));
+        this.mDayOneTemp.setText(forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
+        this.mDayOneCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(0).getCode())));
 
-            List<Forecast> forecast = weather.getForecast();
+        this.mDayTwoDate.setText(forecast.get(1).getDate().substring(0, forecast.get(1).getDate().length() - 5));
+        this.mDayTwoTemp.setText(forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
+        this.mDayTwoCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(1).getCode())));
 
-            this.mDayOneDate.setText(forecast.get(0).getDate().substring(0, forecast.get(0).getDate().length() - 5));
-            this.mDayOneTemp.setText(forecast.get(0).getLow() + "/" + forecast.get(0).getHigh() + "º" + temperature);
-            //this.mDayOneIcon.setImageResource(getResources().getIdentifier(forecast.get(0).getCode(), "drawable", getPackageName()));
+        this.mDayThreeDate.setText(forecast.get(2).getDate().substring(0, forecast.get(2).getDate().length() - 5));
+        this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
+        this.mDayThreeCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(2).getCode())));
 
-            this.mDayTwoDate.setText(forecast.get(1).getDate().substring(0, forecast.get(1).getDate().length() - 5));
-            this.mDayTwoTemp.setText(forecast.get(1).getLow() + "/" + forecast.get(1).getHigh() + "º" + temperature);
-            //this.mDayTwoIcon.setImageResource(getResources().getIdentifier(forecast.get(1).getCode(), "drawable", getPackageName()));
+        this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length() - 5));
+        this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
+        this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(Integer.parseInt(forecast.get(3).getCode())));
 
-            this.mDayThreeDate.setText(forecast.get(2).getDate().substring(0, forecast.get(2).getDate().length() - 5));
-            this.mDayThreeTemp.setText(forecast.get(2).getLow() + "/" + forecast.get(2).getHigh() + "º" + temperature);
-            //this.mDayThreeIcon.setImageResource(getResources().getIdentifier(forecast.get(2).getCode(), "drawable", getPackageName()));
-
-            this.mDayFourDate.setText(forecast.get(3).getDate().substring(0, forecast.get(3).getDate().length() - 5));
-            this.mDayFourTemp.setText(forecast.get(3).getLow() + "/" + forecast.get(3).getHigh() + "º" + temperature);
-            //this.mDayFourIcon.setImageResource(getResources().getIdentifier(forecast.get(3).getCode(), "drawable", getPackageName()));
-        }
         hideProgressbar();
+
     }
 
     @Override
     public void displayTopRedditPost(RedditPost redditPost) {
         mRedditPostTitle.setText(redditPost.getTitle());
+        mRedditPostVotes.setText(redditPost.getUps() + "");
         hideProgressbar();
     }
 
@@ -248,14 +202,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     public void displayLatestCalendarEvent(String event) {
         this.mCalendarEvent.setText(event);
         hideProgressbar();
-    }
-
-    @Override
-    public void displayStockInformation(StockInformation stockInformation) {
-
-//        this.mStockName.setText(getString(R.string.stock_info) + " " + stockInformation.getName()
-//                + ": " + stockInformation.getChange() + "%");
-//        hideProgressbar();
     }
 
     @Override
@@ -288,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
         mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
-        mMainPresenter.loadStockInformation(mConfiguration.getStock(), mConfiguration.getPollingDelay());
 
         if (Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             mMainPresenter.loadLatestCalendarEvent(mConfiguration.getPollingDelay());
