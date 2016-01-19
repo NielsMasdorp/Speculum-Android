@@ -24,7 +24,7 @@ Features
   * Four day forecast
   * Sunrise and sunset time
 * Your upcoming Google Calendar event
-* The top post of your favorite subreddit
+* One of the top posts of your favorite subreddit
 
 How do I use this
 ====
