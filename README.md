@@ -22,6 +22,7 @@ How do I use this
 1. Clone project in Android Studio
 2. Make nescessary adjustments for your device
 3. Run on device or generate .APK
+4. Turn on "Stay Awake" in Developer Options on your device
 
 How to make a mirror
 ====
