@@ -12,7 +12,17 @@ Setup            |  Running
 Features
 ====
 * Date and time
-* Weather powered by Yahoo Weather (Metric and Imperial units)
+* Weather powered by Yahoo Weather
+  * Metric or Imperial
+  * Wind information
+    * Temperature
+    * Speed
+    * Direction
+  * Humidity
+  * Pressure
+  * Visibility
+  * Four day forecast
+  * Sunrise and sunset time
 * Your upcoming Google Calendar event
 * The top post of your favorite subreddit
 
