@@ -14,7 +14,7 @@ public interface IMainView {
 
     void displayTopRedditPost(RedditPost redditPost);
 
-    void showContent();
+    void showContent(int which);
 
     void onError(String message);
 }
