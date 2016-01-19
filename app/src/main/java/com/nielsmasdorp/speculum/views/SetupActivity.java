@@ -31,26 +31,11 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Bind(R.id.et_location)
     EditText mEditTextLocation;
 
-    @Bind(R.id.et_stock)
-    EditText mEditTextStock;
-
     @Bind(R.id.et_subreddit)
     EditText mEditTextSubreddit;
 
     @Bind(R.id.et_polling_delay)
     EditText mEditTextPollingDelay;
-
-    @Bind(R.id.cb_atmosphere)
-    CheckBox mCbAtmosphere;
-
-    @Bind(R.id.cb_wind)
-    CheckBox mCbWind;
-
-    @Bind(R.id.cb_sun)
-    CheckBox mCbSun;
-
-    @Bind(R.id.cb_forecast)
-    CheckBox mCbForecast;
 
     @Bind(R.id.rb_celsius)
     RadioButton mRbCelsius;
@@ -101,24 +86,17 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @SuppressWarnings("unused")
     public void launch() {
 
-        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextStock.getText().toString(), mEditTextSubreddit.getText().toString(),
-                mEditTextPollingDelay.getText().toString(), mCbWind.isChecked(), mCbAtmosphere.isChecked(),
-                mCbSun.isChecked(), mRbCelsius.isChecked(), mCbForecast.isChecked());
+        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
+                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String stock, String subreddit, int pollingDelay, boolean wind, boolean atmosphere,
-                          boolean sun, boolean celsius, boolean forecast) {
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius) {
 
         //Create configuration and pass in Intent
         Configuration configuration = new Configuration.Builder()
-                .sun(sun)
-                .atmosphere(atmosphere)
-                .wind(wind)
                 .celsius(celsius)
-                .forecast(forecast)
                 .location(location)
-                .stock(stock)
                 .subreddit(subreddit)
                 .pollingDelay(pollingDelay)
                 .build();

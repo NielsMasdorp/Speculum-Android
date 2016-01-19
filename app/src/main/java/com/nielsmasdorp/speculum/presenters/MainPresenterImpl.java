@@ -2,10 +2,6 @@ package com.nielsmasdorp.speculum.presenters;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.StockInformation;
-import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
-import com.nielsmasdorp.speculum.models.yahoo_finance.YahooFinanceResponse;
-import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
 import com.nielsmasdorp.speculum.services.YahooService;
@@ -22,7 +18,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -98,33 +93,6 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onNext(CurrentWeather weather) {
 
                         if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
-                    }
-                }));
-    }
-
-    @Override
-    public void loadStockInformation(final String stock, int updateDelay) {
-
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> mYahooService.getApi().getStockQuote(Constants.FINANCE_QUERY_FIRST +
-                        stock + Constants.FINANCE_QUERY_SECOND, Constants.YAHOO_QUERY_FORMAT, Constants.FINANCE_QUERY_ENV))
-                .flatMap(response -> mYahooService.getStockInformation(response))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<StockInformation>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onNext(StockInformation stockInformation) {
-
-                        if (mMainView.get() != null) mMainView.get().displayStockInformation(stockInformation);
                     }
                 }));
     }

@@ -1,9 +1,6 @@
 package com.nielsmasdorp.speculum.services;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
-import com.nielsmasdorp.speculum.models.StockInformation;
-import com.nielsmasdorp.speculum.models.yahoo_finance.Quote;
-import com.nielsmasdorp.speculum.models.yahoo_finance.YahooFinanceResponse;
 import com.nielsmasdorp.speculum.models.yahoo_weather.Channel;
 import com.nielsmasdorp.speculum.models.yahoo_weather.YahooWeatherResponse;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -33,12 +30,6 @@ public class YahooService {
         mYahooApi = retrofit.create(YahooApi.class);
     }
 
-    public Observable<StockInformation> getStockInformation(YahooFinanceResponse response) {
-
-        Quote quote = response.getQuery().getResults().getQuote();
-        return Observable.just(new StockInformation(quote.getSymbol(), quote.getChange(), quote.getName(), quote.getStockExchange()));
-    }
-
     public Observable<CurrentWeather> getCurrentWeather(YahooWeatherResponse response) {
 
         Channel weatherData = response.getQuery().getResults().getChannel();
@@ -64,9 +55,6 @@ public class YahooService {
     }
 
     public interface YahooApi {
-
-        @GET("yql")
-        Observable<YahooFinanceResponse> getStockQuote(@Query("q") String query, @Query("format") String format, @Query("env") String env);
 
         @GET("yql")
         Observable<YahooWeatherResponse> getCurrentWeatherConditions(@Query("q") String query, @Query("format") String format);
