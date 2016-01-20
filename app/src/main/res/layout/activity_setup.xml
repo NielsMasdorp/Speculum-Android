@@ -33,7 +33,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
                     android:layout_margin="16dp"
-                    android:text="Setup"
+                    android:text="@string/setup_title"
                     android:textColor="@color/white"
                     android:textSize="36sp" />
 
@@ -50,8 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="General"
-
+                    android:text="@string/general_title"
                     android:textSize="18sp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -59,11 +58,11 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/InputLayout">
 
-                    <EditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/et_polling_delay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Update interval in minutes (default is 30 minutes)"
+                        android:hint="@string/polling_hint"
                         android:inputType="number"
                         android:maxLength="2"
                         android:singleLine="true" />
@@ -74,9 +73,9 @@
                     android:id="@+id/tv_reddit_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Reddit"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/reddit_title"
                     android:textSize="18sp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -84,11 +83,11 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/InputLayout">
 
-                    <EditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/et_subreddit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Choose a subreddit (default is 'news')"
+                        android:hint="@string/subreddit_hint"
                         android:inputType="text"
                         android:singleLine="true" />
 
@@ -98,9 +97,9 @@
                     android:id="@+id/tv_weather_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Weather"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/weather_title"
                     android:textSize="18sp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -108,11 +107,11 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/InputLayout">
 
-                    <EditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/et_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Choose a city (default is 'New York')"
+                        android:hint="@string/location_hint"
                         android:inputType="text"
                         android:singleLine="true" />
 
@@ -122,10 +121,9 @@
                     android:id="@+id/tv_temp_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-
-                    android:text="Temperature unit"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/temperature_title"
                     android:textSize="18sp" />
 
                 <RadioGroup
@@ -138,14 +136,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="Celsius" />
+                        android:text="@string/temperature_celsius" />
 
                     <RadioButton
                         android:id="@+id/rb_fahrenheit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="false"
-                        android:text="Fahrenheit" />
+                        android:text="@string/temperature_fahrenheit" />
 
                 </RadioGroup>
 
@@ -153,12 +151,14 @@
                     android:id="@+id/btn_launch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:layout_marginTop="16dp"
-                    android:text="Done" />
+                    android:text="@string/btn_done" />
 
             </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
+
 </RelativeLayout>

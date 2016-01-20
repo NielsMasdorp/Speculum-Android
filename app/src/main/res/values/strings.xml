@@ -1,22 +1,25 @@
 <resources>
-    <string name="app_name">Speculum</string>
+
+    <!--App name-->
+    <string name="app_name" translatable="false">Speculum</string>
 
     <!--Google calendar events-->
     <string name="no_events_today">No events today</string>
+    <string name="at">at</string>
     <string name="no_events_error">Could not get events from calendar</string>
 
     <!--Setup activity-->
     <string name="no_permission_for_calendar">You will not see your latest event, you can change this in the system settings on your device</string>
-
-    <!--Main Activity-->
-    <string name="pressure">Pressure</string>
-    <string name="humidity">Humidity</string>
-    <string name="visibility">Visibility</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="wind_temp">Wind temperature</string>
-    <string name="wind_speed">Wind speed</string>
-    <string name="next_event">Next event</string>
-    <string name="stock_info">Stock change for</string>
+    <string name="setup_title">Setup</string>
+    <string name="general_title">General</string>
+    <string name="polling_hint">Update interval in minutes (leave blank for 30 minutes)</string>
+    <string name="reddit_title" translatable="false">Reddit</string>
+    <string name="subreddit_hint">Choose a subreddit (leave black for \'news\')</string>
+    <string name="weather_title">Weather</string>
+    <string name="location_hint">Choose a city (leave blank for \'New York\')</string>
+    <string name="temperature_title">Temperature unit</string>
+    <string name="temperature_celsius">Celsius</string>
+    <string name="temperature_fahrenheit">Fahrenheit</string>
+    <string name="btn_done">Done</string>
 
 </resources>

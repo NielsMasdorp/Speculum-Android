@@ -61,6 +61,7 @@
                     android:textColor="@color/white"
                     android:textSize="50dp"
                     tools:text="6ºC" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -130,6 +131,7 @@
                     android:textColor="@color/white"
                     android:textSize="30dp"
                     tools:text="6 jan" />
+
             </LinearLayout>
 
             <LinearLayout
