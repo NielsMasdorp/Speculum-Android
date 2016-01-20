@@ -42,7 +42,7 @@ How I made my mirror
 Thanks to
 ====
 
-[gijsdewit](https://github.com/gijsdewit) for awesome design
+#####[gijsdewit](https://github.com/gijsdewit) for **awesome** designs
 
 ###Used libraries
 * [Android Design Library](http://developer.android.com/tools/support-library/index.html)
