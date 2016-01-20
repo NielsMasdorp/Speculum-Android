@@ -38,6 +38,18 @@ How I made my mirror
 ====
 //TODO
 
+Thanks to
+====
+
+[gijsdewit](https://github.com/gijsdewit) for awesome design
+
+Used libraries
+* [Android Design Library](http://developer.android.com/tools/support-library/index.html)
+* [Retrofit](https://github.com/square/retrofit)
+* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [Butterknife](https://github.com/JakeWharton/butterknife)
+* [Assent](https://github.com/afollestad/assent)
+
 License
 ====
 ```
