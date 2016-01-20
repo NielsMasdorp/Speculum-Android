@@ -43,7 +43,7 @@ Thanks to
 
 [gijsdewit](https://github.com/gijsdewit) for awesome design
 
-Used libraries
+###Used libraries
 * [Android Design Library](http://developer.android.com/tools/support-library/index.html)
 * [Retrofit](https://github.com/square/retrofit)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
