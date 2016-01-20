@@ -74,7 +74,7 @@ public class GoogleCalendarService {
                     DateFormat formatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
                     details = formatter.format(startTime.getTime()) + " - " + formatter.format(endTime.getTime());
                     if (!TextUtils.isEmpty(cursor.getString(3))) {
-                        details += " ~ " + cursor.getString(3);
+                        details += " " + mContext.get().getString(R.string.at) + " " + cursor.getString(3);
                     }
                     cursor.close();
                     return Observable.just(title + ", " + details);
