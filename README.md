@@ -1,4 +1,3 @@
-# Speculum
 ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Speculum_promo.jpg)
 
 This is an Android application for a magic mirror.
