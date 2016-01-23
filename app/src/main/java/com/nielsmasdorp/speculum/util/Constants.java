@@ -51,6 +51,11 @@ public class Constants {
     //Speech recognition commands
     public static final String KWS_SEARCH = "wakeup";
     public static final String COMMANDS_SEARCH = "commands";
-    public static final String KEYPHRASE = "hello mirror";
-    public static final String UPDATE_PHRASE = "fetch";
+    public static final String KEYPHRASE = "hello magic mirror";
+    public static final String UPDATE_PHRASE = "get me new data";
+    public static final String SLEEP_PHRASE = "go back to sleep";
+
+    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated";
+    public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye";
+    public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 }
