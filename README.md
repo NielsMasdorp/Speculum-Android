@@ -28,71 +28,98 @@ Features
 * One of the top posts of your favorite subreddit
 * Update data by using voice command
 
-Voice commands
+Update data with voice command
 ====
 
-To use a voice command to update the mirror data turn on the voice command support in the setup. When the mirror is showing and is initialized (this could take a little bit of time on an old device) say *hello mirror*, if you get the response *what can i do for you* say *fetch* and if everything went well the device will say *updating the data* and the data will be updated.
+When the you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 10 second timeframe.
 
 ###Add your own commands
 
-By default there is only one language dictionary and voice command available.
-The current dictionary is an **US-English dictionary**. In order to wake the device say *hello mirror*. This phrase can be changed in `Constants.java`, change 
+Although this is out of the scope for this README I had a hard time understanding and configuring the Pocketsphinx library so I figure this might come in handy when you want to add your own functions to this application.
+The `SpeechRecognizer` in this application has two modes; listen to one keyphrase (the wake up phrase) and listen to a list of keywords. The keyphrase to wake up the device is pretty straight forward, if you want to edit the phrase go to `Constants.java`,  and change 
 
 ```java
-public static final String KEYPHRASE = "hello mirror";
+public static final String KEYPHRASE = "hello magic mirror";
 ```
-to anything you want. When you speak this phrase the device will respond and you have 5 seconds to speak an command. As of now the only command is *fetch*. This will update the mirror data (weather, Reddit etc..). After the device has successfully received a command the action you've assigned to it (more below) will be excecuted and the device will go back to sleep.
 
-If you want to add commands to the list of available commands and assign actions to it you must first add the commands to `/assets/sync/commands.gram` and use this format:
-
-```
-do this /1.0/
-do that /1.0/
-fetch /1.0/
-turn on lights /1.0/
-turn off lights /1e-1/
-```
-The number beween the `//` is the threshold for detecting, more about this below. Also, the words in the commands you choose **must** exist in the dictionary file, which can be found in `/assets/sync/cmudict-en-us.dict`.
-
-After you add your commands you must individually add them to `Constants.java` as well.
+to anything you want. When this phrase is recognized the `SpeechRecognizer` will switch to listening to any of the commands in a grammar file you specified. I specified the `commands.gram` file in the initialization of the `SpeechRecognizer` as shown below.
 
 ```java
-public static final String KEYPHRASE = "hello mirror";
-public static final String DO_THIS_PHRASE = "do this";
-public static final String DO_THAT_PHRASE = "do that";
-public static final String UPDATE_PHRASE = "fetch";
-public static final String LIGHT_ON_PHRASE = "turn on lights";
-public static final String LIGHT_OFF_PHRASE = "turn off lights";
+// Create grammar-based search for command recognition
+File commands = new File(assetsDir, "commands.gram");
+recognizer.addKeywordSearch(Constants.COMMANDS_SEARCH, commands);
 ```
-Now you only have to assign your custom actions to the commands. You can assign your own actions to the commands in the `processCommand()` method in the `MainPresenterImpl.java`.
+
+The actual grammar file can be found in `/assets/sync/commands.gram`, you can change the command list or create a new file in that folder and pass it to the `SpeechRecognizer` at initialization. The grammar file must have this format:
+
+```
+get me new data/1e-40/
+go back to sleep/1e-40/
+turn on lights/1e-40/
+turn off lights/1e-40/
+talk/1e-1/
+```
+The number beween the `//` is the threshold for detecting the keywords, the general rule is; the longer the keyword the bigger the threshold (e.g. one-word phrases `/1e-1/` and four-word phrases `/1e-40/`) but you can experiment with these values yourself. Also, every word in the commands you choose **must** exist in the dictionary file, which can be found in `/assets/sync/cmudict-en-us.dict`.
+
+After you add your commands add them individually to `Constants.java` as well.
+
+```java
+public static final String KEYPHRASE = "hello magic mirror";
+public static final String UPDATE_PHRASE = "get me new data";
+public static final String SLEEP_PHRASE = "go back to sleep";
+public static final String LIGHTS_ON_PHRASE = "turn on lights";
+public static final String LIGHTS_OFF_PHRASE = "turn off lights";
+public static final String TALK_PHRASE = "talk";
+```
+
+Now you set your `SpeechRecognizer` to listen to the commands list.
+
+```java
+recognizer.stop();
+//second parameter is the time to listen specified in milliseconds
+recognizer.startListening(Constants.COMMANDS_SEARCH, 5000);
+```
+Whenever the `SpeechRecognizer` recognizes a command I pass the command to the presenter.
+
+```java
+ @Override
+ public void onPartialResult(Hypothesis hypothesis) {
+    if (hypothesis == null)
+        return;
+    mMainPresenter.processCommand(hypothesis.getHypstr());
+}
+```
+Now you only have to assign your custom actions to the commands in the presenter. You can assign your own actions to the commands in the `processCommand()` method in the `MainPresenterImpl.java`.
 
 ```java
 @Override
 public void processCommand(String command) {
-        
-    //I've added only the magic keyword and one other command here
-    //but you get the point. you can do anything you want here
-
-    if (mMainView.get() != null) {
-        if (command.equals(Constants.KEYPHRASE)) {
-            // go and listen for commands
-            mMainView.get().startListening(true, true);
-        } else if (command.equals(Constants.UPDATE_PHRASE)) {
-            //update all data
-            mMainView.get().updateData();
-            //go back to sleep and wait for the magic keyword again
-            mMainView.get().startListening(false, true);
+     switch (command) {
+         case Constants.KEYPHRASE:
+            // start listening for commands
+            break;
+         case Constants.SLEEP_PHRASE:
+             // listen to wake up phrase again
+             break;
+         case Constants.UPDATE_PHRASE:
+             // update data and listen to wake up phrase again
+             break;
         }
     }
 }
 ```
-As of now since I only have 2 commands I pass an `boolean isSleeping` to the `startListening()` method to determine what the next step would be (either go back to sleep and wait for the wake up phrase again or to listen for legit commands).
-When you have more legit commands this logic must ofcourse be changed. There is a `talk()` method in `MainActivity.java` that you can use to have the device say different things depending on the command received.
 
-After changing **reinstall the application** and say the magic wake up command, when you get the response from the device say your custom command and that's pretty much it!
+The way you make the `SpeechRecognizer listen to the wake up phrase is similar to the commands method only this time do not pass a time to listen value as parameter.
+
+```java
+recognizer.stop();
+recognizer.startListening(Constants.KWS_SEARCH);
+```
+
+After changing anything related to the commands **reinstall the application** wake up the device and enjoy!
 
 ###Thresholds
-If you are having trouble with commands being recognized like I have, you can edit the individual thresholds per keyphrase in the grammar file, I am still trying to find the best thresholds for my commands. More info can be found in the [Pocketsphinx  tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm).
+More info can be found in the [Pocketsphinx  tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm).
 
 ###Other languages and dictionaries
 I have not experimented with this, however it is possible to create your own dictionary file. Please refer to the [CMU Sphinx tutorial](http://cmusphinx.sourceforge.net/wiki/tutorial).
