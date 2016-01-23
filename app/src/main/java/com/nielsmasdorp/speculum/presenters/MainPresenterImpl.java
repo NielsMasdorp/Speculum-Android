@@ -176,7 +176,7 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
-    public void processCommand(String command) {
+     public void processCommand(String command) {
 
         if (mMainView.get() != null) {
 
