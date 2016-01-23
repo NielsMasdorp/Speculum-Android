@@ -12,4 +12,8 @@ public interface IMainPresenter {
     void loadTopRedditPost(final String subreddit, int updateDelay);
 
     void unSubscribe();
+
+    void setupRecognitionService();
+
+    void processCommand(String command);
 }

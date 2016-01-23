@@ -10,6 +10,7 @@
 
     <!--Setup activity-->
     <string name="no_permission_for_calendar">You will not see your latest event, you can change this in the system settings on your device</string>
+    <string name="no_permission_for_voice">Permission to record audio denied, you can always change this in the system settings of your device</string>
     <string name="setup_title">Setup</string>
     <string name="general_title">General</string>
     <string name="polling_hint">Update interval in minutes (leave blank for 30 minutes)</string>
@@ -20,6 +21,13 @@
     <string name="temperature_title">Temperature unit</string>
     <string name="temperature_celsius">Celsius</string>
     <string name="temperature_fahrenheit">Fahrenheit</string>
+    <string name="voice_title">Voice commands</string>
+    <string name="turn_on_voice">Turn on voice commands (experimental)</string>
     <string name="btn_done">Done</string>
+
+    <!--Text to speech-->
+    <string name="update_notification" translatable="false">Okay, data is being updated</string>
+    <string name="sleep_notification" translatable="false">I have no idea what you want. I am going back to sleep, bye</string>
+    <string name="woke_up_notification" translatable="false">Hello there. What can I do for you?</string>
 
 </resources>

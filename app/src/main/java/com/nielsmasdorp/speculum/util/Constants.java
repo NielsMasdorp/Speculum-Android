@@ -15,7 +15,7 @@ public class Constants {
 
     public static final String CALENDAR_QUERY_FIRST = "( dtstart >";
     public static final String CALENDAR_QUERY_SECOND = ") and (dtend  <";
-    public static final String CALENDAR_QUERY_THIRD= ")";
+    public static final String CALENDAR_QUERY_THIRD = ")";
     public static final String CALENDAR_QUERY_FOURTH = "dtstart ASC";
 
     //Query extras
@@ -47,4 +47,10 @@ public class Constants {
 
     public static final String TEMPERATURE_IMPERIAL = "F";
     public static final String TEMPERATURE_METRIC = "C";
+
+    //Speech recognition commands
+    public static final String KWS_SEARCH = "wakeup";
+    public static final String COMMANDS_SEARCH = "commands";
+    public static final String KEYPHRASE = "hello mirror";
+    public static final String UPDATE_PHRASE = "fetch";
 }
