@@ -120,6 +120,7 @@ Thanks to
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [Butterknife](https://github.com/JakeWharton/butterknife)
 * [Assent](https://github.com/afollestad/assent)
+* [Pocketsphinx](http://cmusphinx.sourceforge.net/wiki/tutorialandroid)
 
 License
 ====
