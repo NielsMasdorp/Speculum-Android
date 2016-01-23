@@ -1,5 +1,7 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.os.AsyncTask;
+
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
@@ -9,11 +11,14 @@ import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.views.MainActivity;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import edu.cmu.pocketsphinx.Assets;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -56,13 +61,15 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null)
+                            mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(String event) {
 
-                        if (mMainView.get() != null) mMainView.get().displayLatestCalendarEvent(event);
+                        if (mMainView.get() != null)
+                            mMainView.get().displayLatestCalendarEvent(event);
                     }
                 }));
     }
@@ -85,7 +92,8 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null)
+                            mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
@@ -111,13 +119,15 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (mMainView.get() != null) mMainView.get().onError(e.getLocalizedMessage());
+                        if (mMainView.get() != null)
+                            mMainView.get().onError(e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onNext(RedditPost redditPost) {
 
-                        if (mMainView.get() != null) mMainView.get().displayTopRedditPost(redditPost);
+                        if (mMainView.get() != null)
+                            mMainView.get().displayTopRedditPost(redditPost);
                     }
                 }));
     }
@@ -130,5 +140,53 @@ public class MainPresenterImpl implements IMainPresenter {
             }
         }
         mSubscriptions.clear();
+    }
+
+    //TODO RxAndroid
+    @Override
+    public void setupRecognitionService() {
+
+        if (mMainView.get() != null) {
+
+            new AsyncTask<Void, Void, Exception>() {
+                @Override
+                protected Exception doInBackground(Void... params) {
+                    try {
+                        Assets assets = new Assets((MainActivity) mMainView.get());
+                        File assetDir = assets.syncAssets();
+                        mMainView.get().setupRecognizer(assetDir);
+                    } catch (IOException e) {
+                        return e;
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Exception result) {
+                    if (result != null) {
+                        mMainView.get().onError("Failed to init recognizer " + result);
+                    } else {
+                        mMainView.get().startListening(false, false);
+                    }
+                }
+            }.execute();
+        }
+    }
+
+    @Override
+    public void processCommand(String command) {
+
+        if (mMainView.get() != null) {
+            if (command.equals(Constants.KEYPHRASE)) {
+                // go and listen for commands
+                mMainView.get().startListening(true, true);
+            } else if (command.equals(Constants.UPDATE_PHRASE)) {
+                //update all data
+                unSubscribe();
+                mMainView.get().startPolling();
+                // go to sleep again and wait for activation phrase
+                mMainView.get().startListening(false, true);
+            }
+        }
     }
 }

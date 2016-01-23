@@ -18,11 +18,11 @@ public class SetupPresenterImpl implements ISetupPresenter {
     }
 
     @Override
-    public void launch(String location, String subreddit, String pollingDelay, boolean celsius) {
+    public void launch(String location, String subreddit, String pollingDelay, boolean celsius, boolean voiceCommands) {
 
         if (pollingDelay.equals("") || pollingDelay.equals("0")) pollingDelay = Constants.POLLING_DELAY_DEFAULT;
 
         if (mSetupView.get() != null) mSetupView.get().navigateToMainActivity(location.length() == 0 ? Constants.LOCATION_DEFAULT : location,
-                subreddit.length() == 0 ? Constants.SUBREDDIT_DEFAULT : subreddit, Integer.parseInt(pollingDelay), celsius);
+                subreddit.length() == 0 ? Constants.SUBREDDIT_DEFAULT : subreddit, Integer.parseInt(pollingDelay), celsius, voiceCommands);
     }
 }

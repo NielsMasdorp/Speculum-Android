@@ -1,13 +1,18 @@
 package com.nielsmasdorp.speculum.views;
 
+import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,16 +27,22 @@ import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener {
+public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener, RecognitionListener, TextToSpeech.OnInitListener {
 
     @Bind(R.id.weather_layout)
     LinearLayout mWeatherLayout;
@@ -114,10 +125,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_reddit_post_votes)
     TextView mRedditPostVotes;
 
+
     IMainPresenter mMainPresenter;
     View mDecorView;
     Configuration mConfiguration;
     WeatherIconGenerator mIconGenerator;
+
+    SpeechRecognizer recognizer;
+    TextToSpeech mTts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,11 +252,19 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         //Start polling
         startPolling();
 
+        if (mConfiguration.getVoiceCommands()) {
+            //start listening
+            mMainPresenter.setupRecognitionService();
+            //init TTS Service
+            mTts = new TextToSpeech(this, this);
+        }
+
         // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);
     }
 
-    private void startPolling() {
+    @Override
+    public void startPolling() {
 
         mMainPresenter.loadWeather(mConfiguration.getLocation(), mConfiguration.isCelsius(), mConfiguration.getPollingDelay());
         mMainPresenter.loadTopRedditPost(mConfiguration.getSubreddit(), mConfiguration.getPollingDelay());
@@ -252,11 +275,42 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
+    public void startListening(boolean isSleeping, boolean shouldNotify) {
+
+        recognizer.stop();
+        if (!isSleeping) {
+            recognizer.startListening(Constants.KWS_SEARCH);
+            if (shouldNotify) {
+                talk(getString(R.string.update_notification));
+            }
+        } else {
+            recognizer.startListening(Constants.COMMANDS_SEARCH, 5000);
+            if (shouldNotify) {
+                talk(getString(R.string.woke_up_notification));
+            }
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 
         //stop polling
         mMainPresenter.unSubscribe();
+
+        if (mConfiguration.getVoiceCommands()) {
+            //shutdown recognition service
+            if (recognizer != null) {
+                recognizer.cancel();
+                recognizer.shutdown();
+            }
+
+            //close the TTS Engine
+            if (mTts != null) {
+                mTts.stop();
+                mTts.shutdown();
+            }
+        }
 
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
@@ -269,5 +323,98 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
             hideSystemUI();
         }
+    }
+
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null)
+            return;
+
+        String text = hypothesis.getHypstr();
+        mMainPresenter.processCommand(text);
+    }
+
+    @Override
+    public void onResult(Hypothesis hypothesis) {
+    }
+
+    @Override
+    public void onError(Exception e) {
+        onError(e);
+        Log.e(MainActivity.class.getSimpleName(), e.toString());
+    }
+
+    @Override
+    public void onTimeout() {
+        recognizer.stop();
+        recognizer.startListening(Constants.KWS_SEARCH);
+        talk(getString(R.string.sleep_notification));
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+    }
+
+    @Override
+    public void setupRecognizer(File assetsDir) throws IOException {
+
+        recognizer = defaultSetup()
+                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                .setKeywordThreshold(1e-20f)
+                .getRecognizer();
+        recognizer.addListener(this);
+
+        // the activation keyword
+        recognizer.addKeyphraseSearch(Constants.KWS_SEARCH, Constants.KEYPHRASE);
+
+        // Create grammar-based search for command recognition
+        File commands = new File(assetsDir, "commands.gram");
+        recognizer.addKeywordSearch(Constants.COMMANDS_SEARCH, commands);
+    }
+
+    /**
+     * TTS onInit
+     *
+     * @param status
+     */
+    @Override
+    public void onInit(int status) {
+    }
+
+    /**
+     * Use the TTS engine to speak a message to the user
+     *
+     * @param message to speak
+     */
+    private void talk(String message) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ttsGreater21(message);
+        } else {
+            ttsUnder20(message);
+        }
+    }
+
+    /**
+     * Respective methods for TTS on pre SK 20 and Lollipop
+     *
+     * @param text
+     */
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        mTts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId = this.hashCode() + "";
+        mTts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 }
