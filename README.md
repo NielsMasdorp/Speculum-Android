@@ -31,7 +31,7 @@ Features
 Update data with voice command
 ====
 
-When the you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 10 second timeframe.
+When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 10 second timeframe.
 
 ###Add your own commands
 
