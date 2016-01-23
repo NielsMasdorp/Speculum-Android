@@ -32,12 +32,12 @@ Voice commands
 ====
 
 By default there is only one language dictionary and voice command available.
-The current dictionary is an US-en one. In order to wake the device say "hello mirror". This phrase can be changed in `Constants.java`, change 
+The current dictionary is an *US-English dictionary*. In order to wake the device say *'hello mirror'*. This phrase can be changed in `Constants.java`, change 
 
 ```java
 public static final String KEYPHRASE = "hello mirror";
 ```
-to anything you want. When you speak this phrase the device will respond and you have 5 seconds speak an command. As of now the only command is "fetch". This will update the mirror data (weather, Reddit etc..).
+to anything you want. When you speak this phrase the device will respond and you have 5 seconds speak an command. As of now the only command is *'fetch'*. This will update the mirror data (weather, Reddit etc..). After the device has successfully received a command the action you've assigned to it (more below) will be excecuted and the device will go back to sleep.
 
 If you want to add commands to the list of available commands and assign actions to it you must first add the commands to `/assets/sync/commands.gram` and use this format:
 
@@ -82,7 +82,10 @@ public void processCommand(String command) {
     }
 }
 ```
-**Reinstall the application** and say the magic wake up command, when you get the response from the device say your custom command and you're done!
+As of now since I only have 2 commands I pass an `boolean isSleeping` to the `startListening()` method to determine what the next step would be (either go back to sleep and wait for the *'hello mirror'* phrase again or to listen for legit commands.
+When you have more legit commands this logic must ofcourse be changed. There is a `talk()` method in `MainActivity.java` that you can use to have the device say different things depending on the command received.
+
+After changing **reinstall the application** and say the magic wake up command, when you get the response from the device say your custom command and that's pretty much it!
 
 ###Thresholds
 If you are having trouble with commands being recognized like I have, you can edit the individual thresholds per keyphrase in the grammar file, I am still trying to find the best thresholds for my commands. More info can be found in the [Pocketsphinx  tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm).
