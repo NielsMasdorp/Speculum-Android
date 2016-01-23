@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         if (mode.equals(Constants.KWS_SEARCH)) {
             recognizer.startListening(mode);
         } else {
-            recognizer.startListening(mode, 10000);
+            recognizer.startListening(mode, 5000);
         }
     }
 
