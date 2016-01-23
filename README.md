@@ -26,10 +26,14 @@ Features
   * Sunrise and sunset time
 * Your upcoming Google Calendar event
 * One of the top posts of your favorite subreddit
-* Experimental voice command support with Pocketsphinx
+* Update data by using voice command
 
 Voice commands
 ====
+
+To use a voice command to update the mirror data turn on the voice command support in the setup. When the mirror is showing and is initialized (this could take a little bit of time on an old device) say *hello mirror*, if you get the response *what can i do for you* say *fetch* and if everything went well the device will say *updating the data* and the data will be updated.
+
+###Add your own commands
 
 By default there is only one language dictionary and voice command available.
 The current dictionary is an **US-English dictionary**. In order to wake the device say *hello mirror*. This phrase can be changed in `Constants.java`, change 
