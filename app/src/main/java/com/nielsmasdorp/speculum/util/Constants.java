@@ -55,7 +55,7 @@ public class Constants {
     public static final String UPDATE_PHRASE = "get me new data";
     public static final String SLEEP_PHRASE = "go back to sleep";
 
-    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated";
-    public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye";
+    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated. Wake me up if you need me again.";
+    public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye.";
     public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 }
