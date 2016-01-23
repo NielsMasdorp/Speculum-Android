@@ -33,10 +33,11 @@ Voice commands
 
 By default there is only one language dictionary and voice command available.
 The current dictionary is an US-en one. In order to wake the device say "hello mirror". This phrase can be changed in `Constants.java`, change 
+
 ```java
 public static final String KEYPHRASE = "hello mirror";
 ```
-To anything you want. When you speak this phrase the device will respond and you have 5 seconds speak an command. As of now the only command is "fetch". This will update the mirror data (weather, Reddit etc..).
+to anything you want. When you speak this phrase the device will respond and you have 5 seconds speak an command. As of now the only command is "fetch". This will update the mirror data (weather, Reddit etc..).
 
 If you want to add commands to the list of available commands and assign actions to it you must first add the commands to `/assets/sync/commands.gram` and use this format:
 
@@ -50,6 +51,7 @@ turn off lights /1e-1/
 The number beween the `//` is the threshold for detecting, more about this below. Also, the words in the commands you choose **must** exist in the dictionary file, which can be found in `/assets/sync/cmudict-en-us.dict`.
 
 After you add your commands you must individually add them to `Constants.java` as well.
+
 ```java
 public static final String KEYPHRASE = "hello mirror";
 public static final String DO_THIS_PHRASE = "do this";
@@ -58,30 +60,35 @@ public static final String UPDATE_PHRASE = "fetch";
 public static final String LIGHT_ON_PHRASE = "turn on lights";
 public static final String LIGHT_OFF_PHRASE = "turn off lights";
 ```
-Thats it! **Reinstall the application** and when you say the magic wake up phrase and say a command you can assign your own actions to the commands in the `processCommand()` method in the `MainPresenterImpl.java`.
+Now you only have to assign your custom actions to the commands. You can assign your own actions to the commands in the `processCommand()` method in the `MainPresenterImpl.java`.
 
 ```java
 @Override
-    public void processCommand(String command) {
+public void processCommand(String command) {
         
-        //I've added only the magic keyword and one other command here
-        //but you get the point. you can do anything you want here
+    //I've added only the magic keyword and one other command here
+    //but you get the point. you can do anything you want here
 
-        if (mMainView.get() != null) {
-            if (command.equals(Constants.KEYPHRASE)) {
-                // go and listen for commands
-                mMainView.get().startListening(true, true);
-            } else if (command.equals(Constants.UPDATE_PHRASE)) {
-                //update all data
-                mMainView.get().updateData();
-                //go back to sleep and wait for the magic keyword again
-                mMainView.get().startListening(false, true);
-            }
+    if (mMainView.get() != null) {
+        if (command.equals(Constants.KEYPHRASE)) {
+            // go and listen for commands
+            mMainView.get().startListening(true, true);
+        } else if (command.equals(Constants.UPDATE_PHRASE)) {
+            //update all data
+            mMainView.get().updateData();
+            //go back to sleep and wait for the magic keyword again
+            mMainView.get().startListening(false, true);
         }
     }
+}
 ```
+**Reinstall the application** and say the magic wake up command, when you get the response from the device say your custom command and you're done!
+
 ###Thresholds
-If you are having trouble with commands being recognized like I have, you can edit the individual thresholds per keyphrase in the grammar file, I am still trying to find the best thresholds for my commands. More info can be found here [Pocketsphinx  tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm).
+If you are having trouble with commands being recognized like I have, you can edit the individual thresholds per keyphrase in the grammar file, I am still trying to find the best thresholds for my commands. More info can be found in the [Pocketsphinx  tutorial](http://cmusphinx.sourceforge.net/wiki/tutoriallm).
+
+###Other languages and dictionaries
+I have not experimented with this, however it is possible to create your own dictionary file. Please refer to the [CMU Sphinx tutorial](http://cmusphinx.sourceforge.net/wiki/tutorial).
 
 How do I use this
 ====
