@@ -275,19 +275,13 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
-    public void startListening(boolean isSleeping, boolean shouldNotify) {
+    public void setListeningMode(String mode) {
 
         recognizer.stop();
-        if (!isSleeping) {
-            recognizer.startListening(Constants.KWS_SEARCH);
-            if (shouldNotify) {
-                talk(getString(R.string.update_notification));
-            }
+        if (mode.equals(Constants.KWS_SEARCH)) {
+            recognizer.startListening(mode);
         } else {
-            recognizer.startListening(Constants.COMMANDS_SEARCH, 5000);
-            if (shouldNotify) {
-                talk(getString(R.string.woke_up_notification));
-            }
+            recognizer.startListening(mode, 10000);
         }
     }
 
@@ -346,9 +340,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void onTimeout() {
-        recognizer.stop();
-        recognizer.startListening(Constants.KWS_SEARCH);
-        talk(getString(R.string.sleep_notification));
+        talk(Constants.SLEEP_NOTIFICATION);
+        setListeningMode(Constants.KWS_SEARCH);
     }
 
     @Override
@@ -365,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         recognizer = defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
                 .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-                .setKeywordThreshold(1e-20f)
+                .setKeywordThreshold(1e-45f)
                 .getRecognizer();
         recognizer.addListener(this);
 
@@ -391,7 +384,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
      *
      * @param message to speak
      */
-    private void talk(String message) {
+    @Override
+    public void talk(String message) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ttsGreater21(message);
