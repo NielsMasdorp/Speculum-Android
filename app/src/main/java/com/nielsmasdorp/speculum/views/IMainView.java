@@ -3,6 +3,9 @@ package com.nielsmasdorp.speculum.views;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
@@ -17,4 +20,10 @@ public interface IMainView {
     void showContent(int which);
 
     void onError(String message);
+
+    void setupRecognizer(File assetDir) throws IOException;
+
+    void startListening(boolean isSleeping, boolean shouldNotify);
+
+    void startPolling();
 }

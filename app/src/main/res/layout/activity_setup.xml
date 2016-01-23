@@ -147,6 +147,21 @@
 
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/tv_voice_commands"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/voice_title"
+                    android:textSize="18sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_voice_commands"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/turn_on_voice"/>
+
                 <Button
                     android:id="@+id/btn_launch"
                     android:layout_width="wrap_content"

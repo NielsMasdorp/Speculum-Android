@@ -14,4 +14,7 @@
     <string name="temperature_celsius">Celsius</string>
     <string name="temperature_fahrenheit">Fahrenheit</string>
     <string name="weather_title">Weer</string>
+    <string name="voice_title">Stem commandos</string>
+    <string name="turn_on_voice">Zet stem commandos aan (experimenteel)</string>
+    <string name="no_permission_for_voice">Toestemming om audio op te nemen geweigerd, je kunt deze instelling aanpassen in de instellingen van je apparaat</string>
 </resources>
