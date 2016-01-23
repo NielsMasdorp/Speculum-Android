@@ -28,6 +28,14 @@ Features
 * One of the top posts of your favorite subreddit
 * Update data by using voice command
 
+How do I use this
+====
+
+1. Clone project in Android Studio
+2. Make nescessary adjustments for your device
+3. Run on device or generate .APK
+4. Turn on "Stay Awake" in Developer Options on your device
+
 Update data with voice command
 ====
 
@@ -123,14 +131,6 @@ More info can be found in the [Pocketsphinx  tutorial](http://cmusphinx.sourcefo
 
 ###Other languages and dictionaries
 I have not experimented with this, however it is possible to create your own dictionary file. Please refer to the [CMU Sphinx tutorial](http://cmusphinx.sourceforge.net/wiki/tutorial).
-
-How do I use this
-====
-
-1. Clone project in Android Studio
-2. Make nescessary adjustments for your device
-3. Run on device or generate .APK
-4. Turn on "Stay Awake" in Developer Options on your device
 
 How I made my mirror
 ====
