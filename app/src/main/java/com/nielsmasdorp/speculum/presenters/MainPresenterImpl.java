@@ -1,7 +1,9 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
+import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
@@ -166,7 +168,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     if (result != null) {
                         mMainView.get().onError("Failed to init recognizer " + result);
                     } else {
-                        mMainView.get().startListening(false, false);
+                        mMainView.get().setListeningMode(Constants.KWS_SEARCH);
                     }
                 }
             }.execute();
@@ -177,16 +179,28 @@ public class MainPresenterImpl implements IMainPresenter {
     public void processCommand(String command) {
 
         if (mMainView.get() != null) {
-            if (command.equals(Constants.KEYPHRASE)) {
-                // go and listen for commands
-                mMainView.get().startListening(true, true);
-            } else if (command.equals(Constants.UPDATE_PHRASE)) {
-                //update all data
-                unSubscribe();
-                mMainView.get().startPolling();
-                // go to sleep again and wait for activation phrase
-                mMainView.get().startListening(false, true);
+
+            switch (command) {
+                case Constants.KEYPHRASE:
+                    // wake up and listen for commands
+                    mMainView.get().talk(Constants.WAKE_NOTIFICATION);
+                    mMainView.get().setListeningMode(Constants.COMMANDS_SEARCH);
+                    break;
+                case Constants.SLEEP_PHRASE:
+                    // go to sleep
+                    mMainView.get().talk(Constants.SLEEP_NOTIFICATION);
+                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                    break;
+                case Constants.UPDATE_PHRASE:
+                    // update data
+                    mMainView.get().talk(Constants.UPDATE_NOTIFICATION);
+                    unSubscribe();
+                    mMainView.get().startPolling();
+                    // go to sleep again and wait for activation phrase
+                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                    break;
             }
+
         }
     }
 }

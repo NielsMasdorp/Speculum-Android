@@ -23,7 +23,9 @@ public interface IMainView {
 
     void setupRecognizer(File assetDir) throws IOException;
 
-    void startListening(boolean isSleeping, boolean shouldNotify);
+    void setListeningMode(String mode);
 
     void startPolling();
+
+    void talk(String message);
 }

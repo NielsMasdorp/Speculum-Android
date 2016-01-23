@@ -25,9 +25,4 @@
     <string name="turn_on_voice">Turn on voice commands (experimental)</string>
     <string name="btn_done">Done</string>
 
-    <!--Text to speech-->
-    <string name="update_notification" translatable="false">Okay, data is being updated</string>
-    <string name="sleep_notification" translatable="false">I have no idea what you want. I am going back to sleep, bye</string>
-    <string name="woke_up_notification" translatable="false">Hello there. What can I do for you?</string>
-
 </resources>
