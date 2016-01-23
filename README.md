@@ -82,7 +82,7 @@ public void processCommand(String command) {
     }
 }
 ```
-As of now since I only have 2 commands I pass an `boolean isSleeping` to the `startListening()` method to determine what the next step would be (either go back to sleep and wait for the wake up phrase again or to listen for legit commands.
+As of now since I only have 2 commands I pass an `boolean isSleeping` to the `startListening()` method to determine what the next step would be (either go back to sleep and wait for the wake up phrase again or to listen for legit commands).
 When you have more legit commands this logic must ofcourse be changed. There is a `talk()` method in `MainActivity.java` that you can use to have the device say different things depending on the command received.
 
 After changing **reinstall the application** and say the magic wake up command, when you get the response from the device say your custom command and that's pretty much it!
