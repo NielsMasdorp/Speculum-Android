@@ -43,7 +43,7 @@ When you've turned on the voice command option in the setup screen you can talk 
 
 ###Add your own commands
 
-Although this is out of the scope for this README I had a hard time understanding and configuring the Pocketsphinx library so I figure this might come in handy when you want to add your own functions to this application.
+Although this is a bit out of the scope for this document I had a hard time understanding and configuring the Pocketsphinx library so I figure this might come in handy when you want to add your own functions to this application.
 The `SpeechRecognizer` in this application has two modes; listen to one keyphrase (the wake up phrase) and listen to a list of keywords. The keyphrase to wake up the device is pretty straight forward, if you want to edit the phrase go to `Constants.java`,  and change 
 
 ```java
