@@ -35,6 +35,7 @@ How do I use this
 2. Make nescessary adjustments for your device
 3. Run on device or generate .APK
 4. Turn on "Stay Awake" in Developer Options on your device
+5. If you turned on voice recognition change the Text to Speech language to English language options on your device
 
 Update data with voice command
 ====
@@ -117,7 +118,7 @@ public void processCommand(String command) {
 }
 ```
 
-The way you make the `SpeechRecognizer listen to the wake up phrase is similar to the commands method only this time do not pass a time to listen value as parameter.
+The way you make the `SpeechRecognizer` listen to the wake up phrase is similar to the commands method only this time do not pass a time to listen value as parameter.
 
 ```java
 recognizer.stop();
