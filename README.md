@@ -35,7 +35,7 @@ How do I use this
 2. Make nescessary adjustments for your device
 3. Run on device or generate .APK
 4. Turn on "Stay Awake" in Developer Options on your device
-5. If you turned on voice recognition change the Text to Speech language to English language options on your device
+5. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
 
 Update data with voice command
 ====
