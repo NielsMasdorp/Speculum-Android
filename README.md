@@ -35,6 +35,7 @@ How do I use this
 2. Make nescessary adjustments for your device
 3. Run on device or generate .APK
 4. Turn on "Stay Awake" in Developer Options on your device
+5. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
 
 Update data with voice command
 ====
@@ -43,7 +44,7 @@ When you've turned on the voice command option in the setup screen you can talk 
 
 ###Add your own commands
 
-Although this is out of the scope for this README I had a hard time understanding and configuring the Pocketsphinx library so I figure this might come in handy when you want to add your own functions to this application.
+Although this is a bit out of the scope for this document I had a hard time understanding and configuring the Pocketsphinx library so I figure this might come in handy when you want to add your own functions to this application.
 The `SpeechRecognizer` in this application has two modes; listen to one keyphrase (the wake up phrase) and listen to a list of keywords. The keyphrase to wake up the device is pretty straight forward, if you want to edit the phrase go to `Constants.java`,  and change 
 
 ```java
@@ -117,7 +118,7 @@ public void processCommand(String command) {
 }
 ```
 
-The way you make the `SpeechRecognizer listen to the wake up phrase is similar to the commands method only this time do not pass a time to listen value as parameter.
+The way you make the `SpeechRecognizer` listen to the wake up phrase is similar to the commands method only this time do not pass a time to listen value as parameter.
 
 ```java
 recognizer.stop();
