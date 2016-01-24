@@ -54,9 +54,6 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
         ButterKnife.bind(this);
         Assent.setActivity(this, this);
 
-        mDecorView = getWindow().getDecorView();
-        hideSystemUI();
-
         if (!Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
             Assent.requestPermissions(result -> {
                 // Permission granted or denied
@@ -68,11 +65,12 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
 
         mCbVoiceCommands.setOnCheckedChangeListener(this);
 
-        mDecorView.setOnSystemUiVisibilityChangeListener(this);
         mSetupPresenter = new SetupPresenterImpl(this);
     }
 
     private void hideSystemUI() {
+        mDecorView = getWindow().getDecorView();
+
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
@@ -83,6 +81,8 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        mDecorView.setOnSystemUiVisibilityChangeListener(this);
     }
 
     @OnClick(R.id.btn_launch)
@@ -113,6 +113,8 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Override
     protected void onResume() {
         super.onResume();
+
+        hideSystemUI();
 
         // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);

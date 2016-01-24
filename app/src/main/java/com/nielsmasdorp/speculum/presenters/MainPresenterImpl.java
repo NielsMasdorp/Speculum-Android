@@ -1,9 +1,5 @@
 package com.nielsmasdorp.speculum.presenters;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
-import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
@@ -144,39 +140,35 @@ public class MainPresenterImpl implements IMainPresenter {
         mSubscriptions.clear();
     }
 
-    //TODO RxAndroid
     @Override
     public void setupRecognitionService() {
 
         if (mMainView.get() != null) {
 
-            new AsyncTask<Void, Void, Exception>() {
-                @Override
-                protected Exception doInBackground(Void... params) {
-                    try {
-                        Assets assets = new Assets((MainActivity) mMainView.get());
-                        File assetDir = assets.syncAssets();
-                        mMainView.get().setupRecognizer(assetDir);
-                    } catch (IOException e) {
-                        return e;
-                    }
-                    return null;
-                }
+            prepareAssetsForRecognizer()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Void>() {
+                        @Override
+                        public void onCompleted() {
+                            mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                        }
 
-                @Override
-                protected void onPostExecute(Exception result) {
-                    if (result != null) {
-                        mMainView.get().onError("Failed to init recognizer " + result);
-                    } else {
-                        mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                    }
-                }
-            }.execute();
+                        @Override
+                        public void onError(Throwable e) {
+                            if (mMainView.get() != null)
+                                mMainView.get().onError(e.getLocalizedMessage());
+                        }
+
+                        @Override
+                        public void onNext(Void aVoid) {
+                        }
+                    });
         }
     }
 
     @Override
-     public void processCommand(String command) {
+    public void processCommand(String command) {
 
         if (mMainView.get() != null) {
 
@@ -202,5 +194,19 @@ public class MainPresenterImpl implements IMainPresenter {
             }
 
         }
+    }
+
+    private Observable<Void> prepareAssetsForRecognizer() {
+        return Observable.defer(() -> {
+            try {
+                Assets assets = new Assets((MainActivity) mMainView.get());
+                File assetDir = assets.syncAssets();
+                mMainView.get().setupRecognizer(assetDir);
+            } catch (IOException e) {
+                throw new RuntimeException("IOException: " + e.getLocalizedMessage());
+            }
+            return Observable.empty();
+        });
+
     }
 }

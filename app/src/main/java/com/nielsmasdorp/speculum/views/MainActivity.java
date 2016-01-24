@@ -141,21 +141,20 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         ButterKnife.bind(this);
         Assent.setActivity(this, this);
 
-        mDecorView = getWindow().getDecorView();
-        hideSystemUI();
-
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //get configuration from Intent
         mConfiguration = (Configuration) getIntent().getSerializableExtra(Constants.CONFIGURATION_IDENTIFIER);
 
-        mDecorView.setOnSystemUiVisibilityChangeListener(this);
         mMainPresenter = new MainPresenterImpl(this);
         mIconGenerator = WeatherIconGenerator.getInstance();
     }
 
     private void hideSystemUI() {
+
+        mDecorView = getWindow().getDecorView();
+
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
@@ -166,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        mDecorView.setOnSystemUiVisibilityChangeListener(this);
     }
 
     @Override
@@ -248,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Override
     protected void onResume() {
         super.onResume();
+
+        hideSystemUI();
 
         //Start polling
         startPolling();
