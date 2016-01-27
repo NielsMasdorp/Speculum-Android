@@ -207,6 +207,5 @@ public class MainPresenterImpl implements IMainPresenter {
             }
             return Observable.empty();
         });
-
     }
 }

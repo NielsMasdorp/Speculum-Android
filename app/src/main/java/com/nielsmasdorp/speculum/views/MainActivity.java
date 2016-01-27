@@ -327,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         if (hypothesis == null)
             return;
 
-        String text = hypothesis.getHypstr();
-        mMainPresenter.processCommand(text);
+        String command = hypothesis.getHypstr();
+        mMainPresenter.processCommand(command);
     }
 
     @Override
