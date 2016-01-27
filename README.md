@@ -49,6 +49,7 @@ Update data with voice command
 When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 5 second timeframe.
 
 [![Alt text for your video](http://img.youtube.com/vi/bRPGOPEYoYI/0.jpg)](https://www.youtube.com/watch?v=bRPGOPEYoYI)
+*Video demonstration*
 
 ###Add your own commands
 
@@ -143,7 +144,9 @@ I have not experimented with this, however it is possible to create your own dic
 
 How I made my mirror
 ====
-//TODO
+
+Since pre-made two way mirrors are very expensive and hard to get by in my country (The Netherlands) I deciced to make my own.
+I bought some polished transparent plexiglass (60x40cm and 4mm thick) and some two way mirror foil normally used on windows for privacy. I built a wooden frame around it and used some small pieces of wood to hold the tablet in place (I left an opening on the bottom for the charger and on the top to expose the microphone. I then painted the back of the plexiglass black and that's it!
 
 Thanks to
 ====
