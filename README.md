@@ -8,7 +8,7 @@ Submit a pull request!
 
 ###Mirror
 
-![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/mirror_shot_1.JPG)
+![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/mirror.jpg)
 
 ###Application screens
 
