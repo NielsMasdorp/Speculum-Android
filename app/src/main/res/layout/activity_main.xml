@@ -16,7 +16,7 @@
             android:layout_height="280dp"
             android:layout_marginBottom="-60dp"
             android:layout_marginTop="-64dp"
-            android:format12Hour="@null"
+            android:format12Hour="kk:mm"
             android:format24Hour="kk:mm"
             android:textColor="@color/white"
             android:textSize="200dp" />
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:format12Hour="@null"
+            android:format12Hour="dd MMM yyyy"
             android:format24Hour="dd MMM yyyy"
             android:textColor="@color/white"
             android:textSize="54dp" />

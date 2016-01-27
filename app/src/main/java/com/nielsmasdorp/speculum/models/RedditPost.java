@@ -6,9 +6,7 @@ package com.nielsmasdorp.speculum.models;
 public class RedditPost {
 
     private String title;
-
     private String author;
-
     private int ups;
 
     public RedditPost(String title, String author, int ups) {
