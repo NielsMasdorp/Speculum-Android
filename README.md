@@ -144,7 +144,7 @@ I have not experimented with this, however it is possible to create your own dic
 How I made my mirror
 ====
 
-Since pre-made two way mirrors are very expensive and hard to get by in my country (The Netherlands) I deciced to make my own.
+Since pre-made two way mirrors are very expensive and hard to get by in my country (The Netherlands) I decided to make my own.
 I bought some polished transparent plexiglass (60x40cm and 4mm thick) and some two way mirror foil normally used on windows for privacy. I built a wooden frame around it and used some small pieces of wood to hold the tablet in place (I left an opening on the bottom for the charger and on the top to expose the microphone). I then painted the back of the plexiglass black and that's it!
 
 Thanks to
