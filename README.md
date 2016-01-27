@@ -6,7 +6,15 @@ I had an old Nexus 7 (2012) lying around collecting dust and got the idea from [
 I started this project because I wanted to explore the MVP pattern for Android and Hannah's app did not have all the functionality I needed. Feel free to make this application look good on your own device (it was designed for the Nexus 7). Have any great ideas to make this more configurable or usable on more devices? 
 Submit a pull request!
 
-Setup            |  Running
+###Mirror shots
+
+Mirror            |  Close-up
+:-------------------------:|:-------------------------:
+![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/mirror_shot_1.jpg)  |  ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/mirror_shot_2.jpg)
+
+###Application screens
+
+Configuration            |  Running
 :-------------------------:|:-------------------------:
 ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-20-23-24-13_framed.png)  |  ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
 
