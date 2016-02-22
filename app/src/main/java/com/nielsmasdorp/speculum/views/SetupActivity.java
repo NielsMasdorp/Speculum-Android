@@ -44,6 +44,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Bind(R.id.cb_voice_commands)
     CheckBox mCbVoiceCommands;
 
+    @Bind(R.id.cb_remember_config)
+    CheckBox mCbRememberConfig;
+
     ISetupPresenter mSetupPresenter;
     View mDecorView;
 
@@ -90,11 +93,11 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     public void launch() {
 
         mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
-                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked(), mCbVoiceCommands.isChecked());
+                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked(), mCbVoiceCommands.isChecked(), mCbRememberConfig.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands) {
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands, boolean foundOldConfig) {
 
         //Create configuration and pass in Intent
         Configuration configuration = new Configuration.Builder()
@@ -107,6 +110,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, configuration);
+        intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, foundOldConfig);
         startActivity(intent);
     }
 
@@ -146,6 +150,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     }
 
     @Override
+    @SuppressWarnings("all")
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             if (!Assent.isPermissionGranted(Assent.RECORD_AUDIO)) {

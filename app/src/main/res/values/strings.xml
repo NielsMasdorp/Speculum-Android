@@ -23,6 +23,12 @@
     <string name="temperature_fahrenheit">Fahrenheit</string>
     <string name="voice_title">Voice commands</string>
     <string name="turn_on_voice">Turn on voice commands (experimental)</string>
+    <string name="other_title">Other settings</string>
+    <string name="remember_config">Remember this configuration (press back to clear)</string>
     <string name="btn_done">Done</string>
+
+    <!--Main Activity-->
+    <string name="old_config_found_snackbar">Saved configuration found</string>
+    <string name="old_config_found_snackbar_back">Back to setup</string>
 
 </resources>

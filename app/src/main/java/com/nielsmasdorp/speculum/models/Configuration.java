@@ -27,6 +27,7 @@ public class Configuration implements Serializable {
         public Builder pollingDelay(int pollingDelay){this.pollingDelay = pollingDelay; return this; }
         public Builder voiceCommands(boolean voiceCommands){this.voiceCommands = voiceCommands; return this; }
 
+
         public Configuration build() {
 
             return new Configuration(this);

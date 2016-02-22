@@ -5,6 +5,7 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -146,9 +147,26 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         //get configuration from Intent
         mConfiguration = (Configuration) getIntent().getSerializableExtra(Constants.CONFIGURATION_IDENTIFIER);
+        boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         mMainPresenter = new MainPresenterImpl(this);
         mIconGenerator = WeatherIconGenerator.getInstance();
+
+        if (didLoadOldConfig)
+            showConfigurationSnackbar();
+    }
+
+    private void showConfigurationSnackbar() {
+        Snackbar snackbar = Snackbar
+                .make(mWeatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.old_config_found_snackbar_back), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onBackPressed();
+                    }
+                });
+
+        snackbar.show();
     }
 
     private void hideSystemUI() {
@@ -309,7 +327,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             }
         }
 
-        // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
     }

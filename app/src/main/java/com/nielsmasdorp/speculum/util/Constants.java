@@ -29,6 +29,7 @@ public class Constants {
 
     //Intent identifiers
     public static final String CONFIGURATION_IDENTIFIER = "conf";
+    public static final String SAVED_CONFIGURATION_IDENTIFIER = "savedConf";
 
     //Formats
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
