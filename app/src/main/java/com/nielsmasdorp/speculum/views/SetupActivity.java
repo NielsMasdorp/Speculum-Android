@@ -108,7 +108,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                 .voiceCommands(voiceCommands)
                 .build();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SimpleActivity.class);
         intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, configuration);
         intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, foundOldConfig);
         startActivity(intent);
