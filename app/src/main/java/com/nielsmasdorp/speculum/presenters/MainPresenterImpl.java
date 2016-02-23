@@ -52,7 +52,8 @@ public class MainPresenterImpl implements IMainPresenter {
         mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mGoogleCalendarService.getLatestCalendarEvent())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
@@ -83,7 +84,8 @@ public class MainPresenterImpl implements IMainPresenter {
                         location + query, Constants.YAHOO_QUERY_FORMAT))
                 .flatMap(response -> mYahooService.getCurrentWeather(response))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<CurrentWeather>() {
                     @Override
                     public void onCompleted() {
@@ -110,7 +112,8 @@ public class MainPresenterImpl implements IMainPresenter {
                 .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
                 .flatMap(response -> mRedditService.getRedditPost(response))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<RedditPost>() {
                     @Override
                     public void onCompleted() {
@@ -147,7 +150,8 @@ public class MainPresenterImpl implements IMainPresenter {
         if (mMainView.get() != null) {
 
             prepareAssetsForRecognizer()
-                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Void>() {
                         @Override
