@@ -23,6 +23,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
@@ -35,7 +36,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
     private WeakReference<IMainView> mMainView;
 
-    private List<Subscription> mSubscriptions;
+    private CompositeSubscription mCompositeSubscription;
 
     public MainPresenterImpl(IMainView view) {
 
@@ -43,13 +44,13 @@ public class MainPresenterImpl implements IMainPresenter {
         mYahooService = new YahooService();
         mRedditService = new RedditService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
-        mSubscriptions = new ArrayList<>();
+        mCompositeSubscription = new CompositeSubscription();
     }
 
     @Override
     public void loadLatestCalendarEvent(int updateDelay) {
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mGoogleCalendarService.getLatestCalendarEvent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -70,6 +71,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
                         if (mMainView.get() != null)
                             mMainView.get().displayLatestCalendarEvent(event);
+                            mMainView.get().onError("Updated");
                     }
                 }));
     }
@@ -79,7 +81,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
                         location + query, Constants.YAHOO_QUERY_FORMAT))
                 .flatMap(response -> mYahooService.getCurrentWeather(response))
@@ -108,7 +110,7 @@ public class MainPresenterImpl implements IMainPresenter {
     @Override
     public void loadTopRedditPost(final String subreddit, int updateDelay) {
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
                 .flatMap(response -> mRedditService.getRedditPost(response))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,12 +138,8 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void unSubscribe() {
-        for (Subscription subscription : mSubscriptions) {
-            if (!subscription.isUnsubscribed()) {
-                subscription.unsubscribe();
-            }
-        }
-        mSubscriptions.clear();
+        mCompositeSubscription.unsubscribe();
+        mCompositeSubscription = new CompositeSubscription();
     }
 
     @Override
