@@ -15,14 +15,11 @@ import com.nielsmasdorp.speculum.views.MainActivity;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -66,7 +63,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            Log.d("MainPresenter", "CalendarSubscription", e);
+                        Log.d("MainPresenter", "CalendarSubscription", e);
                     }
 
                     @Override
@@ -99,7 +96,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            Log.d("MainPresenter", "WeatherSubscription", e);
+                        Log.d("MainPresenter", "WeatherSubscription", e);
                     }
 
                     @Override
@@ -128,7 +125,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            Log.d("MainPresenter", "RedditSubscription", e);
+                        Log.d("MainPresenter", "RedditSubscription", e);
                     }
 
                     @Override
