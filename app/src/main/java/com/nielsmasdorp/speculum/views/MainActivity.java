@@ -47,110 +47,33 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener, RecognitionListener, TextToSpeech.OnInitListener {
 
-    @Bind(R.id.weather_layout)
-    LinearLayout mWeatherLayout;
-
-    @Nullable
-    @Bind(R.id.weather_stats_layout)
-    LinearLayout mWeatherStatsLayout;
-
-    @Nullable
-    @Bind(R.id.calendar_layout)
-    LinearLayout mCalendarLayout;
-
-    @Nullable
-    @Bind(R.id.reddit_layout)
-    RelativeLayout mRedditLayout;
-
-    @Bind(R.id.iv_current_weather)
-    ImageView mWeatherCondition;
-
-    @Bind(R.id.tv_current_temp)
-    TextView mWeatherTemp;
-
-    @Nullable
-    @Bind(R.id.iv_forecast_weather1)
-    ImageView mDayOneCondition;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_temp1)
-    TextView mDayOneTemp;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_date1)
-    TextView mDayOneDate;
-
-    @Nullable
-    @Bind(R.id.iv_forecast_weather2)
-    ImageView mDayTwoCondition;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_temp2)
-    TextView mDayTwoTemp;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_date2)
-    TextView mDayTwoDate;
-
-    @Nullable
-    @Bind(R.id.iv_forecast_weather3)
-    ImageView mDayThreeCondition;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_temp3)
-    TextView mDayThreeTemp;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_date3)
-    TextView mDayThreeDate;
-
-    @Nullable
-    @Bind(R.id.iv_forecast_weather4)
-    ImageView mDayFourCondition;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_temp4)
-    TextView mDayFourTemp;
-
-    @Nullable
-    @Bind(R.id.tv_forecast_date4)
-    TextView mDayFourDate;
-
-    @Nullable
-    @Bind(R.id.tv_stats_wind)
-    TextView mWeatherWind;
-
-    @Nullable
-    @Bind(R.id.tv_stats_humidity)
-    TextView mWeatherHumidity;
-
-    @Nullable
-    @Bind(R.id.tv_stats_pressure)
-    TextView mWeatherPressure;
-
-    @Nullable
-    @Bind(R.id.tv_stats_visibility)
-    TextView mWeatherVisibility;
-
-    @Nullable
-    @Bind(R.id.tv_sunrise_time)
-    TextView mSunriseTime;
-
-    @Nullable
-    @Bind(R.id.tv_sunset_time)
-    TextView mSunsetTime;
-
-    @Nullable
-    @Bind(R.id.tv_calendar_event)
-    TextView mCalendarEvent;
-
-    @Nullable
-    @Bind(R.id.tv_reddit_post_title)
-    TextView mRedditPostTitle;
-
-    @Nullable
-    @Bind(R.id.tv_reddit_post_votes)
-    TextView mRedditPostVotes;
+    @Bind(R.id.weather_layout) LinearLayout mWeatherLayout;
+    @Nullable @Bind(R.id.weather_stats_layout) LinearLayout mWeatherStatsLayout;
+    @Nullable @Bind(R.id.calendar_layout) LinearLayout mCalendarLayout;
+    @Nullable @Bind(R.id.reddit_layout) RelativeLayout mRedditLayout;
+    @Bind(R.id.iv_current_weather) ImageView mWeatherCondition;
+    @Bind(R.id.tv_current_temp) TextView mWeatherTemp;
+    @Nullable @Bind(R.id.iv_forecast_weather1) ImageView mDayOneCondition;
+    @Nullable @Bind(R.id.tv_forecast_temp1) TextView mDayOneTemp;
+    @Nullable @Bind(R.id.tv_forecast_date1) TextView mDayOneDate;
+    @Nullable @Bind(R.id.iv_forecast_weather2) ImageView mDayTwoCondition;
+    @Nullable @Bind(R.id.tv_forecast_temp2) TextView mDayTwoTemp;
+    @Nullable @Bind(R.id.tv_forecast_date2) TextView mDayTwoDate;
+    @Nullable @Bind(R.id.iv_forecast_weather3) ImageView mDayThreeCondition;
+    @Nullable @Bind(R.id.tv_forecast_temp3) TextView mDayThreeTemp;
+    @Nullable @Bind(R.id.tv_forecast_date3) TextView mDayThreeDate;
+    @Nullable @Bind(R.id.iv_forecast_weather4) ImageView mDayFourCondition;
+    @Nullable @Bind(R.id.tv_forecast_temp4) TextView mDayFourTemp;
+    @Nullable @Bind(R.id.tv_forecast_date4) TextView mDayFourDate;
+    @Nullable @Bind(R.id.tv_stats_wind) TextView mWeatherWind;
+    @Nullable @Bind(R.id.tv_stats_humidity) TextView mWeatherHumidity;
+    @Nullable @Bind(R.id.tv_stats_pressure) TextView mWeatherPressure;
+    @Nullable @Bind(R.id.tv_stats_visibility) TextView mWeatherVisibility;
+    @Nullable @Bind(R.id.tv_sunrise_time) TextView mSunriseTime;
+    @Nullable @Bind(R.id.tv_sunset_time) TextView mSunsetTime;
+    @Nullable @Bind(R.id.tv_calendar_event) TextView mCalendarEvent;
+    @Nullable @Bind(R.id.tv_reddit_post_title) TextView mRedditPostTitle;
+    @Nullable @Bind(R.id.tv_reddit_post_votes) TextView mRedditPostVotes;
 
     IMainPresenter mMainPresenter;
     View mDecorView;
