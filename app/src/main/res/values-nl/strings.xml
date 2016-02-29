@@ -21,4 +21,8 @@
     <string name="remember_config">Onthoud deze configuratie (druk op terug om te verwijderen)</string>
     <string name="old_config_found_snackbar">Opgeslagen configuratie gevonden</string>
     <string name="old_config_found_snackbar_back">Terug naar setup</string>
+    <string name="appearance_normal">Normaal</string>
+    <string name="appearance_simple">Simpel</string>
+    <string name="appearance_title">Uiterlijk</string>
+    <string name="simple_greeting">Hallo daar</string>
 </resources>

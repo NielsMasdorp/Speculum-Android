@@ -36,7 +36,8 @@ public class YahooService {
 
         // Convert degrees to cardinal directions for wind
         String directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
-        String windDirection = directions[(int)Math.round(((Double.parseDouble(weatherData.getWind().getDirection()) % 360) / 45))];
+        String degrees = weatherData.getWind().getDirection();
+        String direction = degrees.equals("") ? "-" : directions[(int) Math.round(((Double.parseDouble(weatherData.getWind().getDirection()) % 360) / 45))];
 
         return Observable.just(new CurrentWeather.Builder()
                 .title(weatherData.getTitle())
@@ -49,7 +50,7 @@ public class YahooService {
                 .sunset(weatherData.getAstronomy().getSunset())
                 .windSpeed(weatherData.getWind().getSpeed())
                 .windTemperature(weatherData.getWind().getChill())
-                .windDirection(windDirection)
+                .windDirection(direction)
                 .forecast(weatherData.getItem().getForecast())
                 .build());
     }

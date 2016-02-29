@@ -12,6 +12,7 @@ public class Configuration implements Serializable {
     private String subreddit;
     private int pollingDelay;
     private boolean voiceCommands;
+    private boolean simpleLayout;
 
     public static class Builder {
 
@@ -20,13 +21,37 @@ public class Configuration implements Serializable {
         private String subreddit;
         private int pollingDelay;
         private boolean voiceCommands;
+        private boolean simpleLayout;
 
-        public Builder celsius(boolean celsius){this.celsius = celsius; return this; }
-        public Builder location(String location){this.location = location; return this; }
-        public Builder subreddit(String subreddit){this.subreddit = subreddit; return this; }
-        public Builder pollingDelay(int pollingDelay){this.pollingDelay = pollingDelay; return this; }
-        public Builder voiceCommands(boolean voiceCommands){this.voiceCommands = voiceCommands; return this; }
+        public Builder celsius(boolean celsius) {
+            this.celsius = celsius;
+            return this;
+        }
 
+        public Builder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder subreddit(String subreddit) {
+            this.subreddit = subreddit;
+            return this;
+        }
+
+        public Builder pollingDelay(int pollingDelay) {
+            this.pollingDelay = pollingDelay;
+            return this;
+        }
+
+        public Builder voiceCommands(boolean voiceCommands) {
+            this.voiceCommands = voiceCommands;
+            return this;
+        }
+
+        public Builder simpleLayout(boolean simpleLayout) {
+            this.simpleLayout = simpleLayout;
+            return this;
+        }
 
         public Configuration build() {
 
@@ -41,6 +66,7 @@ public class Configuration implements Serializable {
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
         this.voiceCommands = builder.voiceCommands;
+        this.simpleLayout = builder.simpleLayout;
     }
 
     public boolean isCelsius() {
@@ -59,5 +85,11 @@ public class Configuration implements Serializable {
         return pollingDelay;
     }
 
-    public boolean getVoiceCommands() { return voiceCommands; }
+    public boolean getVoiceCommands() {
+        return voiceCommands;
+    }
+
+    public boolean isSimpleLayout() {
+        return simpleLayout;
+    }
 }

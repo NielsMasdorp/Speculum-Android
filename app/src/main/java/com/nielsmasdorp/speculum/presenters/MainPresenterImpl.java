@@ -1,5 +1,7 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.util.Log;
+
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
@@ -64,6 +66,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "CalendarSubscription", e);
                     }
 
                     @Override
@@ -71,7 +74,6 @@ public class MainPresenterImpl implements IMainPresenter {
 
                         if (mMainView.get() != null)
                             mMainView.get().displayLatestCalendarEvent(event);
-                            mMainView.get().onError("Updated");
                     }
                 }));
     }
@@ -97,12 +99,14 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "WeatherSubscription", e);
                     }
 
                     @Override
                     public void onNext(CurrentWeather weather) {
 
-                        if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
+                        if (mMainView.get() != null)
+                            mMainView.get().displayCurrentWeather(weather);
                     }
                 }));
     }
@@ -125,6 +129,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "RedditSubscription", e);
                     }
 
                     @Override
