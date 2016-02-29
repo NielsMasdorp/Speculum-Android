@@ -7,6 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="16dp"
                 android:fontFamily="sans-serif-thin"
-                android:text="Hi there, Gijs\nIt's"
+                android:text="@string/simple_greeting"
                 android:textColor="@color/white"
                 android:textSize="82dp" />
 
@@ -34,10 +35,12 @@
                 android:format24Hour="kk:mm"
                 android:textColor="@color/white"
                 android:textSize="240dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,6 +51,7 @@
                     android:text="on"
                     android:textColor="@color/white"
                     android:textSize="82dp" />
+
                 <TextClock
                     android:id="@+id/tc_date"
                     android:layout_width="wrap_content"
@@ -58,7 +62,9 @@
                     android:format24Hour="dd MMM yyyy"
                     android:textColor="@color/white"
                     android:textSize="82dp" />
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/weather_layout"
                 android:layout_width="wrap_content"
@@ -72,8 +78,8 @@
                     android:layout_width="168dp"
                     android:layout_height="168dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_weather_partlycloudy"
-                    android:tint="@color/white" />
+                    android:tint="@color/white"
+                    tools:src="@drawable/ic_weather_partlycloudy" />
 
                 <TextView
                     android:id="@+id/tv_current_temp"
@@ -89,4 +95,5 @@
         </LinearLayout>
 
     </ScrollView>
+
 </RelativeLayout>
