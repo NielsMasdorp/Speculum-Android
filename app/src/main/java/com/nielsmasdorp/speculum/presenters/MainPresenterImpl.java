@@ -1,5 +1,6 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
@@ -28,6 +29,8 @@ import rx.subscriptions.CompositeSubscription;
  * @author Niels Masdorp (NielsMasdorp)
  */
 public class MainPresenterImpl implements IMainPresenter {
+
+    private static final String TAG = MainPresenterImpl.class.getSimpleName();
 
     private YahooService mYahooService;
     private GoogleCalendarService mGoogleCalendarService;
@@ -63,7 +66,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d("MainPresenter", "CalendarSubscription", e);
+                        Log.d(TAG, "CalendarSubscription", e);
                     }
 
                     @Override
@@ -96,7 +99,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d("MainPresenter", "WeatherSubscription", e);
+                        Log.d(TAG, "WeatherSubscription", e);
                     }
 
                     @Override
@@ -119,13 +122,14 @@ public class MainPresenterImpl implements IMainPresenter {
                 .subscribe(new Subscriber<RedditPost>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d("MainPresenter", "RedditSubscription", e);
+                        Log.d(TAG, "RedditSubscription", e);
                     }
 
                     @Override
@@ -162,6 +166,7 @@ public class MainPresenterImpl implements IMainPresenter {
                         public void onError(Throwable e) {
                             if (mMainView.get() != null)
                                 mMainView.get().showError(e.getLocalizedMessage());
+                            Log.e(TAG, "RecognitionService: ", e);
                         }
 
                         @Override
