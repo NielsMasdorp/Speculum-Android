@@ -8,6 +8,7 @@ public class Constants {
     //Query constants
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
     public static final String YAHOO_BASE_URL = "https://query.yahooapis.com/v1/public/";
+    public static final String YOMOMMA_BASE_URL = "http://api.yomomma.info/";
 
     public static final String WEATHER_QUERY_FIRST = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"";
     public static final String WEATHER_QUERY_SECOND_CELSIUS = "\") and u=\"c\"";
@@ -54,10 +55,12 @@ public class Constants {
     public static final String COMMANDS_SEARCH = "commands";
     public static final String KEYPHRASE = "hello magic mirror";
     public static final String UPDATE_PHRASE = "get me new data";
+    public static final String NEWS_PHRASE = "what is new";
+    public static final String JOKE_PHRASE = "tell me a joke";
     public static final String SLEEP_PHRASE = "go back to sleep";
 
     //TTS phrases
-    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated. Wake me up if you need me again.";
+    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated.";
     public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye.";
     public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 

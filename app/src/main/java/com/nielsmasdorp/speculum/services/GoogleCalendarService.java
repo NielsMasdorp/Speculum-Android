@@ -32,6 +32,7 @@ public class GoogleCalendarService {
         this.mContext = new WeakReference<>(context);
     }
 
+    @SuppressWarnings("all")
     public Observable<String> getLatestCalendarEvent() {
         if (mContext.get() != null) {
             String details, title;

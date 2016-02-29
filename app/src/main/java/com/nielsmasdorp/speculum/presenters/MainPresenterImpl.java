@@ -5,10 +5,12 @@ import android.util.Log;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.YoMommaJoke;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
 import com.nielsmasdorp.speculum.services.SharedPreferenceService;
 import com.nielsmasdorp.speculum.services.YahooService;
+import com.nielsmasdorp.speculum.services.YoMommaService;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
 import com.nielsmasdorp.speculum.views.MainActivity;
@@ -35,6 +37,7 @@ public class MainPresenterImpl implements IMainPresenter {
     private YahooService mYahooService;
     private GoogleCalendarService mGoogleCalendarService;
     private RedditService mRedditService;
+    private YoMommaService mYomommaService;
 
     private WeakReference<IMainView> mMainView;
 
@@ -45,6 +48,7 @@ public class MainPresenterImpl implements IMainPresenter {
         mMainView = new WeakReference<>(view);
         mYahooService = new YahooService();
         mRedditService = new RedditService();
+        mYomommaService = new YoMommaService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
         mCompositeSubscription = new CompositeSubscription();
     }
@@ -142,9 +146,30 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
-    public void unSubscribe() {
-        mCompositeSubscription.unsubscribe();
-        mCompositeSubscription = new CompositeSubscription();
+    public void loadJoke() {
+
+        mYomommaService.getApi().getJoke()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<YoMommaJoke>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (mMainView.get() != null)
+                            mMainView.get().showError(e.getLocalizedMessage());
+                        Log.d(TAG, "YoMommaJokeService", e);
+                    }
+
+                    @Override
+                    public void onNext(YoMommaJoke yoMommaJoke) {
+                        if (mMainView.get() != null)
+                            mMainView.get().talk(yoMommaJoke.getJoke());
+                    }
+                });
     }
 
     @Override
@@ -200,6 +225,19 @@ public class MainPresenterImpl implements IMainPresenter {
                     // go to sleep again and wait for activation phrase
                     mMainView.get().setListeningMode(Constants.KWS_SEARCH);
                     break;
+                case Constants.NEWS_PHRASE:
+                    //TODO implement news API
+                    // go to sleep again and wait for activation phrase
+                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                    break;
+                case Constants.JOKE_PHRASE:
+                    loadJoke();
+                    // go to sleep again and wait for activation phrase
+                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                    break;
+                default:
+                    break;
+
             }
 
         }
@@ -216,5 +254,11 @@ public class MainPresenterImpl implements IMainPresenter {
             }
             return Observable.empty();
         });
+    }
+
+    @Override
+    public void unSubscribe() {
+        mCompositeSubscription.unsubscribe();
+        mCompositeSubscription = new CompositeSubscription();
     }
 }
