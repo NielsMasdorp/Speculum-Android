@@ -12,9 +12,7 @@ Submit a pull request!
 
 ###Application screens
 
-Configuration            |  Running
-:-------------------------:|:-------------------------:
-![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-20-23-24-13_framed.png)  |  ![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Screenshot_2016-01-19-17-21-46_framed.png)
+![alt tag](https://raw.githubusercontent.com/NielsMasdorp/Speculum-Android/master/app/src/main/assets/screens_1080p.jpg)
 
 Features
 ====
