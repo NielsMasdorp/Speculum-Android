@@ -66,7 +66,6 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            mMainView.get().onError(e.getLocalizedMessage());
                             Log.d("MainPresenter", "CalendarSubscription", e);
                     }
 
@@ -100,7 +99,6 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            mMainView.get().onError(e.getLocalizedMessage());
                             Log.d("MainPresenter", "WeatherSubscription", e);
                     }
 
@@ -130,7 +128,6 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
-                            mMainView.get().onError(e.getLocalizedMessage());
                             Log.d("MainPresenter", "RedditSubscription", e);
                     }
 
