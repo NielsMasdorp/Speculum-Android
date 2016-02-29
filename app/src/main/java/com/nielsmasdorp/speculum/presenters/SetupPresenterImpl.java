@@ -28,11 +28,12 @@ public class SetupPresenterImpl implements ISetupPresenter {
                         mPreferenceService.getPollingDelay(),
                         mPreferenceService.getCelsius(),
                         mPreferenceService.getVoiceCommands(),
-                        true);
+                        true,
+                        mPreferenceService.getSimpleLayout());
     }
 
     @Override
-    public void launch(String location, String subreddit, String pollingDelay, boolean celsius, boolean voiceCommands, boolean rememberConfig) {
+    public void launch(String location, String subreddit, String pollingDelay, boolean celsius, boolean voiceCommands, boolean rememberConfig, boolean simpleLayout) {
 
         if (pollingDelay.equals("") || pollingDelay.equals("0"))
             pollingDelay = Constants.POLLING_DELAY_DEFAULT;
@@ -42,12 +43,12 @@ public class SetupPresenterImpl implements ISetupPresenter {
         if (subreddit.isEmpty()) subreddit = Constants.SUBREDDIT_DEFAULT;
 
         if (rememberConfig) {
-            mPreferenceService.storeConfiguration(location, subreddit, Integer.parseInt(pollingDelay), celsius, voiceCommands, rememberConfig);
+            mPreferenceService.storeConfiguration(location, subreddit, Integer.parseInt(pollingDelay), celsius, voiceCommands, rememberConfig, simpleLayout);
         } else {
             mPreferenceService.removeConfiguration();
         }
 
         if (mSetupView.get() != null)
-            mSetupView.get().navigateToMainActivity(location, subreddit, Integer.parseInt(pollingDelay), celsius, voiceCommands, false);
+            mSetupView.get().navigateToMainActivity(location, subreddit, Integer.parseInt(pollingDelay), celsius, voiceCommands, false, simpleLayout);
     }
 }

@@ -1,9 +1,12 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.util.Log;
+
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
+import com.nielsmasdorp.speculum.services.SharedPreferenceService;
 import com.nielsmasdorp.speculum.services.YahooService;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
@@ -12,11 +15,14 @@ import com.nielsmasdorp.speculum.views.MainActivity;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -60,6 +66,8 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
+                            mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "CalendarSubscription", e);
                     }
 
                     @Override
@@ -92,6 +100,8 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
+                            mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "WeatherSubscription", e);
                     }
 
                     @Override
@@ -120,6 +130,8 @@ public class MainPresenterImpl implements IMainPresenter {
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
                             mMainView.get().showError(e.getLocalizedMessage());
+                            mMainView.get().onError(e.getLocalizedMessage());
+                            Log.d("MainPresenter", "RedditSubscription", e);
                     }
 
                     @Override

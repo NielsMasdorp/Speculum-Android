@@ -14,6 +14,9 @@
     <string name="setup_title">Setup</string>
     <string name="general_title">General</string>
     <string name="polling_hint">Update interval in minutes (leave blank for 30 minutes)</string>
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_simple">Simple</string>
+    <string name="appearance_normal">Normal</string>
     <string name="reddit_title" translatable="false">Reddit</string>
     <string name="subreddit_hint">Choose a subreddit (leave black for \'news\')</string>
     <string name="weather_title">Weather</string>
@@ -30,5 +33,6 @@
     <!--Main Activity-->
     <string name="old_config_found_snackbar">Saved configuration found</string>
     <string name="old_config_found_snackbar_back">Back to setup</string>
+    <string name="simple_greeting">Hi there\nIt\'s</string>
 
 </resources>

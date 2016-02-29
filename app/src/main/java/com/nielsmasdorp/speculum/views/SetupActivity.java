@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
@@ -35,11 +36,17 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Bind(R.id.et_subreddit)
     EditText mEditTextSubreddit;
 
+    @Bind(R.id.tv_reddit_title)
+    TextView mTvRedditTitle;
+
     @Bind(R.id.et_polling_delay)
     EditText mEditTextPollingDelay;
 
     @Bind(R.id.rb_celsius)
     RadioButton mRbCelsius;
+
+    @Bind(R.id.rb_simple)
+    RadioButton mRbSimple;
 
     @Bind(R.id.cb_voice_commands)
     CheckBox mCbVoiceCommands;
@@ -67,6 +74,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
         }
 
         mCbVoiceCommands.setOnCheckedChangeListener(this);
+        mRbSimple.setOnCheckedChangeListener(this);
 
         mSetupPresenter = new SetupPresenterImpl(this);
     }
@@ -93,11 +101,11 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     public void launch() {
 
         mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
-                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked(), mCbVoiceCommands.isChecked(), mCbRememberConfig.isChecked());
+                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked(), mCbVoiceCommands.isChecked(), mCbRememberConfig.isChecked(), mRbSimple.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands, boolean foundOldConfig) {
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands, boolean foundOldConfig, boolean simpleLayout) {
 
         //Create configuration and pass in Intent
         Configuration configuration = new Configuration.Builder()
@@ -106,6 +114,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                 .subreddit(subreddit)
                 .pollingDelay(pollingDelay)
                 .voiceCommands(voiceCommands)
+                .simpleLayout(simpleLayout)
                 .build();
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -152,15 +161,25 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Override
     @SuppressWarnings("all")
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            if (!Assent.isPermissionGranted(Assent.RECORD_AUDIO)) {
-                Assent.requestPermissions(result -> {
-                    // Permission granted or denied
-                    if (!result.allPermissionsGranted()) {
-                        Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
-                        mCbVoiceCommands.setChecked(false);
-                    }
-                }, 2, Assent.RECORD_AUDIO);
+        if (buttonView.getId() == R.id.cb_voice_commands) {
+            if (isChecked) {
+                if (!Assent.isPermissionGranted(Assent.RECORD_AUDIO)) {
+                    Assent.requestPermissions(result -> {
+                        // Permission granted or denied
+                        if (!result.allPermissionsGranted()) {
+                            Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
+                            mCbVoiceCommands.setChecked(false);
+                        }
+                    }, 2, Assent.RECORD_AUDIO);
+                }
+            }
+        } else {
+            if (isChecked) {
+                mEditTextSubreddit.setVisibility(View.GONE);
+                mTvRedditTitle.setVisibility(View.GONE);
+            } else {
+                mEditTextSubreddit.setVisibility(View.VISIBLE);
+                mTvRedditTitle.setVisibility(View.VISIBLE);
             }
         }
     }
