@@ -47,12 +47,12 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements IMainView, View.OnSystemUiVisibilityChangeListener, RecognitionListener, TextToSpeech.OnInitListener {
 
+    @Bind(R.id.iv_current_weather) ImageView mWeatherCondition;
+    @Bind(R.id.tv_current_temp) TextView mWeatherTemp;
     @Bind(R.id.weather_layout) LinearLayout mWeatherLayout;
     @Nullable @Bind(R.id.weather_stats_layout) LinearLayout mWeatherStatsLayout;
     @Nullable @Bind(R.id.calendar_layout) LinearLayout mCalendarLayout;
     @Nullable @Bind(R.id.reddit_layout) RelativeLayout mRedditLayout;
-    @Bind(R.id.iv_current_weather) ImageView mWeatherCondition;
-    @Bind(R.id.tv_current_temp) TextView mWeatherTemp;
     @Nullable @Bind(R.id.iv_forecast_weather1) ImageView mDayOneCondition;
     @Nullable @Bind(R.id.tv_forecast_temp1) TextView mDayOneTemp;
     @Nullable @Bind(R.id.tv_forecast_date1) TextView mDayOneDate;
