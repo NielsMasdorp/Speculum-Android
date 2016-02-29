@@ -17,6 +17,7 @@ Submit a pull request!
 Features
 ====
 * Date and time
+* Two custom layouts (Simple and Verbose)
 * Weather powered by Yahoo Weather
   * Metric or Imperial
   * Wind information
