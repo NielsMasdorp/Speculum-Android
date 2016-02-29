@@ -19,7 +19,7 @@ public interface IMainView {
 
     void showContent(int which);
 
-    void onError(String message);
+    void showError(String message);
 
     void setupRecognizer(File assetDir) throws IOException;
 

@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     }
 
     @Override
-    public void onError(String message) {
+    public void showError(String message) {
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void onError(Exception e) {
-        onError(e);
+        showError(e.getLocalizedMessage());
         Log.e(MainActivity.class.getSimpleName(), e.toString());
     }
 
