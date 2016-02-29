@@ -4,70 +4,89 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextClock
-            android:id="@+id/tc_time"
-            android:layout_width="wrap_content"
-            android:layout_height="280dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="-60dp"
-            android:layout_marginTop="-64dp"
-            android:format12Hour="kk:mm"
-            android:format24Hour="kk:mm"
-            android:textColor="@color/white"
-            android:textSize="200dp" />
-
-        <TextClock
-            android:id="@+id/tc_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:format12Hour="dd MMM yyyy"
-            android:format24Hour="dd MMM yyyy"
-            android:textColor="@color/white"
-            android:textSize="54dp" />
-
+        android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/weather_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_current_weather"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:layout_gravity="center_horizontal"
-                android:tint="@color/white"
-                tools:src="@drawable/ic_weather_partlycloudy" />
-
             <TextView
-                android:id="@+id/tv_current_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="16dp"
+                android:fontFamily="sans-serif-thin"
+                android:text="Hi there, Gijs\nIt's"
                 android:textColor="@color/white"
-                android:textSize="50dp"
-                tools:text="6ºC" />
+                android:textSize="82dp" />
+
+            <TextClock
+                android:id="@+id/tc_time"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:layout_marginBottom="-100dp"
+                android:layout_marginTop="-50dp"
+                android:fontFamily="sans-serif-thin"
+                android:format12Hour="kk:mm"
+                android:format24Hour="kk:mm"
+                android:textColor="@color/white"
+                android:textSize="240dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="on"
+                    android:textColor="@color/white"
+                    android:textSize="82dp" />
+                <TextClock
+                    android:id="@+id/tc_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:format12Hour="dd MMM yyyy"
+                    android:format24Hour="dd MMM yyyy"
+                    android:textColor="@color/white"
+                    android:textSize="82dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/weather_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="56dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_current_weather"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_weather_partlycloudy"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_current_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:textSize="80dp"
+                    tools:text="6ºC" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/simple_greeting"
-        android:textColor="@color/white"
-        android:textSize="56dp" />
-
+    </ScrollView>
 </RelativeLayout>
