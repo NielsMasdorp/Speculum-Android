@@ -37,11 +37,11 @@ public class Item {
         this.lat = lat;
     }
 
-    public String get_long() {
+    public String getLong() {
         return _long;
     }
 
-    public void set_long(String _long) {
+    public void setLong(String _long) {
         this._long = _long;
     }
 

@@ -90,7 +90,7 @@ public class MainPresenterImpl implements IMainPresenter {
         mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
                         location + query, Constants.YAHOO_QUERY_FORMAT))
-                .flatMap(response -> mYahooService.getCurrentWeather(response))
+                .flatMap(mYahooService::getCurrentWeather)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -119,7 +119,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
         mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
-                .flatMap(response -> mRedditService.getRedditPost(response))
+                .flatMap(mRedditService::getRedditPost)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
