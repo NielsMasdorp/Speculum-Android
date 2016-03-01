@@ -37,10 +37,11 @@ How do I use this
 ====
 
 1. Clone project in Android Studio
-2. Make nescessary adjustments for your device
-3. Run on device or generate .APK
-4. Turn on "Stay Awake" in Developer Options on your device
-5. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
+2. Select JDK8 in Project Settings
+3. Make nescessary adjustments for your device
+4. Run on device or generate .APK
+5. Turn on "Stay Awake" in Developer Options on your device
+6. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
 
 Update data with voice command
 ====
