@@ -3,7 +3,7 @@ package com.nielsmasdorp.speculum.util;
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class Constants {
+public final class Constants {
 
     //Query constants
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
@@ -72,4 +72,6 @@ public class Constants {
     public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
     public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
     public static final String SP_LAYOUT_IDENTIFIER = "simpleLayout";
+
+    private Constants() {}
 }
