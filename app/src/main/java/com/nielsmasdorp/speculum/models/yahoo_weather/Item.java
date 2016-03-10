@@ -9,8 +9,8 @@ import java.util.List;
 public class Item {
 
     private String title;
-    private String lat;
-    private String _long;
+    private String latitude;
+    private String longitude;
     private String link;
     private String pubDate;
     private Condition condition;
@@ -29,20 +29,20 @@ public class Item {
         this.title = title;
     }
 
-    public String getLat() {
-        return lat;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getLong() {
-        return _long;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLong(String _long) {
-        this._long = _long;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getLink() {

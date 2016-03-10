@@ -21,15 +21,15 @@ public class SetupPresenterImpl implements ISetupPresenter {
         mSetupView = new WeakReference<>(view);
         mPreferenceService = SharedPreferenceService.instance();
 
-        if (mPreferenceService.getRememberConfiguration())
-            if (mSetupView.get() != null)
-                mSetupView.get().navigateToMainActivity(mPreferenceService.getLocation(),
-                        mPreferenceService.getSubreddit(),
-                        mPreferenceService.getPollingDelay(),
-                        mPreferenceService.getCelsius(),
-                        mPreferenceService.getVoiceCommands(),
-                        true,
-                        mPreferenceService.getSimpleLayout());
+        if (mPreferenceService.getRememberConfiguration() && mSetupView.get() != null) {
+            mSetupView.get().navigateToMainActivity(mPreferenceService.getLocation(),
+                    mPreferenceService.getSubreddit(),
+                    mPreferenceService.getPollingDelay(),
+                    mPreferenceService.getCelsius(),
+                    mPreferenceService.getVoiceCommands(),
+                    true,
+                    mPreferenceService.getSimpleLayout());
+        }
     }
 
     @Override
