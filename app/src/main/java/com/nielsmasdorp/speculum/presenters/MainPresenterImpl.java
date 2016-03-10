@@ -109,7 +109,9 @@ public class MainPresenterImpl implements IMainPresenter {
                     @Override
                     public void onNext(CurrentWeather weather) {
 
-                        if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
+                        if (mMainView.get() != null) {
+                            mMainView.get().displayCurrentWeather(weather);
+                        }
                     }
                 }));
     }
@@ -218,12 +220,7 @@ public class MainPresenterImpl implements IMainPresenter {
                     mMainView.get().setListeningMode(Constants.KWS_SEARCH);
                     break;
                 case Constants.UPDATE_PHRASE:
-                    // update data
-                    mMainView.get().talk(Constants.UPDATE_NOTIFICATION);
-                    unSubscribe();
-                    mMainView.get().startPolling();
-                    // go to sleep again and wait for activation phrase
-                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
+                    updatePhrase();
                     break;
                 case Constants.NEWS_PHRASE:
                     //TODO implement news API
@@ -241,6 +238,15 @@ public class MainPresenterImpl implements IMainPresenter {
             }
 
         }
+    }
+
+    private void updatePhrase() {
+        // update data
+        mMainView.get().talk(Constants.UPDATE_NOTIFICATION);
+        unSubscribe();
+        mMainView.get().startPolling();
+        // go to sleep again and wait for activation phrase
+        mMainView.get().setListeningMode(Constants.KWS_SEARCH);
     }
 
     private Observable<Void> prepareAssetsForRecognizer() {
