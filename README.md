@@ -18,7 +18,7 @@ Features
 ====
 * Date and time
 * Switch between two custom layouts (Verbose and Simple)
-* Weather powered by Yahoo Weather
+* Weather powered by Forecast.IO
   * Metric or Imperial
   * Wind information
     * Temperature
