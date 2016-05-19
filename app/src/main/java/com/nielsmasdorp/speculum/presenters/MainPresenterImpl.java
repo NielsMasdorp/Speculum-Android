@@ -1,6 +1,5 @@
 package com.nielsmasdorp.speculum.presenters;
 
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.nielsmasdorp.speculum.models.CurrentWeather;
@@ -8,8 +7,7 @@ import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
-import com.nielsmasdorp.speculum.services.SharedPreferenceService;
-import com.nielsmasdorp.speculum.services.YahooService;
+import com.nielsmasdorp.speculum.services.ForecastIOService;
 import com.nielsmasdorp.speculum.services.YoMommaService;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.IMainView;
@@ -34,7 +32,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
     private static final String TAG = MainPresenterImpl.class.getSimpleName();
 
-    private YahooService mYahooService;
+    private ForecastIOService mForecastIOService;
     private GoogleCalendarService mGoogleCalendarService;
     private RedditService mRedditService;
     private YoMommaService mYomommaService;
@@ -46,7 +44,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public MainPresenterImpl(IMainView view) {
 
         mMainView = new WeakReference<>(view);
-        mYahooService = new YahooService();
+        mForecastIOService = new ForecastIOService();
         mRedditService = new RedditService();
         mYomommaService = new YoMommaService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
@@ -83,14 +81,13 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
-    public void loadWeather(final String location, boolean celsius, int updateDelay) {
+    public void loadWeather(final String location, boolean celsius, int updateDelay, String apiKey) {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
         mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
-                        location + query, Constants.YAHOO_QUERY_FORMAT))
-                .flatMap(mYahooService::getCurrentWeather)
+                .flatMap(ignore -> mForecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
+                .flatMap(mForecastIOService::getCurrentWeather)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

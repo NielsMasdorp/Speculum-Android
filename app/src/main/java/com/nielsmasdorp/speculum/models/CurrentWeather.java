@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.models;
 
-import com.nielsmasdorp.speculum.models.yahoo_weather.Forecast;
+import com.nielsmasdorp.speculum.models.forecast.Datum_;
+import com.nielsmasdorp.speculum.models.forecast.Datum__;
 
 import java.util.List;
 
@@ -10,45 +11,39 @@ import java.util.List;
 public class CurrentWeather {
 
     private String title;
-    private String statusCode;
-    private String temperature;
-    private String humidity;
+    private String icon;
+    private int temperature;
+    private int humidity;
     private String pressure;
     private String visibility;
-    private String sunrise;
-    private String sunset;
     private String windSpeed;
-    private String windTemperature;
+    private int windTemperature;
     private String windDirection;
-    private List<Forecast> forecast;
+    private List<Datum__> forecast;
 
     public static class Builder {
 
         private String title;
-        private String statusCode;
-        private String temperature;
-        private String humidity;
+        private String icon;
+        private int temperature;
+        private int humidity;
         private String pressure;
         private String visibility;
-        private String sunrise;
-        private String sunset;
         private String windSpeed;
-        private String windTemperature;
+        private int windTemperature;
         private String windDirection;
-        private List<Forecast> forecast;
+        private List<Datum__> forecast;
 
         public Builder title(String title) { this.title = title; return this; }
-        public Builder statusCode(String statusCode) { this.statusCode = statusCode; return this; }
-        public Builder temperature(String temperature) { this.temperature = temperature; return this; }
-        public Builder humidity(String humidity) { this.humidity = humidity; return this; }
+        public Builder icon(String icon) { this.icon = icon; return this; }
+        public Builder temperature(int temperature) { this.temperature = temperature; return this; }
+        public Builder humidity(int humidity) { this.humidity = humidity; return this; }
         public Builder pressure(String pressure) { this.pressure = pressure; return this; }
         public Builder visibility(String visibility) { this.visibility = visibility; return this; }
-        public Builder sunrise(String sunrise) { this.sunrise = sunrise; return this; }
-        public Builder sunset(String sunset) { this.sunset = sunset; return this; }
         public Builder windSpeed(String windSpeed) { this.windSpeed = windSpeed; return this; }
-        public Builder windTemperature(String windTemperature) { this.windTemperature = windTemperature; return this; }
+        public Builder windTemperature(int windTemperature) { this.windTemperature = windTemperature; return this; }
         public Builder windDirection(String windDirection) { this.windDirection = windDirection; return this; }
-        public Builder forecast(List<Forecast> forecast) { this.forecast = forecast; return this; }
+        public Builder forecast(List<Datum__> forecast) { this.forecast = forecast; return this; }
 
         public CurrentWeather build() {
 
@@ -59,13 +54,11 @@ public class CurrentWeather {
     private CurrentWeather(Builder builder) {
 
         this.title = builder.title;
-        this.statusCode = builder.statusCode;
+        this.icon = builder.icon;
         this.temperature = builder.temperature;
         this.humidity = builder.humidity;
         this.pressure = builder.pressure;
         this.visibility = builder.visibility;
-        this.sunrise = builder.sunrise;
-        this.sunset = builder.sunset;
         this.windSpeed = builder.windSpeed;
         this.windTemperature = builder.windTemperature;
         this.windDirection = builder.windDirection;
@@ -76,15 +69,15 @@ public class CurrentWeather {
         return title;
     }
 
-    public String getStatusCode() {
-        return statusCode;
+    public String getIcon() {
+        return icon;
     }
 
-    public String getTemperature() {
+    public int getTemperature() {
         return temperature;
     }
 
-    public String getHumidity() {
+    public int getHumidity() {
         return humidity;
     }
 
@@ -96,19 +89,11 @@ public class CurrentWeather {
         return visibility;
     }
 
-    public String getSunrise() {
-        return sunrise;
-    }
-
-    public String getSunset() {
-        return sunset;
-    }
-
     public String getWindSpeed() {
         return windSpeed;
     }
 
-    public String getWindTemperature() {
+    public int getWindTemperature() {
         return windTemperature;
     }
 
@@ -116,7 +101,7 @@ public class CurrentWeather {
         return windDirection;
     }
 
-    public List<Forecast> getForecast() {
+    public List<Datum__> getForecast() {
         return forecast;
     }
 }

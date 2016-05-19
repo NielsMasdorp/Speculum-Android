@@ -6,4 +6,6 @@ package com.nielsmasdorp.speculum.views;
 public interface ISetupView {
 
     void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands, boolean rememberConfig, boolean simpleLayout);
+
+    void showError(String localizedMessage);
 }

@@ -7,12 +7,12 @@ public class Constants {
 
     //Query constants
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
-    public static final String YAHOO_BASE_URL = "https://query.yahooapis.com/v1/public/";
+    public static final String FORECAST_BASE_URL = "https://api.forecast.io/forecast/";
     public static final String YOMOMMA_BASE_URL = "http://api.yomomma.info/";
+    public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
 
-    public static final String WEATHER_QUERY_FIRST = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"";
-    public static final String WEATHER_QUERY_SECOND_CELSIUS = "\") and u=\"c\"";
-    public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "\")";
+    public static final String WEATHER_QUERY_SECOND_CELSIUS = "ca";
+    public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "us";
 
     public static final String CALENDAR_QUERY_FIRST = "( dtstart >";
     public static final String CALENDAR_QUERY_SECOND = ") and (dtend  <";

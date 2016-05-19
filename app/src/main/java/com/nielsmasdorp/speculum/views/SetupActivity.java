@@ -13,15 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.presenters.ISetupPresenter;
 import com.nielsmasdorp.speculum.presenters.SetupPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,28 +28,28 @@ import butterknife.OnClick;
  */
 public class SetupActivity extends AppCompatActivity implements ISetupView, View.OnSystemUiVisibilityChangeListener, CompoundButton.OnCheckedChangeListener {
 
-    @Bind(R.id.et_location)
+    @BindView(R.id.et_location)
     EditText mEditTextLocation;
 
-    @Bind(R.id.et_subreddit)
+    @BindView(R.id.et_subreddit)
     EditText mEditTextSubreddit;
 
-    @Bind(R.id.tv_reddit_title)
+    @BindView(R.id.tv_reddit_title)
     TextView mTvRedditTitle;
 
-    @Bind(R.id.et_polling_delay)
+    @BindView(R.id.et_polling_delay)
     EditText mEditTextPollingDelay;
 
-    @Bind(R.id.rb_celsius)
+    @BindView(R.id.rb_celsius)
     RadioButton mRbCelsius;
 
-    @Bind(R.id.rb_simple)
+    @BindView(R.id.rb_simple)
     RadioButton mRbSimple;
 
-    @Bind(R.id.cb_voice_commands)
+    @BindView(R.id.cb_voice_commands)
     CheckBox mCbVoiceCommands;
 
-    @Bind(R.id.cb_remember_config)
+    @BindView(R.id.cb_remember_config)
     CheckBox mCbRememberConfig;
 
     ISetupPresenter mSetupPresenter;
@@ -156,6 +154,12 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
             hideSystemUI();
         }
+    }
+
+    @Override
+    public void showError(String message) {
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

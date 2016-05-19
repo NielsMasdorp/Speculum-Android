@@ -30,5 +30,10 @@ app/app.iml
 *.iml
 
 #Private Keys
+app/src/main/res/values/keys.xml
+speculumkeystore.jks
 app/fabric.properties
 signing.properties
+
+
+

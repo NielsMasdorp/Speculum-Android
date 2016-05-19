@@ -7,7 +7,7 @@ public interface IMainPresenter {
 
     void loadLatestCalendarEvent(int updateDelay);
 
-    void loadWeather(final String location, boolean celsius, int updateDelay);
+    void loadWeather(final String location, boolean celsius, int updateDelay, String apiKey);
 
     void loadTopRedditPost(final String subreddit, int updateDelay);
 

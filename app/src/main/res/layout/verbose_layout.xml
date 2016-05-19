@@ -16,7 +16,7 @@
             android:layout_height="280dp"
             android:layout_marginBottom="-60dp"
             android:layout_marginTop="-64dp"
-            android:format12Hour="kk:mm"
+            android:format12Hour="h:mm"
             android:format24Hour="kk:mm"
             android:textColor="@color/white"
             android:textSize="200dp" />
@@ -335,60 +335,6 @@
                     android:textColor="@color/white"
                     android:textSize="24dp"
                     tools:text="Visibility in km" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/iv_sunrise"
-                    android:layout_width="82dp"
-                    android:layout_height="82dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="4dp"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_weather_sunset_up"
-                    android:tint="@color/white" />
-
-                <ImageView
-                    android:id="@+id/iv_sunset"
-                    android:layout_width="82dp"
-                    android:layout_height="82dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="4dp"
-                    android:layout_toEndOf="@+id/iv_sunrise"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_weather_sunset_down"
-                    android:tint="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_sunrise_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/iv_sunrise"
-                    android:layout_alignStart="@+id/iv_sunrise"
-                    android:layout_below="@+id/iv_sunrise"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:textSize="26dp"
-                    tools:text="08:42" />
-
-                <TextView
-                    android:id="@+id/tv_sunset_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/iv_sunset"
-                    android:layout_alignStart="@+id/iv_sunset"
-                    android:layout_alignTop="@+id/tv_sunrise_time"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:textSize="26dp"
-                    tools:text="17:42" />
 
             </RelativeLayout>
 
