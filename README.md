@@ -28,20 +28,31 @@ Features
   * Pressure
   * Visibility
   * Four day forecast
-  * Sunrise and sunset time
 * Your upcoming Google Calendar event
 * One of the top posts of your favorite subreddit
 * Update data by using voice command
 
-How do I use this
+How do I get started
 ====
 
 1. Clone project in Android Studio
 2. Select JDK8 in Project Settings
 3. Make nescessary adjustments for your device
-4. Run on device or generate .APK
-5. Turn on "Stay Awake" in Developer Options on your device
-6. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
+4. Go to [Forecast.io](https://developer.forecast.io/) and register
+5. Create `keys.xml` in `/res/values/` (sample found below these steps)
+6. Run on device or generate .APK
+7. Turn on "Stay Awake" in Developer Options on your device
+8. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
+
+Example `keys.xml`
+====
+
+```java
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="forecast_api_key">your api key</string>
+</resources>
+```
 
 Update data with voice command
 ====
