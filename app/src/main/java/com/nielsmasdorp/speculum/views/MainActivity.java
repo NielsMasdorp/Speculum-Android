@@ -22,7 +22,7 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.forecast.Datum__;
+import com.nielsmasdorp.speculum.models.forecast.DayForecast;
 import com.nielsmasdorp.speculum.presenters.IMainPresenter;
 import com.nielsmasdorp.speculum.presenters.MainPresenterImpl;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     TextView mWeatherTemp;
     @BindView(R.id.weather_layout)
     LinearLayout mWeatherLayout;
+    @BindView(R.id.tv_last_updated)
+    TextView mWeatherLastUpdated;
+    @Nullable
+    @BindView(R.id.tv_summary)
+    TextView mWeatherSummary;
     @Nullable
     @BindView(R.id.weather_stats_layout)
     LinearLayout mWeatherStatsLayout;
@@ -203,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mWeatherCondition.setImageResource(mIconGenerator.getIcon(weather.getIcon()));
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
+        this.mWeatherLastUpdated.setText(getString(R.string.last_updated) + getMinutesAgo(weather.getLastUpdated()));
 
         if (!mConfiguration.isSimpleLayout()) {
             this.mWeatherWind.setText(weather.getWindSpeed() + speed + " " + weather.getWindDirection() + " | " + weather.getWindTemperature() + "º" + temperature);
@@ -210,25 +216,41 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             this.mWeatherPressure.setText(weather.getPressure() + pressure);
             this.mWeatherVisibility.setText(weather.getVisibility() + distance);
 
-            List<Datum__> forecast = weather.getForecast();
+            List<DayForecast> forecast = weather.getForecast();
 
             SimpleDateFormat formatter = new SimpleDateFormat(metric ? "d MMM" : "MMM d", Locale.getDefault());
 
-            this.mDayOneDate.setText(formatter.format(new Date((long) forecast.get(0).getTime() * 1000)));
-            this.mDayOneTemp.setText((forecast.get(0).getTemperatureMin().intValue() + forecast.get(0).getTemperatureMax().intValue()) / 2 + "º" + temperature);
+            this.mDayOneDate.setText(formatter.format(new Date((long) forecast.get(1).getTime() * 1000)));
+            this.mDayOneTemp.setText((forecast.get(1).getTemperatureMin().intValue() + forecast.get(1).getTemperatureMax().intValue()) / 2 + "º" + temperature);
             this.mDayOneCondition.setImageResource(mIconGenerator.getIcon(forecast.get(0).getIcon()));
-            this.mDayTwoDate.setText(formatter.format(new Date((long) forecast.get(1).getTime() * 1000)));
-            this.mDayTwoTemp.setText((forecast.get(1).getTemperatureMin().intValue() + forecast.get(1).getTemperatureMax().intValue()) / 2 + "º" + temperature);
-            this.mDayTwoCondition.setImageResource(mIconGenerator.getIcon(forecast.get(1).getIcon()));
-            this.mDayThreeDate.setText(formatter.format(new Date((long) forecast.get(2).getTime() * 1000)));
-            this.mDayThreeTemp.setText((forecast.get(2).getTemperatureMin().intValue() + forecast.get(2).getTemperatureMax().intValue()) / 2 + "º" + temperature);
-            this.mDayThreeCondition.setImageResource(mIconGenerator.getIcon(forecast.get(2).getIcon()));
-            this.mDayFourDate.setText(formatter.format(new Date((long) forecast.get(3).getTime() * 1000)));
-            this.mDayFourTemp.setText((forecast.get(3).getTemperatureMin().intValue() + forecast.get(3).getTemperatureMax().intValue()) / 2 + "º" + temperature);
-            this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(forecast.get(3).getIcon()));
+            this.mDayTwoDate.setText(formatter.format(new Date((long) forecast.get(2).getTime() * 1000)));
+            this.mDayTwoTemp.setText((forecast.get(2).getTemperatureMin().intValue() + forecast.get(2).getTemperatureMax().intValue()) / 2 + "º" + temperature);
+            this.mDayTwoCondition.setImageResource(mIconGenerator.getIcon(forecast.get(2).getIcon()));
+            this.mDayThreeDate.setText(formatter.format(new Date((long) forecast.get(3).getTime() * 1000)));
+            this.mDayThreeTemp.setText((forecast.get(3).getTemperatureMin().intValue() + forecast.get(3).getTemperatureMax().intValue()) / 2 + "º" + temperature);
+            this.mDayThreeCondition.setImageResource(mIconGenerator.getIcon(forecast.get(3).getIcon()));
+            this.mDayFourDate.setText(formatter.format(new Date((long) forecast.get(4).getTime() * 1000)));
+            this.mDayFourTemp.setText((forecast.get(4).getTemperatureMin().intValue() + forecast.get(4).getTemperatureMax().intValue()) / 2 + "º" + temperature);
+            this.mDayFourCondition.setImageResource(mIconGenerator.getIcon(forecast.get(4).getIcon()));
+        } else {
+            this.mWeatherSummary.setText(weather.getSummary());
         }
 
         showContent(0);
+    }
+
+    private String getMinutesAgo(Date lastUpdated) {
+
+        Date currentDate = new Date();
+        Long minsAgo = (currentDate.getTime() - lastUpdated.getTime()) / 60000;
+
+        if (minsAgo.intValue() < 1) {
+            return " " + getString(R.string.just_now);
+        } else if (minsAgo.intValue() > 60) {
+            return getString(R.string.one_hour_and) + " " + minsAgo.intValue() % 60 + " " +  getString(R.string.minutes_ago);
+        } else {
+            return " " + minsAgo.intValue() + " " + getString(R.string.minutes_ago);
+        }
     }
 
     @Override

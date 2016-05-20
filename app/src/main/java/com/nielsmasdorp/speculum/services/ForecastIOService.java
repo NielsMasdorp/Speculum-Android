@@ -4,6 +4,8 @@ import com.nielsmasdorp.speculum.models.CurrentWeather;
 import com.nielsmasdorp.speculum.models.forecast.ForecastResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
+import java.util.Date;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,10 +36,11 @@ public class ForecastIOService {
 
         // Convert degrees to cardinal directions for wind
         String[] directions = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
-        String direction = directions[(int) Math.round(((double)response.getCurrently().getWindBearing() % 360) / 45)];
+        String direction = directions[(int) Math.round((response.getCurrently().getWindBearing() % 360) / 45)];
 
         return Observable.just(new CurrentWeather.Builder()
-                .title(response.getCurrently().getSummary())
+                .lastUpdated(new Date((long) response.getCurrently().getTime() * 1000))
+                .summary(response.getCurrently().getSummary())
                 .icon(response.getCurrently().getIcon())
                 .temperature(response.getCurrently().getTemperature().intValue())
                 .humidity((int) (response.getCurrently().getHumidity() * 100))
@@ -46,7 +49,7 @@ public class ForecastIOService {
                 .windSpeed(response.getCurrently().getWindSpeed().toString())
                 .windTemperature(response.getCurrently().getApparentTemperature().intValue())
                 .windDirection(direction)
-                .forecast(response.getDaily().getData())
+                .forecast(response.getForecast().getData())
                 .build());
     }
 

@@ -1,8 +1,8 @@
 package com.nielsmasdorp.speculum.models;
 
-import com.nielsmasdorp.speculum.models.forecast.Datum_;
-import com.nielsmasdorp.speculum.models.forecast.Datum__;
+import com.nielsmasdorp.speculum.models.forecast.DayForecast;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +10,8 @@ import java.util.List;
  */
 public class CurrentWeather {
 
-    private String title;
+    private Date lastUpdated;
+    private String summary;
     private String icon;
     private int temperature;
     private int humidity;
@@ -19,11 +20,12 @@ public class CurrentWeather {
     private String windSpeed;
     private int windTemperature;
     private String windDirection;
-    private List<Datum__> forecast;
+    private List<DayForecast> forecast;
 
     public static class Builder {
 
-        private String title;
+        private Date lastUpdated;
+        private String summary;
         private String icon;
         private int temperature;
         private int humidity;
@@ -32,9 +34,10 @@ public class CurrentWeather {
         private String windSpeed;
         private int windTemperature;
         private String windDirection;
-        private List<Datum__> forecast;
+        private List<DayForecast> forecast;
 
-        public Builder title(String title) { this.title = title; return this; }
+        public Builder lastUpdated(Date lastUpdated) { this.lastUpdated = lastUpdated; return this; }
+        public Builder summary(String summary) { this.summary = summary; return this; }
         public Builder icon(String icon) { this.icon = icon; return this; }
         public Builder temperature(int temperature) { this.temperature = temperature; return this; }
         public Builder humidity(int humidity) { this.humidity = humidity; return this; }
@@ -43,7 +46,7 @@ public class CurrentWeather {
         public Builder windSpeed(String windSpeed) { this.windSpeed = windSpeed; return this; }
         public Builder windTemperature(int windTemperature) { this.windTemperature = windTemperature; return this; }
         public Builder windDirection(String windDirection) { this.windDirection = windDirection; return this; }
-        public Builder forecast(List<Datum__> forecast) { this.forecast = forecast; return this; }
+        public Builder forecast(List<DayForecast> forecast) { this.forecast = forecast; return this; }
 
         public CurrentWeather build() {
 
@@ -53,7 +56,8 @@ public class CurrentWeather {
 
     private CurrentWeather(Builder builder) {
 
-        this.title = builder.title;
+        this.lastUpdated = builder.lastUpdated;
+        this.summary = builder.summary;
         this.icon = builder.icon;
         this.temperature = builder.temperature;
         this.humidity = builder.humidity;
@@ -65,8 +69,12 @@ public class CurrentWeather {
         this.forecast = builder.forecast;
     }
 
-    public String getTitle() {
-        return title;
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public String getSummary() {
+        return summary;
     }
 
     public String getIcon() {
@@ -101,7 +109,7 @@ public class CurrentWeather {
         return windDirection;
     }
 
-    public List<Datum__> getForecast() {
+    public List<DayForecast> getForecast() {
         return forecast;
     }
 }

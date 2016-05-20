@@ -35,5 +35,9 @@
     <string name="old_config_found_snackbar_back">Back to setup</string>
     <string name="simple_greeting">Hi there\nIt\'s</string>
     <string name="date_on">on</string>
+    <string name="last_updated">Last updated:</string>
+    <string name="minutes_ago">"minutes ago</string>
+    <string name="just_now">just now</string>
+    <string name="one_hour_and">one hour and</string>
 
 </resources>
