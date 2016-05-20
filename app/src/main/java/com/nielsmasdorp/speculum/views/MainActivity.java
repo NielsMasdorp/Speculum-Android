@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         this.mWeatherCondition.setImageResource(mIconGenerator.getIcon(weather.getIcon()));
         this.mWeatherTemp.setText(weather.getTemperature() + "º" + temperature);
-        this.mWeatherLastUpdated.setText(getString(R.string.last_updated) + getMinutesAgo(weather.getLastUpdated()));
+        this.mWeatherLastUpdated.setText(getString(R.string.last_updated) + getLastUpdated(weather.getLastUpdated()));
 
         if (!mConfiguration.isSimpleLayout()) {
             this.mWeatherWind.setText(weather.getWindSpeed() + speed + " " + weather.getWindDirection() + " | " + weather.getWindTemperature() + "º" + temperature);
@@ -239,18 +239,11 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
         showContent(0);
     }
 
-    private String getMinutesAgo(Date lastUpdated) {
+    private String getLastUpdated(Date lastUpdated) {
 
-        Date currentDate = new Date();
-        Long minsAgo = (currentDate.getTime() - lastUpdated.getTime()) / 60000;
+        SimpleDateFormat formatter = new SimpleDateFormat("h:mm", Locale.getDefault());
 
-        if (minsAgo.intValue() < 1) {
-            return " " + getString(R.string.just_now);
-        } else if (minsAgo.intValue() > 60) {
-            return getString(R.string.one_hour_and) + " " + minsAgo.intValue() % 60 + " " +  getString(R.string.minutes_ago);
-        } else {
-            return " " + minsAgo.intValue() + " " + getString(R.string.minutes_ago);
-        }
+        return " " + formatter.format(lastUpdated);
     }
 
     @Override

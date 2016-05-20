@@ -27,7 +27,4 @@
     <string name="simple_greeting">Hallo daar</string>
 
     <string name="last_updated">Laatst geupdate:</string>
-    <string name="minutes_ago">"minuten geleden</string>
-    <string name="just_now">net</string>
-    <string name="one_hour_and">een uur en</string>
 </resources>
