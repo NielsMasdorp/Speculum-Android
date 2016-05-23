@@ -9,18 +9,19 @@ import java.util.HashMap;
  */
 public class WeatherIconGenerator {
 
-    private static WeatherIconGenerator _instance;
-
     private HashMap<String, Integer> iconMap;
 
-    public synchronized static WeatherIconGenerator getInstance() {
-        if (_instance == null) {
-            _instance = new WeatherIconGenerator();
-        }
-        return _instance;
+    public WeatherIconGenerator() {
+
+        initMap();
     }
 
-    private WeatherIconGenerator() {
+    /**
+     * Initialize the weather icon map.
+     * Every icon has a String identifier mapped to a resource id.
+     */
+    private void initMap() {
+
         iconMap = new HashMap<>();
         iconMap.put("tornado", R.drawable.ic_weather_tornado);
         iconMap.put("thunderstorm", R.drawable.ic_weather_lightning);
@@ -35,6 +36,12 @@ public class WeatherIconGenerator {
         iconMap.put("partly-cloudy-day", R.drawable.ic_weather_partlycloudy);
     }
 
+    /**
+     * Get an icon for a weather type.
+     *
+     * @param icon weather type (e.g "tornado")
+     * @return icon resource
+     */
     public Integer getIcon(String icon) {
         return iconMap.get(icon);
     }

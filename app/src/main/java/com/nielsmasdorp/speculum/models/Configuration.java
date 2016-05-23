@@ -11,6 +11,7 @@ public class Configuration implements Serializable {
     private String location;
     private String subreddit;
     private int pollingDelay;
+    private boolean rememberConfig;
     private boolean voiceCommands;
     private boolean simpleLayout;
 
@@ -20,6 +21,7 @@ public class Configuration implements Serializable {
         private String location;
         private String subreddit;
         private int pollingDelay;
+        private boolean rememberConfig;
         private boolean voiceCommands;
         private boolean simpleLayout;
 
@@ -40,6 +42,11 @@ public class Configuration implements Serializable {
 
         public Builder pollingDelay(int pollingDelay) {
             this.pollingDelay = pollingDelay;
+            return this;
+        }
+
+        public Builder rememberConfig(boolean rememberConfig) {
+            this.rememberConfig = rememberConfig;
             return this;
         }
 
@@ -65,6 +72,7 @@ public class Configuration implements Serializable {
         this.location = builder.location;
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
+        this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
         this.simpleLayout = builder.simpleLayout;
     }
@@ -73,23 +81,55 @@ public class Configuration implements Serializable {
         return celsius;
     }
 
+    public void setCelsius(boolean celsius) {
+        this.celsius = celsius;
+    }
+
     public String getLocation() {
         return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getSubreddit() {
         return subreddit;
     }
 
+    public void setSubreddit(String subreddit) {
+        this.subreddit = subreddit;
+    }
+
     public int getPollingDelay() {
         return pollingDelay;
     }
 
-    public boolean getVoiceCommands() {
+    public void setPollingDelay(int pollingDelay) {
+        this.pollingDelay = pollingDelay;
+    }
+
+    public boolean isVoiceCommands() {
         return voiceCommands;
+    }
+
+    public void setVoiceCommands(boolean voiceCommands) {
+        this.voiceCommands = voiceCommands;
     }
 
     public boolean isSimpleLayout() {
         return simpleLayout;
+    }
+
+    public void setSimpleLayout(boolean simpleLayout) {
+        this.simpleLayout = simpleLayout;
+    }
+
+    public boolean isRememberConfig() {
+        return rememberConfig;
+    }
+
+    public void setRememberConfig(boolean rememberConfig) {
+        this.rememberConfig = rememberConfig;
     }
 }

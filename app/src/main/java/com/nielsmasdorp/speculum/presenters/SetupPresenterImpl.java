@@ -1,91 +1,97 @@
 package com.nielsmasdorp.speculum.presenters;
 
-import android.util.Log;
+import com.nielsmasdorp.speculum.interactor.SetupInteractor;
+import com.nielsmasdorp.speculum.models.Configuration;
+import com.nielsmasdorp.speculum.views.SetupView;
 
-import com.nielsmasdorp.speculum.models.CurrentWeather;
-import com.nielsmasdorp.speculum.services.GoogleMapService;
-import com.nielsmasdorp.speculum.services.SharedPreferenceService;
-import com.nielsmasdorp.speculum.util.Constants;
-import com.nielsmasdorp.speculum.views.ISetupView;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class SetupPresenterImpl implements ISetupPresenter {
+public class SetupPresenterImpl implements SetupPresenter {
 
-    private static final String TAG = SetupPresenterImpl.class.getSimpleName();
+    private SetupView view;
+    private SetupInteractor interactor;
 
-    private WeakReference<ISetupView> mSetupView;
+    public SetupPresenterImpl(SetupView view, SetupInteractor interactor) {
 
-    private SharedPreferenceService mPreferenceService;
-    private GoogleMapService mGoogleMapService;
-
-    public SetupPresenterImpl(ISetupView view) {
-
-        mSetupView = new WeakReference<>(view);
-        mPreferenceService = SharedPreferenceService.instance();
-        mGoogleMapService = new GoogleMapService();
-
-        if (mPreferenceService.getRememberConfiguration())
-            if (mSetupView.get() != null)
-                mSetupView.get().navigateToMainActivity(mPreferenceService.getLocation(),
-                        mPreferenceService.getSubreddit(),
-                        mPreferenceService.getPollingDelay(),
-                        mPreferenceService.getCelsius(),
-                        mPreferenceService.getVoiceCommands(),
-                        true,
-                        mPreferenceService.getSimpleLayout());
+        this.view = view;
+        this.interactor = interactor;
+        interactor.start(new ConfigurationSubscriber());
     }
 
+    /**
+     * Validate user settings
+     *
+     * @param location       could be city/address etc.
+     * @param subreddit      subreddit string
+     * @param pollingDelay   update UI every x minutes
+     * @param celsius        metric data or imperial
+     * @param voiceCommands  should listen for voice commands
+     * @param rememberConfig should remember configuration for next app start
+     * @param simpleLayout   simple or verbose layout
+     */
     @Override
-    public void launch(String location, String subreddit, String pollingDelay, boolean celsius, boolean voiceCommands, boolean rememberConfig, boolean simpleLayout) {
+    public void validate(String location,
+                         String subreddit,
+                         String pollingDelay,
+                         boolean celsius,
+                         boolean voiceCommands,
+                         boolean rememberConfig,
+                         boolean simpleLayout) {
 
-        if (pollingDelay.equals("") || pollingDelay.equals("0"))
-            pollingDelay = Constants.POLLING_DELAY_DEFAULT;
+        interactor.validate(location,
+                subreddit, pollingDelay,
+                celsius, voiceCommands,
+                rememberConfig,
+                simpleLayout,
+                new ConfigurationSubscriber());
+    }
 
-        if (location.isEmpty()) location = Constants.LOCATION_DEFAULT;
+    /**
+     * Show error message in toast
+     *
+     * @param error message to show
+     */
+    @Override
+    public void showError(String error) {
 
-        if (subreddit.isEmpty()) subreddit = Constants.SUBREDDIT_DEFAULT;
+        view.showError(error);
+    }
 
-        // temp variables
-        final String finalSubreddit = subreddit;
-        final String finalPollingDelay = pollingDelay;
+    /**
+     * Launch main activity with a configuration
+     *
+     * @param configuration all relevant settings
+     */
+    @Override
+    public void launchMainActivity(Configuration configuration) {
 
-        mGoogleMapService.getApi().getLatLongForAddress(location, "false")
-                .flatMap(mGoogleMapService::getLatLong)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+        view.navigateToMainActivity(configuration);
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "GoogleMapService: ", e);
-                        if (mSetupView.get() != null)
-                            mSetupView.get().showError(e.getLocalizedMessage());
-                    }
+    /**
+     * Callback for RxObservables emitted by interactor
+     * this callback is used if this is a new configuration or
+     * if the configuration was stored in preferences.
+     */
+    private final class ConfigurationSubscriber extends Subscriber<Configuration> {
 
-                    @Override
-                    public void onNext(String latLng) {
-                        if (rememberConfig) {
-                            mPreferenceService.storeConfiguration(latLng, finalSubreddit, Integer.parseInt(finalPollingDelay), celsius, voiceCommands, rememberConfig, simpleLayout);
-                        } else {
-                            mPreferenceService.removeConfiguration();
-                        }
-                        if (mSetupView.get() != null)
-                            mSetupView.get().navigateToMainActivity(latLng, finalSubreddit, Integer.parseInt(finalPollingDelay), celsius, voiceCommands, false, simpleLayout);
-                    }
-                });
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(Configuration configuration) {
+
+            view.navigateToMainActivity(configuration);
+        }
     }
 }

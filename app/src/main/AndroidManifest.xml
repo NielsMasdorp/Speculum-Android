@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.Base">
         <activity
-            android:name=".views.SetupActivity"
+            android:name=".activity.SetupActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Base">
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"/>
     </application>
 
