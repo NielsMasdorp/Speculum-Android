@@ -1,5 +1,8 @@
 package com.nielsmasdorp.speculum.services;
 
+import android.app.Application;
+import android.support.v4.app.AppLaunchChecker;
+
 import com.nielsmasdorp.speculum.models.ForecastDayWeather;
 import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.forecast.DayForecast;
@@ -39,7 +42,7 @@ public class ForecastIOService {
         mForecastIOApi = retrofit.create(ForecastIOApi.class);
     }
 
-    public Observable<Weather> getCurrentWeather(ForecastResponse response, WeatherIconGenerator iconGenerator, boolean metric) {
+    public Observable<Weather> getCurrentWeather(ForecastResponse response, WeatherIconGenerator iconGenerator, boolean metric, boolean is24HourFormat) {
 
         String distanceUnit = metric ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressureUnit = metric ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
@@ -67,7 +70,7 @@ public class ForecastIOService {
                 .iconId(iconGenerator.getIcon(response.getCurrently().getIcon()))
                 .summary(response.getCurrently().getSummary())
                 .temperature(response.getCurrently().getTemperature().intValue() + "º" + temperatureUnit)
-                .lastUpdated(new SimpleDateFormat("h:mm", Locale.getDefault()).format(new Date((long) response.getCurrently().getTime() * 1000)))
+                .lastUpdated(new SimpleDateFormat(is24HourFormat ? "h:mm" : "H:mm", Locale.getDefault()).format(new Date((long) response.getCurrently().getTime() * 1000)))
                 .windInfo(response.getCurrently().getWindSpeed().intValue() + speedUnit + " " + direction + " | " + response.getCurrently().getApparentTemperature().intValue() + "º" + temperatureUnit)
                 .humidityInfo((int) (response.getCurrently().getHumidity() * 100) + "%")
                 .pressureInfo(response.getCurrently().getPressure().intValue() + pressureUnit)

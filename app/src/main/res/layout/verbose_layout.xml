@@ -50,8 +50,7 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_weather_partlycloudy"
-                    android:tint="@color/white" />
+                    android:src="@drawable/ic_weather_partlycloudy" />
 
                 <TextView
                     android:id="@+id/tv_current_temp"
@@ -76,8 +75,7 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_weather_partlycloudy"
-                    android:tint="@color/white" />
+                    android:src="@drawable/ic_weather_partlycloudy" />
 
                 <TextView
                     android:id="@+id/tv_forecast_temp1"
@@ -111,8 +109,7 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_weather_sunny"
-                    android:tint="@color/white" />
+                    android:src="@drawable/ic_weather_sunny" />
 
                 <TextView
                     android:id="@+id/tv_forecast_temp2"
@@ -146,8 +143,7 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_weather_rainy"
-                    android:tint="@color/white" />
+                    android:src="@drawable/ic_weather_sleet" />
 
                 <TextView
                     android:id="@+id/tv_forecast_temp3"
@@ -183,7 +179,6 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center_horizontal"
-                    android:tint="@color/white"
                     tools:src="@drawable/ic_weather_partlycloudy" />
 
                 <TextView

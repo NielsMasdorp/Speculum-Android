@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.interactor;
 
 import android.app.Application;
+import android.text.format.DateFormat;
 
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.Weather;
@@ -75,11 +76,12 @@ public class MainInteractorImpl implements MainInteractor {
     @Override
     public void loadWeather(String location, boolean celsius, int updateDelay, String apiKey, Subscriber<Weather> subscriber) {
 
+        boolean is24HourFormat = DateFormat.is24HourFormat(application);
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
-                .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, celsius))
+                .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, is24HourFormat, celsius))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
