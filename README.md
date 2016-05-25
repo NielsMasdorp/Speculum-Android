@@ -1,4 +1,4 @@
-![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/Speculum_promo.jpg)
+![alt tag](http://i.imgur.com/4AyPrAu.jpg)
 
 This is an Android application for a magic mirror.
 I had an old Nexus 7 (2012) lying around collecting dust and got the idea from [HomeMirror by Hannah Mitt](https://github.com/HannahMitt/HomeMirror).
@@ -8,11 +8,11 @@ Submit a pull request!
 
 ###Mirror
 
-![alt tag](https://github.com/NielsMasdorp/Speculum-Android/blob/master/app/src/main/assets/mirror.jpg)
+![alt tag](http://i.imgur.com/EPyAXyw.jpg)
 
 ###Application screens
 
-![alt tag](https://raw.githubusercontent.com/NielsMasdorp/Speculum-Android/master/app/src/main/assets/screens_1080p.jpg)
+![alt tag](http://i.imgur.com/SMdJDOd.jpg)
 
 Features
 ====
@@ -167,6 +167,7 @@ Thanks to
 * [Android Design Library](http://developer.android.com/tools/support-library/index.html)
 * [Retrofit](https://github.com/square/retrofit)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [Dagger2](http://google.github.io/dagger/)
 * [Butterknife](https://github.com/JakeWharton/butterknife)
 * [Assent](https://github.com/afollestad/assent)
 * [Pocketsphinx](http://cmusphinx.sourceforge.net/wiki/tutorialandroid)
