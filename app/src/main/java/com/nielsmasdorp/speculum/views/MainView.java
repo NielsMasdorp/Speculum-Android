@@ -1,6 +1,5 @@
 package com.nielsmasdorp.speculum.views;
 
-import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 
