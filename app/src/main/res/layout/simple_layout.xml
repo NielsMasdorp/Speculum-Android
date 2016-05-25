@@ -74,7 +74,6 @@
                     android:layout_width="168dp"
                     android:layout_height="168dp"
                     android:layout_gravity="center_horizontal"
-                    android:tint="@color/white"
                     tools:src="@drawable/ic_weather_partlycloudy" />
 
                 <LinearLayout

@@ -26,9 +26,9 @@ public class WeatherIconGenerator {
         iconMap.put("tornado", R.drawable.ic_weather_tornado);
         iconMap.put("thunderstorm", R.drawable.ic_weather_lightning);
         iconMap.put("wind", R.drawable.ic_weather_windy);
-        iconMap.put("rain", R.drawable.ic_weather_rainy);
+        iconMap.put("rain", R.drawable.ic_weather_pouring);
         iconMap.put("snow", R.drawable.ic_weather_snowy);
-        iconMap.put("sleet", R.drawable.ic_weather_snowy);
+        iconMap.put("sleet", R.drawable.ic_weather_sleet);
         iconMap.put("fog", R.drawable.ic_weather_fog);
         iconMap.put("partly-cloudy-night", R.drawable.ic_weather_cloudy_night);
         iconMap.put("clear-night", R.drawable.ic_weather_night);
