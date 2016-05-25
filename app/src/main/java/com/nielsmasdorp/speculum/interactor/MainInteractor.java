@@ -1,6 +1,6 @@
 package com.nielsmasdorp.speculum.interactor;
 
-import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
 
@@ -17,11 +17,11 @@ public interface MainInteractor {
 
     void loadTopRedditPost(String subreddit, int updateDelay, Subscriber<RedditPost> subscriber);
 
-    void loadWeather(String location, boolean celsius, int updateDelay, String apiKey, Subscriber<CurrentWeather> subscriber);
+    void loadWeather(String location, boolean celsius, int updateDelay, String apiKey, Subscriber<Weather> subscriber);
 
     void loadYoMommaJoke(Subscriber<YoMommaJoke> subscriber);
 
-    void setupRecognitionService(Subscriber<File> subscriber);
+    void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber);
 
     void unSubscribe();
 }

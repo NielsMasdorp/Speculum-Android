@@ -11,6 +11,7 @@ import com.nielsmasdorp.speculum.services.ForecastIOService;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
 import com.nielsmasdorp.speculum.services.YoMommaService;
+import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 import com.nielsmasdorp.speculum.views.MainView;
 
 import dagger.Module;
@@ -31,9 +32,9 @@ public class MainModule {
 
     @Provides
     @PerActivity
-    public MainPresenter provideMainPresenter(MainInteractor interactor) {
+    public MainPresenter provideMainPresenter(MainInteractor interactor, Application application) {
 
-        return new MainPresenterImpl(mainView, interactor);
+        return new MainPresenterImpl(mainView, interactor, application);
     }
 
     @Provides
@@ -42,8 +43,8 @@ public class MainModule {
                                                 ForecastIOService forecastIOService,
                                                 GoogleCalendarService googleMapService,
                                                 RedditService redditService,
-                                                YoMommaService yoMommaService) {
+                                                YoMommaService yoMommaService, WeatherIconGenerator iconGenerator) {
 
-        return new MainInteractorImpl(application, forecastIOService, googleMapService, redditService, yoMommaService);
+        return new MainInteractorImpl(application, forecastIOService, googleMapService, redditService, yoMommaService, iconGenerator);
     }
 }

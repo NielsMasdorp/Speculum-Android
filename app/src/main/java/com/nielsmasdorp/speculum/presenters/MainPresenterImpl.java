@@ -1,10 +1,15 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.app.Application;
+import android.os.Build;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.activity.MainActivity;
 import com.nielsmasdorp.speculum.interactor.MainInteractor;
 import com.nielsmasdorp.speculum.models.Configuration;
-import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
 import com.nielsmasdorp.speculum.util.Constants;
@@ -12,183 +17,301 @@ import com.nielsmasdorp.speculum.views.MainView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class MainPresenterImpl implements MainPresenter {
+public class MainPresenterImpl implements MainPresenter, RecognitionListener, TextToSpeech.OnInitListener {
 
     private MainView view;
     private MainInteractor interactor;
+    private Application application;
     private Configuration configuration;
+    private SpeechRecognizer recognizer;
+    private TextToSpeech textToSpeech;
 
-    public MainPresenterImpl(MainView view, MainInteractor interactor) {
+    public MainPresenterImpl(MainView view, MainInteractor interactor, Application application) {
 
         this.view = view;
         this.interactor = interactor;
+        this.application = application;
     }
 
+    /*
+    Begin presenter methods
+     */
     @Override
     public void setConfiguration(Configuration configuration) {
 
         this.configuration = configuration;
     }
 
-    /**
-     * Start the UI, interactor will query all API's.
-     * @param hasAccessToCalendar do we have calendar permissions?
-     */
     @Override
     public void start(boolean hasAccessToCalendar) {
-
         if (null != configuration) {
-
-            interactor.loadWeather(configuration.getLocation(), configuration.isCelsius(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
-
+            startWeather();
             if (configuration.isVoiceCommands()) {
-                interactor.setupRecognitionService(new AssetSubscriber());
+                initSpeechRecognitionService();
+                setupTts();
             }
             if (!configuration.isSimpleLayout()) {
-                interactor.loadTopRedditPost(configuration.getSubreddit(), configuration.getPollingDelay(), new RedditSubscriber());
-
+                startReddit();
                 if (hasAccessToCalendar) {
-                    interactor.loadLatestCalendarEvent(configuration.getPollingDelay(), new CalendarEventSubscriber());
+                    startCalendar();
                 }
             }
         }
     }
 
-    /**
-     * Process a voice command picked up by the speech recognition service
-     * @param command the command
-     */
-    @Override
-    public void processVoiceCommand(String command) {
+    private void updateData() {
+        interactor.unSubscribe();
+        if (null != configuration) {
+            startWeather();
+            if (!configuration.isSimpleLayout()) {
+                startReddit();
+                startCalendar();
+            }
+        }
+    }
 
+    @Override
+    public void showError(String error) {
+        view.showError(error);
+    }
+
+    @Override
+    public void finish() {
+        interactor.unSubscribe();
+        if (recognizer != null) {
+            recognizer.cancel();
+            recognizer.shutdown();
+        }
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+    }
+    /*
+    End presenter methods
+     */
+
+    /*
+    Begin start background data methods
+     */
+    private void startWeather() {
+        interactor.loadWeather(configuration.getLocation(), configuration.isCelsius(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
+    }
+
+    private void startReddit() {
+        interactor.loadTopRedditPost(configuration.getSubreddit(), configuration.getPollingDelay(), new RedditSubscriber());
+    }
+
+    private void startCalendar() {
+        interactor.loadLatestCalendarEvent(configuration.getPollingDelay(), new CalendarEventSubscriber());
+    }
+    /*
+    End start background data methods
+     */
+
+    /*
+    Begin speech recognition related initialisation
+     */
+    private void initSpeechRecognitionService() {
+        interactor.getAssetsDirForSpeechRecognizer(new AssetSubscriber());
+    }
+
+    private void setupTts() {
+        initTts()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
+    }
+
+    public void setupRecognizer(File assetDir) {
+        initRecognizer(assetDir)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        setListeningMode(Constants.KWS_SEARCH);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                    }
+                });
+    }
+
+    private Observable<Void> initTts() {
+        return Observable.defer(() -> {
+            textToSpeech = new TextToSpeech(application, this);
+            return Observable.empty();
+        });
+    }
+
+    private Observable<Void> initRecognizer(File assetDir) {
+        return Observable.defer(() -> {
+            try {
+                recognizer = defaultSetup()
+                        .setAcousticModel(new File(assetDir, "en-us-ptm"))
+                        .setDictionary(new File(assetDir, "cmudict-en-us.dict"))
+                        .setKeywordThreshold(1e-45f)
+                        .getRecognizer();
+                recognizer.addListener(this);
+                recognizer.addKeyphraseSearch(Constants.KWS_SEARCH, Constants.KEYPHRASE);
+                recognizer.addKeywordSearch(Constants.COMMANDS_SEARCH, new File(assetDir, "commands.gram"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return Observable.empty();
+        });
+    }
+    /*
+     End speech recognition related initialisation
+     */
+
+
+    /*
+    Begin speech recognition logic methods
+     */
+    public void setListeningMode(String mode) {
+        recognizer.stop();
+        if (mode.equals(Constants.KWS_SEARCH)) {
+            recognizer.startListening(mode);
+        } else {
+            recognizer.startListening(mode, 5000);
+        }
+    }
+
+    private void processVoiceCommand(String command) {
         switch (command) {
             case Constants.KEYPHRASE:
                 // wake up and listen for commands
-                view.talk(Constants.WAKE_NOTIFICATION);
-                view.setListeningMode(Constants.COMMANDS_SEARCH);
+                speak(Constants.WAKE_NOTIFICATION);
+                setListeningMode(Constants.COMMANDS_SEARCH);
                 break;
             case Constants.SLEEP_PHRASE:
                 // go to sleep
-                view.talk(Constants.SLEEP_NOTIFICATION);
-                view.setListeningMode(Constants.KWS_SEARCH);
+                speak(Constants.SLEEP_NOTIFICATION);
+                setListeningMode(Constants.KWS_SEARCH);
                 break;
             case Constants.UPDATE_PHRASE:
                 // update data
-                view.talk(Constants.UPDATE_NOTIFICATION);
-                forceRefresh();
+                speak(Constants.UPDATE_NOTIFICATION);
+                updateData();
                 // go to sleep again and wait for activation phrase
-                view.setListeningMode(Constants.KWS_SEARCH);
+                setListeningMode(Constants.KWS_SEARCH);
                 break;
             case Constants.JOKE_PHRASE:
                 interactor.loadYoMommaJoke(new YoMammaJokeSubscriber());
                 // go to sleep again and wait for activation phrase
-                view.setListeningMode(Constants.KWS_SEARCH);
-                break;
-            default:
+                setListeningMode(Constants.KWS_SEARCH);
                 break;
         }
     }
-
-    /**
-     * Force refresh the interactor to get new data
+    /*
+    End speech recognition logic methods
      */
-    private void forceRefresh() {
 
-        interactor.unSubscribe();
-        start(true);
+    /*
+    Begin text to speech methods
+     */
+    @SuppressWarnings("deprecation")
+    public void speak(String sentence) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String utteranceId = this.hashCode() + "";
+            textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        } else {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+            textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, map);
+        }
     }
+    /*
+    End text to speech methods
+     */
 
-    /**
-     * Show error in view.
-     * @param error message
+
+    /*
+    Begin speech recognition logic methods
      */
     @Override
-    public void showError(String error) {
-
-        view.showError(error);
+    public void onBeginningOfSpeech() {
     }
 
-    /**
-     * Display the latest calendar event.
-     * @param event to display
-     */
     @Override
-    public void displayLatestCalendarEvent(String event) {
-
-        view.displayLatestCalendarEvent(event);
+    public void onEndOfSpeech() {
     }
 
-    /**
-     * Display current weather
-     * @param weather to display
-     */
     @Override
-    public void displayCurrentWeather(CurrentWeather weather) {
-
-        view.displayCurrentWeather(configuration, weather);
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null) return;
+        String command = hypothesis.getHypstr();
+        processVoiceCommand(command);
     }
 
-    /**
-     * Display top reddit post.
-     * @param redditPost to display
-     */
     @Override
-    public void displayTopRedditPost(RedditPost redditPost) {
-
-        view.displayTopRedditPost(redditPost);
+    public void onResult(Hypothesis hypothesis) {
     }
 
-    /**
-     * Set listening mode in the speech recognition service
-     * @param mode the mode to set
-     */
     @Override
-    public void setListeningMode(String mode) {
-
-        view.setListeningMode(mode);
+    public void onError(Exception e) {
+        showError(e.getLocalizedMessage());
+        Log.e(MainActivity.class.getSimpleName(), e.toString());
     }
 
-    /**
-     * Setup the speech recognition service.
-     * @param assetDir the asset directory
-     * @throws IOException
-     */
     @Override
-    public void setupRecognizer(File assetDir) throws IOException {
-
-        view.setupRecognizer(assetDir);
+    public void onTimeout() {
+        speak(Constants.SLEEP_NOTIFICATION);
+        setListeningMode(Constants.KWS_SEARCH);
     }
-
-    /**
-     * Give speech feedback to user.
-     * @param sentence to speak
+     /*
+    End speech recognition logic methods
      */
+
+    /*
+   Begin tts lifecycle methods
+    */
     @Override
-    public void talk(String sentence) {
-
-        view.talk(sentence);
+    public void onInit(int status) {
     }
+    /*
+   End tts lifecycle methods
+    */
 
-    /**
-     * Stop the interactor.
-     */
-    @Override
-    public void finish() {
-
-        interactor.unSubscribe();
-    }
-
-    /**
-     * Callback for RxObservables emitted by interactor,
-     * this callback is used for the weather observable.
-     */
-    private final class WeatherSubscriber extends Subscriber<CurrentWeather> {
+    private final class WeatherSubscriber extends Subscriber<Weather> {
 
         @Override
         public void onCompleted() {
@@ -196,21 +319,15 @@ public class MainPresenterImpl implements MainPresenter {
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
-        public void onNext(CurrentWeather currentWeather) {
-
-            view.displayCurrentWeather(configuration, currentWeather);
+        public void onNext(Weather weather) {
+            view.displayCurrentWeather(weather, configuration.isSimpleLayout());
         }
     }
 
-    /**
-     * Callback for RxObservables emitted by interactor,
-     * this callback is used for the reddit observable.
-     */
     private final class RedditSubscriber extends Subscriber<RedditPost> {
 
         @Override
@@ -219,21 +336,15 @@ public class MainPresenterImpl implements MainPresenter {
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
         public void onNext(RedditPost redditPost) {
-
             view.displayTopRedditPost(redditPost);
         }
     }
 
-    /**
-     * Callback for RxObservables emitted by interactor,
-     * this callback is used for the calendar observable.
-     */
     private final class CalendarEventSubscriber extends Subscriber<String> {
 
         @Override
@@ -242,21 +353,15 @@ public class MainPresenterImpl implements MainPresenter {
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
         public void onNext(String event) {
-
             view.displayLatestCalendarEvent(event);
         }
     }
 
-    /**
-     * Callback for RxObservables emitted by interactor,
-     * this callback is used for the joke observable.
-     */
     private final class YoMammaJokeSubscriber extends Subscriber<YoMommaJoke> {
 
         @Override
@@ -265,42 +370,29 @@ public class MainPresenterImpl implements MainPresenter {
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
         public void onNext(YoMommaJoke joke) {
-
-            view.talk(joke.getJoke());
+            speak(joke.getJoke());
         }
     }
 
-    /**
-     * Callback for RxObservables emitted by interactor,
-     * this callback is used for the asset observable.
-     */
     private final class AssetSubscriber extends Subscriber<File> {
 
         @Override
         public void onCompleted() {
-
-            view.setListeningMode(Constants.KWS_SEARCH);
         }
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
         public void onNext(File assetDir) {
-            try {
-                view.setupRecognizer(assetDir);
-            } catch (IOException e) {
-                throw new RuntimeException("IOException: " + e.getLocalizedMessage());
-            }
+            setupRecognizer(assetDir);
         }
     }
 }

@@ -16,4 +16,8 @@ public class ForecastResponse {
     public Forecast getForecast() {
         return daily;
     }
+
+    public Forecast getDaily() {
+        return daily;
+    }
 }
