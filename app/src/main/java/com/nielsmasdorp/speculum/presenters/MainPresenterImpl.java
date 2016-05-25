@@ -1,154 +1,141 @@
 package com.nielsmasdorp.speculum.presenters;
 
+import android.app.Application;
+import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-import com.nielsmasdorp.speculum.models.CurrentWeather;
+import com.nielsmasdorp.speculum.R;
+import com.nielsmasdorp.speculum.activity.MainActivity;
+import com.nielsmasdorp.speculum.interactor.MainInteractor;
+import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
-import com.nielsmasdorp.speculum.services.GoogleCalendarService;
-import com.nielsmasdorp.speculum.services.RedditService;
-import com.nielsmasdorp.speculum.services.ForecastIOService;
-import com.nielsmasdorp.speculum.services.YoMommaService;
 import com.nielsmasdorp.speculum.util.Constants;
-import com.nielsmasdorp.speculum.views.IMainView;
-import com.nielsmasdorp.speculum.views.MainActivity;
+import com.nielsmasdorp.speculum.views.MainView;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
 
-import edu.cmu.pocketsphinx.Assets;
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+
+import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class MainPresenterImpl implements IMainPresenter {
+public class MainPresenterImpl implements MainPresenter, RecognitionListener, TextToSpeech.OnInitListener {
 
-    private static final String TAG = MainPresenterImpl.class.getSimpleName();
+    private MainView view;
+    private MainInteractor interactor;
+    private Application application;
+    private Configuration configuration;
+    private SpeechRecognizer recognizer;
+    private TextToSpeech textToSpeech;
 
-    private ForecastIOService mForecastIOService;
-    private GoogleCalendarService mGoogleCalendarService;
-    private RedditService mRedditService;
-    private YoMommaService mYomommaService;
+    public MainPresenterImpl(MainView view, MainInteractor interactor, Application application) {
 
-    private WeakReference<IMainView> mMainView;
+        this.view = view;
+        this.interactor = interactor;
+        this.application = application;
+    }
 
-    private CompositeSubscription mCompositeSubscription;
+    /*
+    Begin presenter methods
+     */
+    @Override
+    public void setConfiguration(Configuration configuration) {
 
-    public MainPresenterImpl(IMainView view) {
-
-        mMainView = new WeakReference<>(view);
-        mForecastIOService = new ForecastIOService();
-        mRedditService = new RedditService();
-        mYomommaService = new YoMommaService();
-        mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
-        mCompositeSubscription = new CompositeSubscription();
+        this.configuration = configuration;
     }
 
     @Override
-    public void loadLatestCalendarEvent(int updateDelay) {
+    public void start(boolean hasAccessToCalendar) {
+        if (null != configuration) {
+            startWeather();
+            if (configuration.isVoiceCommands()) {
+                initSpeechRecognitionService();
+                setupTts();
+            }
+            if (!configuration.isSimpleLayout()) {
+                startReddit();
+                if (hasAccessToCalendar) {
+                    startCalendar();
+                }
+            }
+        }
+    }
 
-        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> mGoogleCalendarService.getLatestCalendarEvent())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (mMainView.get() != null)
-                            mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d(TAG, "CalendarSubscription", e);
-                    }
-
-                    @Override
-                    public void onNext(String event) {
-
-                        if (mMainView.get() != null)
-                            mMainView.get().displayLatestCalendarEvent(event);
-                    }
-                }));
+    private void updateData() {
+        interactor.unSubscribe();
+        if (null != configuration) {
+            startWeather();
+            if (!configuration.isSimpleLayout()) {
+                startReddit();
+                startCalendar();
+            }
+        }
     }
 
     @Override
-    public void loadWeather(final String location, boolean celsius, int updateDelay, String apiKey) {
-
-        final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
-
-        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> mForecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
-                .flatMap(mForecastIOService::getCurrentWeather)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<CurrentWeather>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (mMainView.get() != null)
-                            mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d(TAG, "WeatherSubscription", e);
-                    }
-
-                    @Override
-                    public void onNext(CurrentWeather weather) {
-
-                        if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
-                    }
-                }));
+    public void showError(String error) {
+        view.showError(error);
     }
 
     @Override
-    public void loadTopRedditPost(final String subreddit, int updateDelay) {
+    public void finish() {
+        interactor.unSubscribe();
+        if (recognizer != null) {
+            recognizer.cancel();
+            recognizer.shutdown();
+        }
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+    }
+    /*
+    End presenter methods
+     */
 
-        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
-                .flatMap(mRedditService::getRedditPost)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<RedditPost>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (mMainView.get() != null)
-                            mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d(TAG, "RedditSubscription", e);
-                    }
-
-                    @Override
-                    public void onNext(RedditPost redditPost) {
-
-                        if (mMainView.get() != null)
-                            mMainView.get().displayTopRedditPost(redditPost);
-                    }
-                }));
+    /*
+    Begin start background data methods
+     */
+    private void startWeather() {
+        interactor.loadWeather(configuration.getLocation(), configuration.isCelsius(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
     }
 
-    @Override
-    public void loadJoke() {
+    private void startReddit() {
+        interactor.loadTopRedditPost(configuration.getSubreddit(), configuration.getPollingDelay(), new RedditSubscriber());
+    }
 
-        mYomommaService.getApi().getJoke()
-                .observeOn(AndroidSchedulers.mainThread())
+    private void startCalendar() {
+        interactor.loadLatestCalendarEvent(configuration.getPollingDelay(), new CalendarEventSubscriber());
+    }
+    /*
+    End start background data methods
+     */
+
+    /*
+    Begin speech recognition related initialisation
+     */
+    private void initSpeechRecognitionService() {
+        interactor.getAssetsDirForSpeechRecognizer(new AssetSubscriber());
+    }
+
+    private void setupTts() {
+        initTts()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<YoMommaJoke>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
 
@@ -156,106 +143,256 @@ public class MainPresenterImpl implements IMainPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (mMainView.get() != null)
-                            mMainView.get().showError(e.getLocalizedMessage());
-                        Log.d(TAG, "YoMommaJokeService", e);
+                        view.showError(e.getLocalizedMessage());
                     }
 
                     @Override
-                    public void onNext(YoMommaJoke yoMommaJoke) {
-                        if (mMainView.get() != null)
-                            mMainView.get().talk(yoMommaJoke.getJoke());
+                    public void onNext(Void aVoid) {
+
                     }
                 });
     }
 
-    @Override
-    public void setupRecognitionService() {
+    public void setupRecognizer(File assetDir) {
+        initRecognizer(assetDir)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        setListeningMode(Constants.KWS_SEARCH);
+                    }
 
-        if (mMainView.get() != null) {
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(e.getLocalizedMessage());
+                    }
 
-            prepareAssetsForRecognizer()
-                    .subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Void>() {
-                        @Override
-                        public void onCompleted() {
-                            mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (mMainView.get() != null)
-                                mMainView.get().showError(e.getLocalizedMessage());
-                            Log.e(TAG, "RecognitionService: ", e);
-                        }
-
-                        @Override
-                        public void onNext(Void aVoid) {
-                        }
-                    });
-        }
+                    @Override
+                    public void onNext(Void aVoid) {
+                    }
+                });
     }
 
-    @Override
-    public void processCommand(String command) {
-
-        if (mMainView.get() != null) {
-
-            switch (command) {
-                case Constants.KEYPHRASE:
-                    // wake up and listen for commands
-                    mMainView.get().talk(Constants.WAKE_NOTIFICATION);
-                    mMainView.get().setListeningMode(Constants.COMMANDS_SEARCH);
-                    break;
-                case Constants.SLEEP_PHRASE:
-                    // go to sleep
-                    mMainView.get().talk(Constants.SLEEP_NOTIFICATION);
-                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                    break;
-                case Constants.UPDATE_PHRASE:
-                    // update data
-                    mMainView.get().talk(Constants.UPDATE_NOTIFICATION);
-                    unSubscribe();
-                    mMainView.get().startPolling();
-                    // go to sleep again and wait for activation phrase
-                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                    break;
-                case Constants.NEWS_PHRASE:
-                    //TODO implement news API
-                    // go to sleep again and wait for activation phrase
-                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                    break;
-                case Constants.JOKE_PHRASE:
-                    loadJoke();
-                    // go to sleep again and wait for activation phrase
-                    mMainView.get().setListeningMode(Constants.KWS_SEARCH);
-                    break;
-                default:
-                    break;
-
-            }
-
-        }
-    }
-
-    private Observable<Void> prepareAssetsForRecognizer() {
+    private Observable<Void> initTts() {
         return Observable.defer(() -> {
-            try {
-                Assets assets = new Assets((MainActivity) mMainView.get());
-                File assetDir = assets.syncAssets();
-                mMainView.get().setupRecognizer(assetDir);
-            } catch (IOException e) {
-                throw new RuntimeException("IOException: " + e.getLocalizedMessage());
-            }
+            textToSpeech = new TextToSpeech(application, this);
             return Observable.empty();
         });
     }
 
+    private Observable<Void> initRecognizer(File assetDir) {
+        return Observable.defer(() -> {
+            try {
+                recognizer = defaultSetup()
+                        .setAcousticModel(new File(assetDir, "en-us-ptm"))
+                        .setDictionary(new File(assetDir, "cmudict-en-us.dict"))
+                        .setKeywordThreshold(1e-45f)
+                        .getRecognizer();
+                recognizer.addListener(this);
+                recognizer.addKeyphraseSearch(Constants.KWS_SEARCH, Constants.KEYPHRASE);
+                recognizer.addKeywordSearch(Constants.COMMANDS_SEARCH, new File(assetDir, "commands.gram"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return Observable.empty();
+        });
+    }
+    /*
+     End speech recognition related initialisation
+     */
+
+
+    /*
+    Begin speech recognition logic methods
+     */
+    public void setListeningMode(String mode) {
+        recognizer.stop();
+        if (mode.equals(Constants.KWS_SEARCH)) {
+            recognizer.startListening(mode);
+        } else {
+            recognizer.startListening(mode, 5000);
+        }
+    }
+
+    private void processVoiceCommand(String command) {
+        switch (command) {
+            case Constants.KEYPHRASE:
+                // wake up and listen for commands
+                speak(Constants.WAKE_NOTIFICATION);
+                setListeningMode(Constants.COMMANDS_SEARCH);
+                break;
+            case Constants.SLEEP_PHRASE:
+                // go to sleep
+                speak(Constants.SLEEP_NOTIFICATION);
+                setListeningMode(Constants.KWS_SEARCH);
+                break;
+            case Constants.UPDATE_PHRASE:
+                // update data
+                speak(Constants.UPDATE_NOTIFICATION);
+                updateData();
+                // go to sleep again and wait for activation phrase
+                setListeningMode(Constants.KWS_SEARCH);
+                break;
+            case Constants.JOKE_PHRASE:
+                interactor.loadYoMommaJoke(new YoMammaJokeSubscriber());
+                // go to sleep again and wait for activation phrase
+                setListeningMode(Constants.KWS_SEARCH);
+                break;
+        }
+    }
+    /*
+    End speech recognition logic methods
+     */
+
+    /*
+    Begin text to speech methods
+     */
+    @SuppressWarnings("deprecation")
+    public void speak(String sentence) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String utteranceId = this.hashCode() + "";
+            textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        } else {
+            HashMap<String, String> map = new HashMap<>();
+            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+            textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, map);
+        }
+    }
+    /*
+    End text to speech methods
+     */
+
+
+    /*
+    Begin speech recognition logic methods
+     */
     @Override
-    public void unSubscribe() {
-        mCompositeSubscription.unsubscribe();
-        mCompositeSubscription = new CompositeSubscription();
+    public void onBeginningOfSpeech() {
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+    }
+
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null) return;
+        String command = hypothesis.getHypstr();
+        processVoiceCommand(command);
+    }
+
+    @Override
+    public void onResult(Hypothesis hypothesis) {
+    }
+
+    @Override
+    public void onError(Exception e) {
+        showError(e.getLocalizedMessage());
+        Log.e(MainActivity.class.getSimpleName(), e.toString());
+    }
+
+    @Override
+    public void onTimeout() {
+        speak(Constants.SLEEP_NOTIFICATION);
+        setListeningMode(Constants.KWS_SEARCH);
+    }
+     /*
+    End speech recognition logic methods
+     */
+
+    /*
+   Begin tts lifecycle methods
+    */
+    @Override
+    public void onInit(int status) {
+    }
+    /*
+   End tts lifecycle methods
+    */
+
+    private final class WeatherSubscriber extends Subscriber<Weather> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(Weather weather) {
+            view.displayCurrentWeather(weather, configuration.isSimpleLayout());
+        }
+    }
+
+    private final class RedditSubscriber extends Subscriber<RedditPost> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(RedditPost redditPost) {
+            view.displayTopRedditPost(redditPost);
+        }
+    }
+
+    private final class CalendarEventSubscriber extends Subscriber<String> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(String event) {
+            view.displayLatestCalendarEvent(event);
+        }
+    }
+
+    private final class YoMammaJokeSubscriber extends Subscriber<YoMommaJoke> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(YoMommaJoke joke) {
+            speak(joke.getJoke());
+        }
+    }
+
+    private final class AssetSubscriber extends Subscriber<File> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(File assetDir) {
+            setupRecognizer(assetDir);
+        }
     }
 }

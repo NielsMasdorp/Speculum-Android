@@ -57,10 +57,15 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:8.0.1'
 
+    compile 'com.google.dagger:dagger:2.1'
     compile('com.github.afollestad:assent:0.2.2') {
         transitive = true
     }
+
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.1'
+
+    provided 'javax.annotation:jsr250-api:1.0'
 }
 
 ant.importBuild 'assets.xml'

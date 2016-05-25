@@ -5,39 +5,56 @@ package com.nielsmasdorp.speculum.util;
  */
 public class Constants {
 
-    //Query constants
+    /**
+     * Base urls
+     */
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
     public static final String FORECAST_BASE_URL = "https://api.forecast.io/forecast/";
     public static final String YOMOMMA_BASE_URL = "http://api.yomomma.info/";
     public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
 
+    /**
+     * Weather query
+     */
     public static final String WEATHER_QUERY_SECOND_CELSIUS = "ca";
     public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "us";
 
+    /**
+     * Calendar query
+     */
     public static final String CALENDAR_QUERY_FIRST = "( dtstart >";
     public static final String CALENDAR_QUERY_SECOND = ") and (dtend  <";
     public static final String CALENDAR_QUERY_THIRD = ")";
     public static final String CALENDAR_QUERY_FOURTH = "dtstart ASC";
 
-    //Query extras
-    public static final String YAHOO_QUERY_FORMAT = "json";
+    /**
+     * Reddit query
+     */
     public static final int REDDIT_LIMIT = 5;
 
-    //Defaults
+    /**
+     * Default settings
+     */
     public static final String LOCATION_DEFAULT = "New York";
     public static final String SUBREDDIT_DEFAULT = "news";
     public static final String POLLING_DELAY_DEFAULT = "30";
 
-    //Intent identifiers
+    /**
+     * Intent identifiers
+     */
     public static final String CONFIGURATION_IDENTIFIER = "conf";
     public static final String SAVED_CONFIGURATION_IDENTIFIER = "savedConf";
 
-    //Formats
+    /**
+     * Formats
+     */
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
     public static final String SIMPLEDATEFORMAT_HHMMSSDDMMYY = "hh:mm:ss dd/MM/yy";
     public static final String END_OF_DAY_TIME = "23:59:59 ";
 
-    //Units
+    /**
+     * Units
+     */
     public static final String PRESSURE_IMPERIAL = "in";
     public static final String PRESSURE_METRIC = "mb";
 
@@ -50,21 +67,26 @@ public class Constants {
     public static final String TEMPERATURE_IMPERIAL = "F";
     public static final String TEMPERATURE_METRIC = "C";
 
-    //Speech recognition commands
+    /**
+     * Speech commands
+     */
     public static final String KWS_SEARCH = "wakeup";
     public static final String COMMANDS_SEARCH = "commands";
     public static final String KEYPHRASE = "hello magic mirror";
     public static final String UPDATE_PHRASE = "get me new data";
-    public static final String NEWS_PHRASE = "what is new";
     public static final String JOKE_PHRASE = "tell me a joke";
     public static final String SLEEP_PHRASE = "go back to sleep";
 
-    //TTS phrases
+    /**
+     * TTS phrases
+     */
     public static final String UPDATE_NOTIFICATION = "Okay, data is being updated.";
     public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye.";
     public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 
-    //Shared preference identifiers
+    /**
+     * Shared preferences identifiers
+     */
     public static final String SP_LOCATION_IDENTIFIER = "location";
     public static final String SP_SUBREDDIT_IDENTIFIER = "subreddit";
     public static final String SP_POLLING_IDENTIFIER = "pollingDelay";
