@@ -2,8 +2,8 @@ package com.nielsmasdorp.speculum.interactor;
 
 import android.app.Application;
 
-import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
 import com.nielsmasdorp.speculum.services.ForecastIOService;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;

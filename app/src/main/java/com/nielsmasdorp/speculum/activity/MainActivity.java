@@ -19,19 +19,11 @@ import com.afollestad.assent.Assent;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.SpeculumApplication;
 import com.nielsmasdorp.speculum.models.Configuration;
-import com.nielsmasdorp.speculum.models.ForecastDayWeather;
-import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
-import com.nielsmasdorp.speculum.models.forecast.DayForecast;
+import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
 import com.nielsmasdorp.speculum.util.Constants;
-import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 import com.nielsmasdorp.speculum.views.MainView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -123,9 +115,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Inject
     MainPresenter presenter;
-
-    @Inject
-    WeatherIconGenerator weatherIconGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,14 +208,16 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     public void displayTopRedditPost(RedditPost redditPost) {
         tvRedditPostTitle.setText(redditPost.getTitle());
         tvRedditPostVotes.setText(redditPost.getUps() + "");
-        if (this.rlRedditLayout.getVisibility() != View.VISIBLE) this.rlRedditLayout.setVisibility(View.VISIBLE);
+        if (this.rlRedditLayout.getVisibility() != View.VISIBLE)
+            this.rlRedditLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     @SuppressWarnings("all")
     public void displayLatestCalendarEvent(String event) {
         this.tvCalendarEvent.setText(event);
-        if (this.llCalendarLayout.getVisibility() != View.VISIBLE) this.llCalendarLayout.setVisibility(View.VISIBLE);
+        if (this.llCalendarLayout.getVisibility() != View.VISIBLE)
+            this.llCalendarLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
