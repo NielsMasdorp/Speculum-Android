@@ -143,7 +143,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
                     @Override
                     public void onError(Throwable e) {
-
+                        view.showError(e.getLocalizedMessage());
                     }
 
                     @Override
