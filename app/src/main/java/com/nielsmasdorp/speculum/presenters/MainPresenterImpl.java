@@ -92,16 +92,41 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     @Override
     public void finish() {
-        interactor.unSubscribe();
-        if (recognizer != null) {
-            recognizer.cancel();
-            recognizer.shutdown();
-        }
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
+        tearDownSpeechService()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        interactor.unSubscribe();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
     }
+
+    private Observable<Void> tearDownSpeechService() {
+        return Observable.defer(() -> {
+            if (recognizer != null) {
+                recognizer.cancel();
+                recognizer.shutdown();
+            }
+            if (textToSpeech != null) {
+                textToSpeech.stop();
+                textToSpeech.shutdown();
+            }
+            return Observable.empty();
+        });
+    }
+
     /*
     End presenter methods
      */

@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.activity;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.SpeculumApplication;
 import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.presenters.SetupPresenter;
+import com.nielsmasdorp.speculum.util.ASFObjectStore;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.SetupView;
 
@@ -60,7 +62,10 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     @Inject
     SetupPresenter presenter;
 
-    View decorView;
+    @Inject
+    ASFObjectStore<Configuration> objectStore;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +90,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void hideSystemUI() {
-        decorView = getWindow().getDecorView();
-
-        // Set the IMMERSIVE flag.
-        // Set the content to appear under the system bars so that the content
-        // doesn't resize when the system bars hide and show.
+        View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -102,18 +103,28 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     }
 
     @OnClick(R.id.btn_launch)
-    @SuppressWarnings("unused")
     public void launch() {
-
         presenter.validate(etLocation.getText().toString(), etSubreddit.getText().toString(),
                 etPollingDelay.getText().toString(), rbCelsius.isChecked(), cbVoiceCommands.isChecked(), cbRememberConfig.isChecked(), rbSimpleLayout.isChecked());
+    }
+
+    @Override
+    public void showLoading() {
+        progressDialog = ProgressDialog.show(SetupActivity.this, "",
+                getString(R.string.validating), true);
+    }
+
+    @Override
+    public void hideLoading() {
+        if (null != progressDialog && progressDialog.isShowing()) progressDialog.hide();
     }
 
     @Override
     public void navigateToMainActivity(Configuration configuration) {
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, configuration);
+        String objectKey = objectStore.pushStrong(configuration);
+        intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, objectKey);
         intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, configuration.isRememberConfig());
         startActivity(intent);
     }
@@ -121,18 +132,13 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     @Override
     protected void onResume() {
         super.onResume();
-
         hideSystemUI();
-
-        // Updates the activity every time the Activity becomes visible again
         Assent.setActivity(this, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
     }
@@ -140,14 +146,11 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Lets Assent handle permission results and contact your callbacks
         Assent.handleResult(permissions, grantResults);
     }
 
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
-
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
             hideSystemUI();
         }
@@ -155,7 +158,6 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
 
     @Override
     public void showError(String message) {
-
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 

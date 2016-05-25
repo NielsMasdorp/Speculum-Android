@@ -22,6 +22,7 @@ import com.nielsmasdorp.speculum.models.Configuration;
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.presenters.MainPresenter;
+import com.nielsmasdorp.speculum.util.ASFObjectStore;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.MainView;
 
@@ -116,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Inject
     MainPresenter presenter;
 
+    @Inject
+    ASFObjectStore<Configuration> objectStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         ((SpeculumApplication) getApplication()).createMainComponent(this).inject(this);
         Assent.setActivity(this, this);
 
-        //get configuration from Intent
-        Configuration configuration = (Configuration) getIntent().getSerializableExtra(Constants.CONFIGURATION_IDENTIFIER);
+        String objectKey = getIntent().getStringExtra(Constants.CONFIGURATION_IDENTIFIER);
+        Configuration configuration = (Configuration) objectStore.pop(objectKey);
         boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         ViewStub viewStub = configuration.isSimpleLayout() ?

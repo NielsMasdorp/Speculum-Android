@@ -79,18 +79,22 @@ public class SetupPresenterImpl implements SetupPresenter {
     private final class ConfigurationSubscriber extends Subscriber<Configuration> {
 
         @Override
+        public void onStart() {
+            view.showLoading();
+        }
+
+        @Override
         public void onCompleted() {
+            view.hideLoading();
         }
 
         @Override
         public void onError(Throwable e) {
-
             view.showError(e.getMessage());
         }
 
         @Override
         public void onNext(Configuration configuration) {
-
             view.navigateToMainActivity(configuration);
         }
     }

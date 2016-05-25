@@ -1,5 +1,7 @@
 package com.nielsmasdorp.speculum.di.module;
 
+import com.nielsmasdorp.speculum.models.Configuration;
+import com.nielsmasdorp.speculum.util.ASFObjectStore;
 import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 
 import javax.inject.Singleton;
@@ -18,5 +20,12 @@ public class UtilModule {
     public WeatherIconGenerator provideWeatherIconGenerator() {
 
         return new WeatherIconGenerator();
+    }
+
+    @Provides
+    @Singleton
+    public ASFObjectStore<Configuration> provideWeatherASFObjectStore() {
+
+        return new ASFObjectStore<>();
     }
 }

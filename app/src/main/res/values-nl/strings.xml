@@ -27,4 +27,6 @@
     <string name="simple_greeting">Hallo daar</string>
 
     <string name="last_updated">Laatst geupdate:</string>
+    <string name="validating">Controleren..</string>
+
 </resources>

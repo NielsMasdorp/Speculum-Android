@@ -1,11 +1,9 @@
 package com.nielsmasdorp.speculum.models;
 
-import java.io.Serializable;
-
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class Configuration implements Serializable {
+public class Configuration {
 
     private boolean celsius;
     private String location;

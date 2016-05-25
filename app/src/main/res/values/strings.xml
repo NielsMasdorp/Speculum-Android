@@ -36,5 +36,6 @@
     <string name="simple_greeting">Hi there\nIt\'s</string>
     <string name="date_on">on</string>
     <string name="last_updated">Last updated:</string>
+    <string name="validating">Validating..</string>
 
 </resources>

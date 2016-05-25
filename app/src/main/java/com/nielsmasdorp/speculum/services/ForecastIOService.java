@@ -29,6 +29,7 @@ import rx.Observable;
  */
 public class ForecastIOService {
 
+    private final int AMOUNT_OF_DAYS_IN_FORECAST = 4;
     private ForecastIOApi mForecastIOApi;
 
     public ForecastIOService() {
@@ -57,7 +58,7 @@ public class ForecastIOService {
 
         List<ForecastDayWeather> forecast = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < AMOUNT_OF_DAYS_IN_FORECAST; i++) {
             DayForecast f = response.getForecast().getData().get(i);
             String date = dateFormatter.format(new Date((long) f.getTime() * 1000));
             int intTemp = (f.getTemperatureMin().intValue() + f.getTemperatureMax().intValue()) / 2;
