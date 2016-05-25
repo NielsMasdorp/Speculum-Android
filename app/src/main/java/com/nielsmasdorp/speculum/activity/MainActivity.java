@@ -1,6 +1,7 @@
 package com.nielsmasdorp.speculum.activity;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Inject
     ASFObjectStore<Configuration> objectStore;
 
+    ProgressDialog listeningDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +172,24 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         mDecorView.setOnSystemUiVisibilityChangeListener(this);
+    }
+
+    @Override
+    public void showListening() {
+        listeningDialog = ProgressDialog.show(MainActivity.this, getString(R.string.give_command), getString(R.string.listening), true);
+    }
+
+    @Override
+    public void showCommandExecuting() {
+        if (null != listeningDialog && listeningDialog.isShowing()) {
+            listeningDialog.setTitle(getString(R.string.command_understood));
+            listeningDialog.setMessage(getString(R.string.executing));
+        }
+    }
+
+    @Override
+    public void hideListening() {
+        if (null != listeningDialog && listeningDialog.isShowing()) listeningDialog.hide();
     }
 
     @Override

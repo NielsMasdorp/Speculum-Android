@@ -28,5 +28,9 @@
 
     <string name="last_updated">Laatst geupdate:</string>
     <string name="validating">Controleren..</string>
+    <string name="listening">Aan het luisteren..</string>
+    <string name="give_command">Spreek een commando</string>
+    <string name="command_understood">Commando begrepen</string>
+    <string name="executing">Uitvoeren..</string>
 
 </resources>

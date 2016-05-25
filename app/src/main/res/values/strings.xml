@@ -37,5 +37,9 @@
     <string name="date_on">on</string>
     <string name="last_updated">Last updated:</string>
     <string name="validating">Validating..</string>
+    <string name="listening">Listening..</string>
+    <string name="give_command">Give a command</string>
+    <string name="command_understood">Command understood</string>
+    <string name="executing">Executing..</string>
 
 </resources>

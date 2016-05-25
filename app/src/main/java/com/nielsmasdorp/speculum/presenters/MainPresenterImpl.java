@@ -2,6 +2,7 @@ package com.nielsmasdorp.speculum.presenters;
 
 import android.app.Application;
 import android.os.Build;
+import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import com.nielsmasdorp.speculum.views.MainView;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
@@ -246,11 +248,13 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 // wake up and listen for commands
                 speak(Constants.WAKE_NOTIFICATION);
                 setListeningMode(Constants.COMMANDS_SEARCH);
+                view.showListening();
                 break;
             case Constants.SLEEP_PHRASE:
                 // go to sleep
                 speak(Constants.SLEEP_NOTIFICATION);
                 setListeningMode(Constants.KWS_SEARCH);
+                view.hideListening();
                 break;
             case Constants.UPDATE_PHRASE:
                 // update data
@@ -258,14 +262,47 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 updateData();
                 // go to sleep again and wait for activation phrase
                 setListeningMode(Constants.KWS_SEARCH);
+                commandExecuting();
                 break;
             case Constants.JOKE_PHRASE:
                 interactor.loadYoMommaJoke(new YoMammaJokeSubscriber());
                 // go to sleep again and wait for activation phrase
                 setListeningMode(Constants.KWS_SEARCH);
+                commandExecuting();
                 break;
         }
     }
+
+    private void commandExecuting() {
+
+        notifyCommandExecuting()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        view.hideListening();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                    }
+                });
+    }
+
+    private Observable<Void> notifyCommandExecuting() {
+        return Observable.defer(() -> {
+            view.showCommandExecuting();
+            SystemClock.sleep(TimeUnit.SECONDS.toMillis(1));
+            return Observable.empty();
+        });
+    }
+
     /*
     End speech recognition logic methods
      */
@@ -321,6 +358,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     public void onTimeout() {
         speak(Constants.SLEEP_NOTIFICATION);
         setListeningMode(Constants.KWS_SEARCH);
+        view.hideListening();
     }
      /*
     End speech recognition logic methods
