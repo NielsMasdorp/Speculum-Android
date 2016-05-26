@@ -14,6 +14,10 @@ public interface MainView extends BaseView {
 
     void hideListening();
 
+    void showMap();
+
+    void hideMap();
+
     void displayCurrentWeather(Weather weather, boolean isSimpleLayout);
 
     void displayLatestCalendarEvent(String event);

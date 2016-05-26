@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.SpeculumApplication;
 import com.nielsmasdorp.speculum.models.Configuration;
@@ -26,6 +28,7 @@ import com.nielsmasdorp.speculum.presenters.MainPresenter;
 import com.nielsmasdorp.speculum.util.ASFObjectStore;
 import com.nielsmasdorp.speculum.util.Constants;
 import com.nielsmasdorp.speculum.views.MainView;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @BindString(R.string.command_understood) String commandUnderstood;
     @BindString(R.string.executing) String executing;
     @BindString(R.string.last_updated) String lastUpdated;
+    @BindString(R.string.static_maps_api_key) String mapsApiKey;
+
     // @formatter:on
 
     @Inject
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     ASFObjectStore<Configuration> objectStore;
 
     ProgressDialog listeningDialog;
+    MaterialDialog mapDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +155,32 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void hideListening() {
-        if (null != listeningDialog && listeningDialog.isShowing()) listeningDialog.hide();
+        if (null != listeningDialog && listeningDialog.isShowing()) {
+            listeningDialog.dismiss();
+            listeningDialog = null;
+        }
+        hideSystemUI();
+    }
+
+    @Override
+    public void showMap() {
+
+        mapDialog = new MaterialDialog.Builder(this)
+                .customView(R.layout.map_image, false)
+                .contentGravity(GravityEnum.CENTER)
+                .build();
+
+        View imageView = mapDialog.getCustomView();
+        Picasso.with(MainActivity.this).load(Constants.GOOGLE_STATIC_MAPS_HOME_URL + mapsApiKey).into((ImageView) imageView);
+        mapDialog.show();
+    }
+
+    @Override
+    public void hideMap() {
+        if (null != mapDialog && mapDialog.isShowing()) {
+            mapDialog.dismiss();
+            mapDialog = null;
+        }
         hideSystemUI();
     }
 

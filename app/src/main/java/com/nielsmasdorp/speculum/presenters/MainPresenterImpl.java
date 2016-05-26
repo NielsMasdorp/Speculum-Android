@@ -245,37 +245,38 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     private void processVoiceCommand(String command) {
         switch (command) {
             case Constants.KEYPHRASE:
-                // wake up and listen for commands
                 speak(Constants.WAKE_NOTIFICATION);
                 setListeningMode(Constants.COMMANDS_SEARCH);
                 view.showListening();
                 break;
             case Constants.SLEEP_PHRASE:
-                // go to sleep
                 speak(Constants.SLEEP_NOTIFICATION);
                 setListeningMode(Constants.KWS_SEARCH);
                 view.hideListening();
                 break;
             case Constants.UPDATE_PHRASE:
-                // update data
                 speak(Constants.UPDATE_NOTIFICATION);
                 updateData();
-                // go to sleep again and wait for activation phrase
                 setListeningMode(Constants.KWS_SEARCH);
                 commandExecuting();
                 break;
             case Constants.JOKE_PHRASE:
                 interactor.loadYoMommaJoke(new YoMammaJokeSubscriber());
-                // go to sleep again and wait for activation phrase
                 setListeningMode(Constants.KWS_SEARCH);
                 commandExecuting();
+                break;
+            case Constants.MAP_PHRASE:
+                speak(Constants.MAP_NOTIFICATION);
+                setListeningMode(Constants.KWS_SEARCH);
+                view.hideListening();
+                showMap();
                 break;
         }
     }
 
     private void commandExecuting() {
 
-        notifyCommandExecuting()
+        timeOut(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {
@@ -301,9 +302,37 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 });
     }
 
-    private Observable<Void> notifyCommandExecuting() {
+    private void showMap() {
+
+        timeOut(10)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+
+                    @Override
+                    public void onStart() {
+                        view.showMap();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        view.hideMap();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                    }
+                });
+    }
+
+    private Observable<Void> timeOut(Integer seconds) {
         return Observable.defer(() -> {
-            SystemClock.sleep(TimeUnit.SECONDS.toMillis(1));
+            SystemClock.sleep(TimeUnit.SECONDS.toMillis(seconds));
             return Observable.empty();
         });
     }

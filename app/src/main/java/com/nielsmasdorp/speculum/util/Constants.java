@@ -12,6 +12,13 @@ public class Constants {
     public static final String FORECAST_BASE_URL = "https://api.forecast.io/forecast/";
     public static final String YOMOMMA_BASE_URL = "http://api.yomomma.info/";
     public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
+    public static final String GOOGLE_STATIC_MAPS_HOME_URL = "https://maps.googleapis.com/maps/api/staticmap?" +
+            "center=52.2922966,4.9891498&" +
+            "zoom=15&" +
+            "size=1000x1000&" +
+            "markers=color:blue%7Clabel:%7C52.2922966,4.9891498&" +
+            "key=";
+
 
     /**
      * Weather query
@@ -76,11 +83,13 @@ public class Constants {
     public static final String UPDATE_PHRASE = "get me new data";
     public static final String JOKE_PHRASE = "tell me a joke";
     public static final String SLEEP_PHRASE = "go back to sleep";
+    public static final String MAP_PHRASE = "show my home";
 
     /**
      * TTS phrases
      */
     public static final String UPDATE_NOTIFICATION = "Okay, data is being updated.";
+    public static final String MAP_NOTIFICATION = "Okay, showing a map of your neighbourhood";
     public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye.";
     public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 

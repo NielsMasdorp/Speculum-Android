@@ -17,7 +17,7 @@ import rx.Observable;
  */
 public class GoogleMapsService {
 
-    private GoogleMapsApi mGoogleMapsApi;
+    private GoogleMapsApi googleMapsApi;
 
     public GoogleMapsService() {
 
@@ -27,7 +27,7 @@ public class GoogleMapsService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mGoogleMapsApi = retrofit.create(GoogleMapsApi.class);
+        googleMapsApi = retrofit.create(GoogleMapsApi.class);
     }
 
     public Observable<String> getLatLong(GoogleMapsResponse response) {
@@ -45,7 +45,7 @@ public class GoogleMapsService {
 
     public GoogleMapsApi getApi() {
 
-        return mGoogleMapsApi;
+        return googleMapsApi;
     }
 
     public interface GoogleMapsApi {
