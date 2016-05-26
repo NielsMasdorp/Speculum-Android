@@ -30,7 +30,7 @@ Features
   * Four day forecast
 * Your upcoming Google Calendar event
 * One of the top posts of your favorite subreddit
-* Update data by using voice command
+* Update data by using voice command (pull up map of your home, ask for a joke and update data or implement your own)
 
 How do I get started
 ====
@@ -39,9 +39,11 @@ How do I get started
 2. Select JDK8 in Project Settings
 3. Make nescessary adjustments for your device
 4. Go to [Forecast.io](https://developer.forecast.io/) and register
-5. Create a `keys.xml` file in `/res/values/` (sample found below these steps)
-6. Run on device or generate .APK
-7. Turn on "Stay Awake" in Developer Options on your device
+5. Go to [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/) and register for a browser key (this is optional, only do this if you want to have the mirror show a maps view of your home on command)
+6. Create a `keys.xml` file in `/res/values/` (sample found below these steps)
+7. Add your latitude and longitude to the URL in `Constants.java` (sample also found below these steps)
+7. Run on device or generate .APK
+8. Turn on "Stay Awake" in Developer Options on your device
 8. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
 
 Example `keys.xml`
@@ -50,14 +52,29 @@ Example `keys.xml`
 ```java
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="forecast_api_key">your api key</string>
+    <string name="forecast_api_key">your forecast io api key</string>
+    <string name="static_maps_api_key">your static maps api key</string>
 </resources>
+```
+
+Example Static Maps API URL in `Constants.java`
+====
+
+You can find your latitude and longitude in Google Maps.
+
+```java
+public static final String GOOGLE_STATIC_MAPS_HOME_URL = "https://maps.googleapis.com/maps/api/staticmap?" +
+            "center=<YOUR LATITUDE>,<YOUR LONGITUDE>&" +
+            "zoom=15&" +
+            "size=1000x1000&" +
+            "markers=color:blue%7Clabel:%7C<YOUR LATITUDE>,<YOUR LONGITUDE>&" +
+            "key=";
 ```
 
 Update data with voice command
 ====
 
-When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 5 second timeframe. You can watch a small video demonstration below.
+When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 5 second timeframe. You can watch a small video demonstration below. There are also some other built in commands like **tell me a joke** which tells you a joke and **show my home** which pulls up a maps view of your home (if you did all the steps in the tutorial above). A small demonstration of the concept can be found below.
 
 [![Alt text for your video](http://img.youtube.com/vi/bRPGOPEYoYI/0.jpg)](https://www.youtube.com/watch?v=bRPGOPEYoYI)
 
