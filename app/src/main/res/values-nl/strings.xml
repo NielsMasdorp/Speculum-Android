@@ -3,7 +3,7 @@
     <string name="at">in</string>
     <string name="btn_done">Klaar</string>
     <string name="general_title">Algemeen</string>
-    <string name="location_hint">Kies een stad (laat leeg voor \'New York\')</string>
+    <string name="location_hint">Kies een adres/stad (laat leeg voor \'New York\')</string>
     <string name="no_events_error">Kan geen gebeurtenissen uit de kalender halen</string>
     <string name="no_events_today">Geen gebeurtenissen vandaag</string>
     <string name="no_permission_for_calendar">Je zult je laatste event niet kunnen zien, je kunt deze instelling aanpassen in de instellingen van je apparaat</string>

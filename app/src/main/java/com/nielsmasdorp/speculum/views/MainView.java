@@ -14,7 +14,7 @@ public interface MainView extends BaseView {
 
     void hideListening();
 
-    void showMap();
+    void showMap(String location);
 
     void hideMap();
 

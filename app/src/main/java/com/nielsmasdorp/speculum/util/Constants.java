@@ -12,13 +12,9 @@ public class Constants {
     public static final String FORECAST_BASE_URL = "https://api.forecast.io/forecast/";
     public static final String YOMOMMA_BASE_URL = "http://api.yomomma.info/";
     public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
-    public static final String GOOGLE_STATIC_MAPS_HOME_URL = "https://maps.googleapis.com/maps/api/staticmap?" +
-            "center=52.2922966,4.9891498&" +
-            "zoom=15&" +
-            "size=1000x1000&" +
-            "markers=color:blue%7Clabel:%7C52.2922966,4.9891498&" +
-            "key=";
-
+    public static final String STATIC_MAPS_URL_FIRST = "https://maps.googleapis.com/maps/api/staticmap?center=";
+    public static final String STATIC_MAPS_URL_SECOND = "&zoom=15&size=1000x1000&markers=color:blue%7Clabel:%7C";
+    public static final String STATIC_MAPS_URL_THIRD = "&key=";
 
     /**
      * Weather query

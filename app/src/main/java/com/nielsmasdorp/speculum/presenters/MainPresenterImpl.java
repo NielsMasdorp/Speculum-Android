@@ -311,7 +311,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
                     @Override
                     public void onStart() {
-                        view.showMap();
+                        view.showMap(configuration.getLocation());
                     }
 
                     @Override

@@ -41,10 +41,9 @@ How do I get started
 4. Go to [Forecast.io](https://developer.forecast.io/) and register
 5. Go to [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/) and register for a browser key (this is optional, only do this if you want to have the mirror show a maps view of your home on command)
 6. Create a `keys.xml` file in `/res/values/` (sample found below these steps)
-7. Add your latitude and longitude to the URL in `Constants.java` (sample also found below these steps)
 7. Run on device or generate .APK
 8. Turn on "Stay Awake" in Developer Options on your device
-8. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
+9. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
 
 Example `keys.xml`
 ====
@@ -55,20 +54,6 @@ Example `keys.xml`
     <string name="forecast_api_key">your forecast io api key</string>
     <string name="static_maps_api_key">your static maps api key</string>
 </resources>
-```
-
-Example Static Maps API URL in `Constants.java`
-====
-
-You can find your latitude and longitude in Google Maps.
-
-```java
-public static final String GOOGLE_STATIC_MAPS_HOME_URL = "https://maps.googleapis.com/maps/api/staticmap?" +
-            "center=<YOUR LATITUDE>,<YOUR LONGITUDE>&" +
-            "zoom=15&" +
-            "size=1000x1000&" +
-            "markers=color:blue%7Clabel:%7C<YOUR LATITUDE>,<YOUR LONGITUDE>&" +
-            "key=";
 ```
 
 Update data with voice command

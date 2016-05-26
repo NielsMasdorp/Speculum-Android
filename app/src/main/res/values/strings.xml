@@ -20,7 +20,7 @@
     <string name="reddit_title" translatable="false">Reddit</string>
     <string name="subreddit_hint">Choose a subreddit (leave black for \'news\')</string>
     <string name="weather_title">Weather</string>
-    <string name="location_hint">Choose a city (leave blank for \'New York\')</string>
+    <string name="location_hint">Choose a address/city (leave blank for \'New York\')</string>
     <string name="temperature_title">Temperature unit</string>
     <string name="temperature_celsius">Celsius</string>
     <string name="temperature_fahrenheit">Fahrenheit</string>
@@ -34,7 +34,7 @@
     <string name="old_config_found_snackbar">Saved configuration found</string>
     <string name="old_config_found_snackbar_back">Back to setup</string>
     <string name="simple_greeting">Hi there\nIt\'s</string>
-    <string name="date_on">on</string>
+    <string name="date_on" translatable="false">on</string>
     <string name="last_updated">Last updated:</string>
     <string name="validating">Validating..</string>
     <string name="listening">Listening..</string>

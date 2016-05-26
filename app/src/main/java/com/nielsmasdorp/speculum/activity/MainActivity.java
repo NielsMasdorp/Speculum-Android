@@ -163,7 +163,12 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     }
 
     @Override
-    public void showMap() {
+    public void showMap(String location) {
+
+        String url = Constants.STATIC_MAPS_URL_FIRST +
+                location + Constants.STATIC_MAPS_URL_SECOND +
+                location + Constants.STATIC_MAPS_URL_THIRD +
+                mapsApiKey;
 
         mapDialog = new MaterialDialog.Builder(this)
                 .customView(R.layout.map_image, false)
@@ -171,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 .build();
 
         View imageView = mapDialog.getCustomView();
-        Picasso.with(MainActivity.this).load(Constants.GOOGLE_STATIC_MAPS_HOME_URL + mapsApiKey).into((ImageView) imageView);
+        Picasso.with(MainActivity.this).load(url).into((ImageView) imageView);
         mapDialog.show();
     }
 
