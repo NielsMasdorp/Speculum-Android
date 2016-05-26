@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         Assent.setActivity(this, this);
 
         String objectKey = getIntent().getStringExtra(Constants.CONFIGURATION_IDENTIFIER);
-        Configuration configuration = (Configuration) objectStore.pop(objectKey);
+        Configuration configuration = (Configuration) objectStore.get(objectKey);
         boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         ViewStub viewStub = configuration.isSimpleLayout() ?

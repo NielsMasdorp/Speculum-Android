@@ -279,6 +279,12 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {
+
+                    @Override
+                    public void onStart() {
+                        view.showCommandExecuting();
+                    }
+
                     @Override
                     public void onCompleted() {
                         view.hideListening();
@@ -297,7 +303,6 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     private Observable<Void> notifyCommandExecuting() {
         return Observable.defer(() -> {
-            view.showCommandExecuting();
             SystemClock.sleep(TimeUnit.SECONDS.toMillis(1));
             return Observable.empty();
         });

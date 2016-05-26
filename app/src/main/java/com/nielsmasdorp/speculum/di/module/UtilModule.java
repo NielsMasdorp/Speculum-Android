@@ -24,7 +24,7 @@ public class UtilModule {
 
     @Provides
     @Singleton
-    public ASFObjectStore<Configuration> provideWeatherASFObjectStore() {
+    public ASFObjectStore<Configuration> provideASFObjectStore() {
 
         return new ASFObjectStore<>();
     }
