@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void hideListening() {
         if (null != listeningDialog && listeningDialog.isShowing()) listeningDialog.hide();
+        hideSystemUI();
     }
 
     @Override
@@ -247,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void showError(String message) {
-
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -255,25 +256,20 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     protected void onResume() {
         super.onResume();
         Assent.setActivity(this, this);
-
         hideSystemUI();
-
         presenter.start(Assent.isPermissionGranted(Assent.READ_CALENDAR));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         presenter.finish();
-
         if (isFinishing())
             Assent.setActivity(this, null);
     }
 
     @Override
     public void onSystemUiVisibilityChange(int visibility) {
-
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
             hideSystemUI();
         }

@@ -32,5 +32,6 @@
     <string name="give_command">Spreek een commando</string>
     <string name="command_understood">Commando begrepen</string>
     <string name="executing">Uitvoeren..</string>
+    <string name="tomorrow">Morgen</string>
 
 </resources>

@@ -1,8 +1,9 @@
 package com.nielsmasdorp.speculum.services;
 
 import android.app.Application;
-import android.support.v4.app.AppLaunchChecker;
+import android.text.format.DateFormat;
 
+import com.nielsmasdorp.speculum.R;
 import com.nielsmasdorp.speculum.models.ForecastDayWeather;
 import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.forecast.DayForecast;
@@ -29,7 +30,6 @@ import rx.Observable;
  */
 public class ForecastIOService {
 
-    private final int AMOUNT_OF_DAYS_IN_FORECAST = 4;
     private ForecastIOApi mForecastIOApi;
 
     public ForecastIOService() {
@@ -43,7 +43,12 @@ public class ForecastIOService {
         mForecastIOApi = retrofit.create(ForecastIOApi.class);
     }
 
-    public Observable<Weather> getCurrentWeather(ForecastResponse response, WeatherIconGenerator iconGenerator, boolean metric, boolean is24HourFormat) {
+    public Observable<Weather> getCurrentWeather(ForecastResponse response,
+                                                 WeatherIconGenerator iconGenerator,
+                                                 Application application,
+                                                 boolean metric) {
+
+        boolean is24HourFormat = DateFormat.is24HourFormat(application);
 
         String distanceUnit = metric ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressureUnit = metric ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;
@@ -58,13 +63,14 @@ public class ForecastIOService {
 
         List<ForecastDayWeather> forecast = new ArrayList<>();
 
+        int AMOUNT_OF_DAYS_IN_FORECAST = 4;
         for (int i = 0; i < AMOUNT_OF_DAYS_IN_FORECAST; i++) {
-            DayForecast f = response.getForecast().getData().get(i);
+            DayForecast f = response.getForecast().getData().get(i+1);
             String date = dateFormatter.format(new Date((long) f.getTime() * 1000));
             int intTemp = (f.getTemperatureMin().intValue() + f.getTemperatureMax().intValue()) / 2;
             String temp = intTemp + "º" + temperatureUnit;
             int iconId = iconGenerator.getIcon(f.getIcon());
-            forecast.add(new ForecastDayWeather(iconId, temp, date));
+            forecast.add(new ForecastDayWeather(iconId, temp, i == 0 ? application.getString(R.string.tomorrow) : date));
         }
 
         return Observable.just(new Weather.Builder()
