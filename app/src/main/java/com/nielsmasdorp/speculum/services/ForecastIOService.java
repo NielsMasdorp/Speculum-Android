@@ -30,7 +30,7 @@ import rx.Observable;
  */
 public class ForecastIOService {
 
-    private ForecastIOApi mForecastIOApi;
+    private ForecastIOApi forecastIOApi;
 
     public ForecastIOService() {
 
@@ -40,7 +40,7 @@ public class ForecastIOService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mForecastIOApi = retrofit.create(ForecastIOApi.class);
+        forecastIOApi = retrofit.create(ForecastIOApi.class);
     }
 
     public Observable<Weather> getCurrentWeather(ForecastResponse response,
@@ -88,7 +88,7 @@ public class ForecastIOService {
 
     public ForecastIOApi getApi() {
 
-        return mForecastIOApi;
+        return forecastIOApi;
     }
 
     public interface ForecastIOApi {

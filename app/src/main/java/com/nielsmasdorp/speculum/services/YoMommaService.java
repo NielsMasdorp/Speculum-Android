@@ -14,7 +14,7 @@ import rx.Observable;
  */
 public class YoMommaService {
 
-    private YoMommaApi mYoMommaApi;
+    private YoMommaApi yoMommaApi;
 
     public YoMommaService() {
 
@@ -24,12 +24,12 @@ public class YoMommaService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mYoMommaApi = retrofit.create(YoMommaApi.class);
+        yoMommaApi = retrofit.create(YoMommaApi.class);
     }
 
     public YoMommaApi getApi() {
 
-        return mYoMommaApi;
+        return yoMommaApi;
     }
 
     public interface YoMommaApi {

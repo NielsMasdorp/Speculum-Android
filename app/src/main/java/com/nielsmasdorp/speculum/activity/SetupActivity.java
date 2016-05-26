@@ -26,6 +26,7 @@ import com.nielsmasdorp.speculum.views.SetupView;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,29 +36,18 @@ import butterknife.OnClick;
  */
 public class SetupActivity extends AppCompatActivity implements SetupView, View.OnSystemUiVisibilityChangeListener, CompoundButton.OnCheckedChangeListener {
 
-    @BindView(R.id.et_location)
-    EditText etLocation;
+    @BindView(R.id.et_location) EditText etLocation;
+    @BindView(R.id.et_subreddit) EditText etSubreddit;
+    @BindView(R.id.tv_reddit_title) TextView tvRedditTitle;
+    @BindView(R.id.et_polling_delay) EditText etPollingDelay;
+    @BindView(R.id.rb_celsius) RadioButton rbCelsius;
+    @BindView(R.id.rb_simple) RadioButton rbSimpleLayout;
+    @BindView(R.id.cb_voice_commands) CheckBox cbVoiceCommands;
+    @BindView(R.id.cb_remember_config) CheckBox cbRememberConfig;
 
-    @BindView(R.id.et_subreddit)
-    EditText etSubreddit;
-
-    @BindView(R.id.tv_reddit_title)
-    TextView tvRedditTitle;
-
-    @BindView(R.id.et_polling_delay)
-    EditText etPollingDelay;
-
-    @BindView(R.id.rb_celsius)
-    RadioButton rbCelsius;
-
-    @BindView(R.id.rb_simple)
-    RadioButton rbSimpleLayout;
-
-    @BindView(R.id.cb_voice_commands)
-    CheckBox cbVoiceCommands;
-
-    @BindView(R.id.cb_remember_config)
-    CheckBox cbRememberConfig;
+    @BindString(R.string.validating) String validating;
+    @BindString(R.string.no_permission_for_voice) String noPermissionForVoice;
+    @BindString(R.string.no_permission_for_calendar) String noPermissionForCalendar;
 
     @Inject
     SetupPresenter presenter;
@@ -79,7 +69,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
             Assent.requestPermissions(result -> {
                 // Permission granted or denied
                 if (!result.allPermissionsGranted()) {
-                    Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_calendar), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetupActivity.this, noPermissionForCalendar, Toast.LENGTH_SHORT).show();
                 }
             }, 1, Assent.READ_CALENDAR);
         }
@@ -103,7 +93,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     }
 
     @OnClick(R.id.btn_launch)
-    public void launch() {
+    public void validate() {
         presenter.validate(etLocation.getText().toString(), etSubreddit.getText().toString(),
                 etPollingDelay.getText().toString(), rbCelsius.isChecked(), cbVoiceCommands.isChecked(), cbRememberConfig.isChecked(), rbSimpleLayout.isChecked());
     }
@@ -111,20 +101,19 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
     @Override
     public void showLoading() {
         progressDialog = ProgressDialog.show(SetupActivity.this, "",
-                getString(R.string.validating), true);
+                validating, true);
     }
 
     @Override
     public void hideLoading() {
-        if (null != progressDialog && progressDialog.isShowing()) progressDialog.hide();
+        if (null != progressDialog && progressDialog.isShowing()) progressDialog.dismiss();
     }
 
     @Override
     public void navigateToMainActivity(Configuration configuration) {
 
         Intent intent = new Intent(this, MainActivity.class);
-        String objectKey = objectStore.pushStrong(configuration);
-        intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, objectKey);
+        objectStore.setObject(configuration);
         intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, configuration.isRememberConfig());
         startActivity(intent);
     }
@@ -170,7 +159,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView, View.
                     Assent.requestPermissions(result -> {
                         // Permission granted or denied
                         if (!result.allPermissionsGranted()) {
-                            Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetupActivity.this, noPermissionForVoice, Toast.LENGTH_SHORT).show();
                             cbVoiceCommands.setChecked(false);
                         }
                     }, 2, Assent.RECORD_AUDIO);

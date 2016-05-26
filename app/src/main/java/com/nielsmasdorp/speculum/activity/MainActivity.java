@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewStub;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +29,7 @@ import com.nielsmasdorp.speculum.views.MainView;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,83 +38,43 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements MainView, View.OnSystemUiVisibilityChangeListener {
 
-    @BindView(R.id.iv_current_weather)
-    ImageView ivWeatherCondition;
-    @BindView(R.id.tv_current_temp)
-    TextView tvWeatherTemperature;
-    @BindView(R.id.weather_layout)
-    LinearLayout llWeatherLayout;
-    @BindView(R.id.tv_last_updated)
-    TextView tvWeatherLastUpdated;
-    @Nullable
-    @BindView(R.id.tv_summary)
-    TextView tvWeatherSummary;
-    @Nullable
-    @BindView(R.id.weather_stats_layout)
-    LinearLayout llWeatherStatsLayout;
-    @Nullable
-    @BindView(R.id.calendar_layout)
-    LinearLayout llCalendarLayout;
-    @Nullable
-    @BindView(R.id.reddit_layout)
-    RelativeLayout rlRedditLayout;
-    @Nullable
-    @BindView(R.id.iv_forecast_weather1)
-    ImageView ivDayOneIcon;
-    @Nullable
-    @BindView(R.id.tv_forecast_temp1)
-    TextView tvDayOneTemperature;
-    @Nullable
-    @BindView(R.id.tv_forecast_date1)
-    TextView tvDayOneDate;
-    @Nullable
-    @BindView(R.id.iv_forecast_weather2)
-    ImageView ivDayTwoIcon;
-    @Nullable
-    @BindView(R.id.tv_forecast_temp2)
-    TextView tvDayTwoTemperature;
-    @Nullable
-    @BindView(R.id.tv_forecast_date2)
-    TextView tvDayTwoDate;
-    @Nullable
-    @BindView(R.id.iv_forecast_weather3)
-    ImageView ivDayThreeIcon;
-    @Nullable
-    @BindView(R.id.tv_forecast_temp3)
-    TextView tvDayThreeTemperature;
-    @Nullable
-    @BindView(R.id.tv_forecast_date3)
-    TextView tvDayThreeDate;
-    @Nullable
-    @BindView(R.id.iv_forecast_weather4)
-    ImageView ivDayFourIcon;
-    @Nullable
-    @BindView(R.id.tv_forecast_temp4)
-    TextView tvDayFourTemperature;
-    @Nullable
-    @BindView(R.id.tv_forecast_date4)
-    TextView tvDayFourDate;
-    @Nullable
-    @BindView(R.id.tv_stats_wind)
-    TextView tvWeatherWind;
-    @Nullable
-    @BindView(R.id.tv_stats_humidity)
-    TextView tvWeatherHumidity;
-    @Nullable
-    @BindView(R.id.tv_stats_pressure)
-    TextView tvWeatherPressure;
-    @Nullable
-    @BindView(R.id.tv_stats_visibility)
-    TextView tvWeatherVisibility;
-    @Nullable
-    @BindView(R.id.tv_calendar_event)
-    TextView tvCalendarEvent;
-    @Nullable
-    @BindView(R.id.tv_reddit_post_title)
-    TextView tvRedditPostTitle;
-    @Nullable
-    @BindView(R.id.tv_reddit_post_votes)
-    TextView tvRedditPostVotes;
+    // @formatter:off
+    @BindView(R.id.iv_current_weather) ImageView ivWeatherCondition;
+    @BindView(R.id.tv_current_temp) TextView tvWeatherTemperature;
+    @BindView(R.id.weather_layout) LinearLayout llWeatherLayout;
+    @BindView(R.id.tv_last_updated) TextView tvWeatherLastUpdated;
+    @Nullable @BindView(R.id.tv_summary) TextView tvWeatherSummary;
+    @Nullable @BindView(R.id.weather_stats_layout) LinearLayout llWeatherStatsLayout;
+    @Nullable @BindView(R.id.calendar_layout) LinearLayout llCalendarLayout;
+    @Nullable @BindView(R.id.reddit_layout) RelativeLayout rlRedditLayout;
+    @Nullable @BindView(R.id.iv_forecast_weather1) ImageView ivDayOneIcon;
+    @Nullable @BindView(R.id.tv_forecast_temp1) TextView tvDayOneTemperature;
+    @Nullable @BindView(R.id.tv_forecast_date1) TextView tvDayOneDate;
+    @Nullable @BindView(R.id.iv_forecast_weather2) ImageView ivDayTwoIcon;
+    @Nullable @BindView(R.id.tv_forecast_temp2) TextView tvDayTwoTemperature;
+    @Nullable @BindView(R.id.tv_forecast_date2) TextView tvDayTwoDate;
+    @Nullable @BindView(R.id.iv_forecast_weather3) ImageView ivDayThreeIcon;
+    @Nullable @BindView(R.id.tv_forecast_temp3) TextView tvDayThreeTemperature;
+    @Nullable @BindView(R.id.tv_forecast_date3) TextView tvDayThreeDate;
+    @Nullable @BindView(R.id.iv_forecast_weather4) ImageView ivDayFourIcon;
+    @Nullable @BindView(R.id.tv_forecast_temp4) TextView tvDayFourTemperature;
+    @Nullable @BindView(R.id.tv_forecast_date4) TextView tvDayFourDate;
+    @Nullable @BindView(R.id.tv_stats_wind) TextView tvWeatherWind;
+    @Nullable @BindView(R.id.tv_stats_humidity) TextView tvWeatherHumidity;
+    @Nullable @BindView(R.id.tv_stats_pressure) TextView tvWeatherPressure;
+    @Nullable @BindView(R.id.tv_stats_visibility) TextView tvWeatherVisibility;
+    @Nullable @BindView(R.id.tv_calendar_event) TextView tvCalendarEvent;
+    @Nullable @BindView(R.id.tv_reddit_post_title) TextView tvRedditPostTitle;
+    @Nullable @BindView(R.id.tv_reddit_post_votes) TextView tvRedditPostVotes;
+
+    @BindString(R.string.old_config_found_snackbar) String oldConfigFound;
+    @BindString(R.string.old_config_found_snackbar_back) String getOldConfigFoundBack;
+    @BindString(R.string.give_command) String giveCommand;
+    @BindString(R.string.listening) String listening;
+    @BindString(R.string.command_understood) String commandUnderstood;
+    @BindString(R.string.executing) String executing;
+    @BindString(R.string.last_updated) String lastUpdated;
+    // @formatter:on
 
     @Inject
     MainPresenter presenter;
@@ -131,8 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         ((SpeculumApplication) getApplication()).createMainComponent(this).inject(this);
         Assent.setActivity(this, this);
 
-        String objectKey = getIntent().getStringExtra(Constants.CONFIGURATION_IDENTIFIER);
-        Configuration configuration = (Configuration) objectStore.get(objectKey);
+        Configuration configuration = objectStore.get();
         boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         ViewStub viewStub = configuration.isSimpleLayout() ?
@@ -153,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     private void showConfigurationSnackbar() {
         Snackbar snackbar = Snackbar
-                .make(llWeatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
-                .setAction(getString(R.string.old_config_found_snackbar_back), view -> {
+                .make(llWeatherLayout, oldConfigFound, Snackbar.LENGTH_LONG)
+                .setAction(getOldConfigFoundBack, view -> {
                     onBackPressed();
                 });
 
@@ -177,14 +136,14 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void showListening() {
-        listeningDialog = ProgressDialog.show(MainActivity.this, getString(R.string.give_command), getString(R.string.listening), true);
+        listeningDialog = ProgressDialog.show(MainActivity.this, giveCommand, listening, true);
     }
 
     @Override
     public void showCommandExecuting() {
         if (null != listeningDialog && listeningDialog.isShowing()) {
-            listeningDialog.setTitle(getString(R.string.command_understood));
-            listeningDialog.setMessage(getString(R.string.executing));
+            listeningDialog.setTitle(commandUnderstood);
+            listeningDialog.setMessage(executing);
         }
     }
 
@@ -198,16 +157,18 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @SuppressWarnings("all")
     public void displayCurrentWeather(Weather weather, boolean isSimpleLayout) {
 
+        // Current simple weather
         this.ivWeatherCondition.setImageResource(weather.getIconId());
         this.tvWeatherTemperature.setText(weather.getTemperature());
-        this.tvWeatherLastUpdated.setText(getString(R.string.last_updated) + " " + weather.getLastUpdated());
+        this.tvWeatherLastUpdated.setText(lastUpdated + " " + weather.getLastUpdated());
 
         if (!isSimpleLayout) {
+            // More weather info
             this.tvWeatherWind.setText(weather.getWindInfo());
             this.tvWeatherHumidity.setText(weather.getHumidityInfo());
             this.tvWeatherPressure.setText(weather.getPressureInfo());
             this.tvWeatherVisibility.setText(weather.getVisibilityInfo());
-
+            // Forecast
             this.tvDayOneDate.setText(weather.getForecast().get(0).getDate());
             this.tvDayOneTemperature.setText(weather.getForecast().get(0).getTemperature());
             this.ivDayOneIcon.setImageResource(weather.getForecast().get(0).getIconId());

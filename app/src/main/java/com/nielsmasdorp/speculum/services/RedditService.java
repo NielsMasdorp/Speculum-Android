@@ -20,7 +20,7 @@ import rx.Observable;
  */
 public class RedditService {
 
-    private RedditApi mRedditApi;
+    private RedditApi redditApi;
 
     public RedditService() {
 
@@ -30,7 +30,7 @@ public class RedditService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mRedditApi = retrofit.create(RedditApi.class);
+        redditApi = retrofit.create(RedditApi.class);
     }
 
     public Observable<RedditPost> getRedditPost(RedditResponse response) {
@@ -46,7 +46,7 @@ public class RedditService {
 
     public RedditApi getApi() {
 
-        return mRedditApi;
+        return redditApi;
     }
 
     public interface RedditApi {
