@@ -59,7 +59,7 @@ Example `keys.xml`
 Update data with voice command
 ====
 
-When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You then have 5 seconds to say **get me new data** and the data will refresh, if you don't say anything for 5 seconds the device will go back to sleep by itself, you can also force this by saying **go back to sleep** in the 5 second timeframe. There are also some other built in commands like **tell me a joke** which tells you a joke and **show my home** which pulls up a maps view of the location you've entered in the setup screen (if you added the Static Maps API key that is). A small demonstration of the concept can be found below.
+When you've turned on the voice command option in the setup screen you can talk to your device and make it update the data. To do this wake the device up by saying **hello magic mirror**, the device will then respond with **hello there, how can I help you?**. You can then speak commands, for example: say **update** and the data will refresh, if you don't say anything for a minute the device will go back to sleep by itself, you can also force this by saying **go to sleep**. There are also some other built in commands like **tell me a joke** which tells you a joke and **show my location** which pulls up a maps view of your home (if you did all the steps in the tutorial above). A small demonstration of the concept can be found below.
 
 [![Alt text for your video](http://img.youtube.com/vi/bRPGOPEYoYI/0.jpg)](https://www.youtube.com/watch?v=bRPGOPEYoYI)
 
@@ -83,23 +83,21 @@ recognizer.addKeywordSearch(Constants.COMMANDS_SEARCH, commands);
 The actual grammar file can be found in `/assets/sync/commands.gram`, you can change the command list or create a new file in that folder and pass it to the `SpeechRecognizer` at initialization. The grammar file must have this format:
 
 ```
-get me new data/1e-40/
-go back to sleep/1e-40/
-turn on lights/1e-40/
-turn off lights/1e-40/
-talk/1e-1/
+update/1e-1/
+go to sleep/1e-40/
+tell me a joke/1e-40/
+show my location/1e-40/
 ```
-The number beween the `//` is the threshold for detecting the keywords, the general rule is; the longer the keyword the bigger the threshold (e.g. one-word phrases `/1e-1/` and four-word phrases `/1e-40/`) but you can experiment with these values yourself. Also, every word in the commands you choose **must** exist in the dictionary file, which can be found in `/assets/sync/cmudict-en-us.dict`.
+The number between the `//` is the threshold for detecting the keywords, the general rule is; the longer the keyword the bigger the threshold (e.g. one-word phrases `/1e-1/` and four-word phrases `/1e-40/`) but you can experiment with these values yourself. Also, every word in the commands you choose **must** exist in the dictionary file, which can be found in `/assets/sync/cmudict-en-us.dict`.
 
 After you add your commands add them individually to `Constants.java` as well.
 
 ```java
 public static final String KEYPHRASE = "hello magic mirror";
-public static final String UPDATE_PHRASE = "get me new data";
-public static final String SLEEP_PHRASE = "go back to sleep";
-public static final String LIGHTS_ON_PHRASE = "turn on lights";
-public static final String LIGHTS_OFF_PHRASE = "turn off lights";
-public static final String TALK_PHRASE = "talk";
+public static final String UPDATE_PHRASE = "update";
+public static final String SLEEP_PHRASE = "go to sleep";
+public static final String JOKE_ON_PHRASE = "tell me a joke";
+public static final String MAP_PHRASE = "show my location";
 ```
 
 Now you set your `SpeechRecognizer` to listen to the commands list.
@@ -107,7 +105,7 @@ Now you set your `SpeechRecognizer` to listen to the commands list.
 ```java
 recognizer.stop();
 //second parameter is the time to listen specified in milliseconds
-recognizer.startListening(Constants.COMMANDS_SEARCH, 5000);
+recognizer.startListening(Constants.COMMANDS_SEARCH, TimeUnit.MINUTES.toMillis(1);
 ```
 Whenever the `SpeechRecognizer` recognizes a command I pass the command for processing.
 
@@ -127,12 +125,15 @@ public void processCommand(String command) {
      switch (command) {
          case Constants.KEYPHRASE:
             // start listening for commands
+            setListeningMode(Constants.COMMANDS_SEARCH);
             break;
          case Constants.SLEEP_PHRASE:
              // listen to wake up phrase again
+             setListeningMode(Constants.KWS_SEARCH);
              break;
          case Constants.UPDATE_PHRASE:
-             // update data and listen to wake up phrase again
+             // update data and keep restart recognizer to listen for keywords
+             setListeningMode(Constants.COMMANDS_SEARCH);
              break;
         }
     }

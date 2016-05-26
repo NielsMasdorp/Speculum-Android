@@ -19,7 +19,7 @@ public class YoMommaService {
     public YoMommaService() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.YOMOMMA_BASE_URL)
+                .baseUrl(Constants.YO_MOMMA_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -33,7 +33,7 @@
     <!--Main Activity-->
     <string name="old_config_found_snackbar">Saved configuration found</string>
     <string name="old_config_found_snackbar_back">Back to setup</string>
-    <string name="simple_greeting">Hi there\nIt\'s</string>
+    <string name="simple_greeting">Hi there,\nIt\'s</string>
     <string name="date_on" translatable="false">on</string>
     <string name="last_updated">Last updated:</string>
     <string name="validating">Validating..</string>

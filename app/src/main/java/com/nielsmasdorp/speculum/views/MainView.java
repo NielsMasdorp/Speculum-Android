@@ -10,8 +10,6 @@ public interface MainView extends BaseView {
 
     void showListening();
 
-    void showCommandExecuting();
-
     void hideListening();
 
     void showMap(String location);

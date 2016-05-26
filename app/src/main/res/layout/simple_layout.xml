@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,14 +13,35 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif-thin"
-                android:text="@string/simple_greeting"
-                android:textColor="@color/white"
-                android:textSize="82dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/simple_greeting"
+                    android:textColor="@color/white"
+                    android:textSize="82dp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/iv_listening"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_mic"
+                    android:tint="@color/white"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
 
             <TextClock
                 android:id="@+id/tc_time"
@@ -32,7 +53,7 @@
                 android:format12Hour="h:mm"
                 android:format24Hour="kk:mm"
                 android:textColor="@color/white"
-                android:textSize="240dp" />
+                android:textSize="240dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +67,7 @@
                     android:fontFamily="sans-serif-thin"
                     android:text="@string/date_on"
                     android:textColor="@color/white"
-                    android:textSize="82dp" />
+                    android:textSize="82dp"/>
 
                 <TextClock
                     android:id="@+id/tc_date"
@@ -57,7 +78,7 @@
                     android:format12Hour="dd MMM yyyy"
                     android:format24Hour="dd MMM yyyy"
                     android:textColor="@color/white"
-                    android:textSize="82dp" />
+                    android:textSize="82dp"/>
 
             </LinearLayout>
 
@@ -74,7 +95,7 @@
                     android:layout_width="168dp"
                     android:layout_height="168dp"
                     android:layout_gravity="center_horizontal"
-                    tools:src="@drawable/ic_weather_partlycloudy" />
+                    tools:src="@drawable/ic_weather_partlycloudy"/>
 
                 <LinearLayout
 
@@ -89,18 +110,18 @@
                         android:fontFamily="sans-serif-thin"
                         android:textColor="@color/white"
                         android:textSize="80dp"
-                        tools:text="6ºC" />
+                        tools:text="6ºC"/>
 
                     <TextView
                         android:id="@+id/tv_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-thin"
-                        android:textColor="@color/white"
-                        android:maxLines="3"
                         android:ellipsize="end"
+                        android:fontFamily="sans-serif-thin"
+                        android:maxLines="3"
+                        android:textColor="@color/white"
                         android:textSize="50dp"
-                        tools:text="Cloudy with a chance of meatballs" />
+                        tools:text="Cloudy with a chance of meatballs"/>
 
                     <TextView
                         android:id="@+id/tv_last_updated"
@@ -108,9 +129,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-thin"
                         android:textColor="@color/white"
-                        android:textStyle="italic"
                         android:textSize="20dp"
-                        tools:text="Last updated: 26 minutes ago" />
+                        android:textStyle="italic"
+                        tools:text="Last updated: 26 minutes ago"/>
 
                 </LinearLayout>
 

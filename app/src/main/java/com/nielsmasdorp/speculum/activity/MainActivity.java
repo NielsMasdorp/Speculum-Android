@@ -2,6 +2,7 @@ package com.nielsmasdorp.speculum.activity;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @BindView(R.id.tv_current_temp) TextView tvWeatherTemperature;
     @BindView(R.id.weather_layout) LinearLayout llWeatherLayout;
     @BindView(R.id.tv_last_updated) TextView tvWeatherLastUpdated;
+    @BindView(R.id.iv_listening) ImageView ivListening;
+
     @Nullable @BindView(R.id.tv_summary) TextView tvWeatherSummary;
     @Nullable @BindView(R.id.weather_stats_layout) LinearLayout llWeatherStatsLayout;
     @Nullable @BindView(R.id.calendar_layout) LinearLayout llCalendarLayout;
@@ -87,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Inject
     ASFObjectStore<Configuration> objectStore;
 
-    ProgressDialog listeningDialog;
     MaterialDialog mapDialog;
 
     @Override
@@ -142,24 +144,12 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     public void showListening() {
-        listeningDialog = ProgressDialog.show(MainActivity.this, giveCommand, listening, true);
-    }
-
-    @Override
-    public void showCommandExecuting() {
-        if (null != listeningDialog && listeningDialog.isShowing()) {
-            listeningDialog.setTitle(commandUnderstood);
-            listeningDialog.setMessage(executing);
-        }
+        ivListening.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideListening() {
-        if (null != listeningDialog && listeningDialog.isShowing()) {
-            listeningDialog.dismiss();
-            listeningDialog = null;
-        }
-        hideSystemUI();
+        ivListening.setVisibility(View.INVISIBLE);
     }
 
     @Override

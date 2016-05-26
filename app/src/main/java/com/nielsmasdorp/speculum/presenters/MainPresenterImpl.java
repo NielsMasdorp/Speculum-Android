@@ -125,6 +125,8 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 textToSpeech.stop();
                 textToSpeech.shutdown();
             }
+            view.hideListening();
+            view.hideMap();
             return Observable.empty();
         });
     }
@@ -238,7 +240,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         if (mode.equals(Constants.KWS_SEARCH)) {
             recognizer.startListening(mode);
         } else {
-            recognizer.startListening(mode, 5000);
+            recognizer.startListening(mode, (int) TimeUnit.MINUTES.toMillis(1));
         }
     }
 
@@ -256,50 +258,19 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 break;
             case Constants.UPDATE_PHRASE:
                 speak(Constants.UPDATE_NOTIFICATION);
+                setListeningMode(Constants.COMMANDS_SEARCH);
                 updateData();
-                setListeningMode(Constants.KWS_SEARCH);
-                commandExecuting();
                 break;
             case Constants.JOKE_PHRASE:
                 interactor.loadYoMommaJoke(new YoMammaJokeSubscriber());
-                setListeningMode(Constants.KWS_SEARCH);
-                commandExecuting();
+                setListeningMode(Constants.COMMANDS_SEARCH);
                 break;
             case Constants.MAP_PHRASE:
                 speak(Constants.MAP_NOTIFICATION);
-                setListeningMode(Constants.KWS_SEARCH);
-                view.hideListening();
+                setListeningMode(Constants.COMMANDS_SEARCH);
                 showMap();
                 break;
         }
-    }
-
-    private void commandExecuting() {
-
-        timeOut(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-
-                    @Override
-                    public void onStart() {
-                        view.showCommandExecuting();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        view.hideListening();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.showError(e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-                    }
-                });
     }
 
     private void showMap() {
@@ -380,6 +351,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     @Override
     public void onResult(Hypothesis hypothesis) {
+
     }
 
     @Override
