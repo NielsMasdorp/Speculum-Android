@@ -172,6 +172,8 @@ Thanks to
 * [Dagger2](http://google.github.io/dagger/)
 * [Butterknife](https://github.com/JakeWharton/butterknife)
 * [Assent](https://github.com/afollestad/assent)
+* [Material Dialogs](https://github.com/afollestad/material-dialogs)
+* [Picasso](http://square.github.io/picasso/)
 * [Pocketsphinx](http://cmusphinx.sourceforge.net/wiki/tutorialandroid)
 
 License
