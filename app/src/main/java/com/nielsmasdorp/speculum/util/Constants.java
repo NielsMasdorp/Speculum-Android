@@ -83,8 +83,8 @@ public class Constants {
     /**
      * TTS phrases
      */
-    public static final String UPDATE_NOTIFICATION = "Okay, data is being updated.";
-    public static final String MAP_NOTIFICATION = "Okay, showing a map of your neighbourhood";
+    public static final String UPDATE_NOTIFICATION = "Okay, here is new data.";
+    public static final String MAP_NOTIFICATION = "Okay, here is a map.";
     public static final String SLEEP_NOTIFICATION = "I am going back to sleep, bye bye.";
     public static final String WAKE_NOTIFICATION = "Hello there. What can I do for you?";
 
