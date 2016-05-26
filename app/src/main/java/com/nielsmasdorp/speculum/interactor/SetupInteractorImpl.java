@@ -3,7 +3,7 @@ package com.nielsmasdorp.speculum.interactor;
 import android.app.Application;
 
 import com.nielsmasdorp.speculum.models.Configuration;
-import com.nielsmasdorp.speculum.services.GoogleMapService;
+import com.nielsmasdorp.speculum.services.GoogleMapsService;
 import com.nielsmasdorp.speculum.services.SharedPreferenceService;
 import com.nielsmasdorp.speculum.util.Constants;
 
@@ -19,9 +19,9 @@ public class SetupInteractorImpl implements SetupInteractor {
 
     Application application;
     SharedPreferenceService preferenceService;
-    GoogleMapService googleMapService;
+    GoogleMapsService googleMapService;
 
-    public SetupInteractorImpl(Application application, SharedPreferenceService preferenceService, GoogleMapService googleMapService) {
+    public SetupInteractorImpl(Application application, SharedPreferenceService preferenceService, GoogleMapsService googleMapService) {
 
         this.application = application;
         this.preferenceService = preferenceService;

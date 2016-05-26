@@ -15,11 +15,11 @@ import rx.Observable;
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
-public class GoogleMapService {
+public class GoogleMapsService {
 
     private GoogleMapsApi mGoogleMapsApi;
 
-    public GoogleMapService() {
+    public GoogleMapsService() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.GOOGLE_MAPS_BASE_URL)

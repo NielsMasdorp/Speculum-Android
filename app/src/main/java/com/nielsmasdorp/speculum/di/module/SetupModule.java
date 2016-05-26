@@ -7,7 +7,7 @@ import com.nielsmasdorp.speculum.interactor.SetupInteractor;
 import com.nielsmasdorp.speculum.interactor.SetupInteractorImpl;
 import com.nielsmasdorp.speculum.presenters.SetupPresenter;
 import com.nielsmasdorp.speculum.presenters.SetupPresenterImpl;
-import com.nielsmasdorp.speculum.services.GoogleMapService;
+import com.nielsmasdorp.speculum.services.GoogleMapsService;
 import com.nielsmasdorp.speculum.services.SharedPreferenceService;
 import com.nielsmasdorp.speculum.views.SetupView;
 
@@ -28,7 +28,7 @@ public class SetupModule {
 
     @Provides
     @PerActivity
-    public SetupInteractor provideSetupInteractor(Application application, SharedPreferenceService preferenceService, GoogleMapService googleMapService) {
+    public SetupInteractor provideSetupInteractor(Application application, SharedPreferenceService preferenceService, GoogleMapsService googleMapService) {
 
         return new SetupInteractorImpl(application, preferenceService, googleMapService);
     }
