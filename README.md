@@ -39,7 +39,7 @@ How do I get started
 2. Select JDK8 in Project Settings
 3. Make nescessary adjustments for your device
 4. Go to [Forecast.io](https://developer.forecast.io/) and register
-5. Create `keys.xml` in `/res/values/` (sample found below these steps)
+5. Create a `keys.xml` file in `/res/values/` (sample found below these steps)
 6. Run on device or generate .APK
 7. Turn on "Stay Awake" in Developer Options on your device
 8. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
@@ -107,14 +107,14 @@ recognizer.stop();
 //second parameter is the time to listen specified in milliseconds
 recognizer.startListening(Constants.COMMANDS_SEARCH, 5000);
 ```
-Whenever the `SpeechRecognizer` recognizes a command I pass the command to the presenter.
+Whenever the `SpeechRecognizer` recognizes a command I pass the command for processing.
 
 ```java
  @Override
  public void onPartialResult(Hypothesis hypothesis) {
     if (hypothesis == null)
         return;
-    mMainPresenter.processCommand(hypothesis.getHypstr());
+    processCommand(hypothesis.getHypstr());
 }
 ```
 Now you only have to assign your custom actions to the commands in the presenter. You can assign your own actions to the commands in the `processCommand()` method in the `MainPresenterImpl.java`.
