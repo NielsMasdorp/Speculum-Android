@@ -30,7 +30,7 @@ Features
   * Four day forecast
 * Your upcoming Google Calendar event
 * One of the top posts of your favorite subreddit
-* Interact with the mirror via voice commands (pull up map of your home, ask for a joke and update data or be creative and implement your own)
+* Interact with the mirror via voice commands (pull up map of your home, ask for a joke, update the visible data or be creative and implement your own)
 
 How do I get started
 ====
