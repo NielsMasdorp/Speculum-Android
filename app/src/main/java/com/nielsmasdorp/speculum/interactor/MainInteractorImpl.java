@@ -55,6 +55,7 @@ public class MainInteractorImpl implements MainInteractor {
 
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> googleCalendarService.getLatestCalendarEvent())
+                .retry()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -67,6 +68,7 @@ public class MainInteractorImpl implements MainInteractor {
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> redditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
                 .flatMap(redditService::getRedditPost)
+                .retry()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -81,6 +83,7 @@ public class MainInteractorImpl implements MainInteractor {
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
                 .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, application, celsius))
+                .retry()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
