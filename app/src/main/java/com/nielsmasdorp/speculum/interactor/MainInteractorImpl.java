@@ -15,6 +15,7 @@ import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
@@ -51,10 +52,10 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     @Override
-    public void loadLatestCalendarEvent(int updateDelay, Subscriber<String> subscriber) {
+    public void loadCalendarEvents(int updateDelay, Subscriber<String> subscriber) {
 
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-                .flatMap(ignore -> googleCalendarService.getLatestCalendarEvent())
+                .flatMap(ignore -> googleCalendarService.getCalendarEvents())
                 .retry()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

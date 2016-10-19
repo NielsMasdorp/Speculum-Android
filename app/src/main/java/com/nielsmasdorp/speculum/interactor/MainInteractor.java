@@ -13,7 +13,7 @@ import rx.Subscriber;
  */
 public interface MainInteractor {
 
-    void loadLatestCalendarEvent(int updateDelay, Subscriber<String> subscriber);
+    void loadCalendarEvents(int updateDelay, Subscriber<String> subscriber);
 
     void loadTopRedditPost(String subreddit, int updateDelay, Subscriber<RedditPost> subscriber);
 

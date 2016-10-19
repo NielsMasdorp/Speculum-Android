@@ -1,24 +1,24 @@
 package com.nielsmasdorp.speculum.views;
 
-import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.RedditPost;
+import com.nielsmasdorp.speculum.models.Weather;
 
 /**
  * @author Niels Masdorp (NielsMasdorp)
  */
 public interface MainView extends BaseView {
 
-    void showListening();
+	void showListening();
 
-    void hideListening();
+	void hideListening();
 
-    void showMap(String location);
+	void showMap(String location);
 
-    void hideMap();
+	void hideMap();
 
-    void displayCurrentWeather(Weather weather, boolean isSimpleLayout);
+	void displayCurrentWeather(Weather weather, boolean isSimpleLayout);
 
-    void displayLatestCalendarEvent(String event);
+	void displayCalendarEvents(String events);
 
-    void displayTopRedditPost(RedditPost redditPost);
+	void displayTopRedditPost(RedditPost redditPost);
 }

@@ -1,8 +1,6 @@
 package com.nielsmasdorp.speculum.activity;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -228,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     @Override
     @SuppressWarnings("all")
-    public void displayLatestCalendarEvent(String event) {
-        this.tvCalendarEvent.setText(event);
+    public void displayCalendarEvents(String events) {
+        this.tvCalendarEvent.setText(events);
         if (this.llCalendarLayout.getVisibility() != View.VISIBLE)
             this.llCalendarLayout.setVisibility(View.VISIBLE);
     }
