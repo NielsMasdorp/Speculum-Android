@@ -1,11 +1,11 @@
 package com.nielsmasdorp.speculum.interactor;
 
 import android.app.Application;
-import android.text.format.DateFormat;
 
 import com.nielsmasdorp.speculum.models.RedditPost;
 import com.nielsmasdorp.speculum.models.Weather;
 import com.nielsmasdorp.speculum.models.YoMommaJoke;
+import com.nielsmasdorp.speculum.util.Observables;
 import com.nielsmasdorp.speculum.services.ForecastIOService;
 import com.nielsmasdorp.speculum.services.GoogleCalendarService;
 import com.nielsmasdorp.speculum.services.RedditService;
@@ -15,7 +15,6 @@ import com.nielsmasdorp.speculum.util.WeatherIconGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
@@ -29,6 +28,9 @@ import rx.subscriptions.CompositeSubscription;
  * @author Niels Masdorp (NielsMasdorp)
  */
 public class MainInteractorImpl implements MainInteractor {
+
+    private static int AMOUNT_OF_RETRIES = 10;
+    private static int DELAY_IN_SECONDS = 1;
 
     private Application application;
     private ForecastIOService forecastIOService;
@@ -56,7 +58,7 @@ public class MainInteractorImpl implements MainInteractor {
 
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> googleCalendarService.getCalendarEvents())
-                .retry()
+                .retryWhen(Observables.exponentialBackoff(AMOUNT_OF_RETRIES, DELAY_IN_SECONDS, TimeUnit.SECONDS))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -69,7 +71,7 @@ public class MainInteractorImpl implements MainInteractor {
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> redditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
                 .flatMap(redditService::getRedditPost)
-                .retry()
+                .retryWhen(Observables.exponentialBackoff(AMOUNT_OF_RETRIES, DELAY_IN_SECONDS, TimeUnit.SECONDS))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -84,7 +86,7 @@ public class MainInteractorImpl implements MainInteractor {
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
                 .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, application, celsius))
-                .retry()
+                .retryWhen(Observables.exponentialBackoff(AMOUNT_OF_RETRIES, DELAY_IN_SECONDS, TimeUnit.SECONDS))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -121,10 +123,6 @@ public class MainInteractorImpl implements MainInteractor {
 
     @Override
     public void unSubscribe() {
-
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
-        }
-        compositeSubscription = new CompositeSubscription();
+        compositeSubscription.clear();
     }
 }
