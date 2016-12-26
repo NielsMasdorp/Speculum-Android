@@ -1,5 +1,6 @@
 package com.nielsmasdorp.speculum.activity;
 
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
     MaterialDialog mapDialog;
 
+    ObjectAnimator pulse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,13 +121,10 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     }
 
     private void showConfigurationSnackbar() {
-        Snackbar snackbar = Snackbar
+        Snackbar
                 .make(llWeatherLayout, oldConfigFound, Snackbar.LENGTH_LONG)
-                .setAction(getOldConfigFoundBack, view -> {
-                    onBackPressed();
-                });
-
-        snackbar.show();
+                .setAction(getOldConfigFoundBack, view -> onBackPressed())
+                .show();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -143,10 +144,12 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void showListening() {
         ivListening.setVisibility(View.VISIBLE);
+        ivListening.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pulse));
     }
 
     @Override
     public void hideListening() {
+        ivListening.clearAnimation();
         ivListening.setVisibility(View.INVISIBLE);
     }
 
