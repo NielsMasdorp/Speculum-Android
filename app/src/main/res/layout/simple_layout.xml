@@ -1,144 +1,126 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:text="@string/simple_greeting"
+            android:textColor="@color/white"
+            android:textSize="82sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/iv_listening"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_mic"
+            android:tint="@color/white"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <TextClock
+        android:id="@+id/tc_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:format12Hour="h:mm"
+        android:format24Hour="kk:mm"
+        android:textColor="@color/white"
+        android:textSize="200sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:text="@string/date_on"
+            android:textColor="@color/white"
+            android:textSize="82sp"/>
+
+        <TextClock
+            android:id="@+id/tc_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="sans-serif-thin"
+            android:format12Hour="dd MMM yyyy"
+            android:format24Hour="dd MMM yyyy"
+            android:textColor="@color/white"
+            android:textSize="82sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/weather_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_current_weather"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:layout_gravity="center_horizontal"
+            tools:src="@drawable/ic_weather_partlycloudy"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="@string/simple_greeting"
-                    android:textColor="@color/white"
-                    android:textSize="82dp"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-
-                <ImageView
-                    android:id="@+id/iv_listening"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/ic_mic"
-                    android:tint="@color/white"
-                    android:visibility="invisible"/>
-
-            </LinearLayout>
-
-            <TextClock
-                android:id="@+id/tc_time"
-                android:layout_width="match_parent"
-                android:layout_height="360dp"
-                android:layout_marginBottom="-100dp"
-                android:layout_marginTop="-50dp"
-                android:fontFamily="sans-serif-thin"
-                android:format12Hour="h:mm"
-                android:format24Hour="kk:mm"
-                android:textColor="@color/white"
-                android:textSize="240dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="@string/date_on"
-                    android:textColor="@color/white"
-                    android:textSize="82dp"/>
-
-                <TextClock
-                    android:id="@+id/tc_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:format12Hour="dd MMM yyyy"
-                    android:format24Hour="dd MMM yyyy"
-                    android:textColor="@color/white"
-                    android:textSize="82dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/weather_layout"
+            <TextView
+                android:id="@+id/tv_current_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="56dp"
-                android:orientation="horizontal">
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@color/white"
+                android:textSize="80sp"
+                tools:text="6ºC"/>
 
-                <ImageView
-                    android:id="@+id/iv_current_weather"
-                    android:layout_width="168dp"
-                    android:layout_height="168dp"
-                    android:layout_gravity="center_horizontal"
-                    tools:src="@drawable/ic_weather_partlycloudy"/>
+            <TextView
+                android:id="@+id/tv_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-thin"
+                android:maxLines="3"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                tools:text="Cloudy with a chance of meatballs"/>
 
-                <LinearLayout
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_current_temp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-thin"
-                        android:textColor="@color/white"
-                        android:textSize="80dp"
-                        tools:text="6ºC"/>
-
-                    <TextView
-                        android:id="@+id/tv_summary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="sans-serif-thin"
-                        android:maxLines="3"
-                        android:textColor="@color/white"
-                        android:textSize="50dp"
-                        tools:text="Cloudy with a chance of meatballs"/>
-
-                    <TextView
-                        android:id="@+id/tv_last_updated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-thin"
-                        android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textStyle="italic"
-                        tools:text="Last updated: 26 minutes ago"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_last_updated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                tools:text="Last updated: 26 minutes ago"/>
 
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
