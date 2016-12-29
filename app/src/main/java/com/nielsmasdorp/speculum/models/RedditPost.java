@@ -7,9 +7,9 @@ public class RedditPost {
 
     private String title;
     private String author;
-    private int ups;
+    private String ups;
 
-    public RedditPost(String title, String author, int ups) {
+    public RedditPost(String title, String author, String ups) {
         this.title = title;
         this.author = author;
         this.ups = ups;
@@ -23,7 +23,7 @@ public class RedditPost {
         return author;
     }
 
-    public int getUps() {
+    public String getUps() {
         return ups;
     }
 }

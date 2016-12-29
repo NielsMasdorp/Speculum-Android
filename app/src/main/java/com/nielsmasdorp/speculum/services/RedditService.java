@@ -5,6 +5,7 @@ import com.nielsmasdorp.speculum.models.reddit.Data_;
 import com.nielsmasdorp.speculum.models.reddit.RedditResponse;
 import com.nielsmasdorp.speculum.util.Constants;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import retrofit2.Retrofit;
@@ -19,6 +20,9 @@ import rx.Observable;
  * @author Niels Masdorp (NielsMasdorp)
  */
 public class RedditService {
+
+    private static final String REDDIT_UPS_THOUSAND_SUFFIX = "k";
+    private static final String REDDIT_UPS_UNKNOWN = "-";
 
     private RedditApi redditApi;
 
@@ -41,7 +45,19 @@ public class RedditService {
         Data_ postData = response.getData().getChildren().get(randomNumber).getData();
 
         return Observable.just(new RedditPost(postData.getTitle(), postData.getAuthor(),
-                postData.getUps()));
+                mapRedditUps(postData.getUps())));
+    }
+
+    private String mapRedditUps(Integer ups) {
+        if (ups == null) {
+            return REDDIT_UPS_UNKNOWN;
+        }
+        if ((ups / 1000) > 0) {
+            DecimalFormat df = new DecimalFormat("#.#");
+            return df.format((double) ups / 1000) + REDDIT_UPS_THOUSAND_SUFFIX;
+        } else {
+            return ups.toString();
+        }
     }
 
     public RedditApi getApi() {

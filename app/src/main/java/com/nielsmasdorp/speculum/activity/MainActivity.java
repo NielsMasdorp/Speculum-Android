@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Nullable @BindView(R.id.tv_summary) TextView tvWeatherSummary;
     @Nullable @BindView(R.id.weather_stats_layout) LinearLayout llWeatherStatsLayout;
     @Nullable @BindView(R.id.calendar_layout) LinearLayout llCalendarLayout;
-    @Nullable @BindView(R.id.reddit_layout) RelativeLayout rlRedditLayout;
+    @Nullable @BindView(R.id.reddit_layout) LinearLayout llRedditLayout;
     @Nullable @BindView(R.id.iv_forecast_weather1) ImageView ivDayOneIcon;
     @Nullable @BindView(R.id.tv_forecast_temp1) TextView tvDayOneTemperature;
     @Nullable @BindView(R.id.tv_forecast_date1) TextView tvDayOneDate;
@@ -223,8 +222,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     public void displayTopRedditPost(RedditPost redditPost) {
         tvRedditPostTitle.setText(redditPost.getTitle());
         tvRedditPostVotes.setText(redditPost.getUps() + "");
-        if (this.rlRedditLayout.getVisibility() != View.VISIBLE)
-            this.rlRedditLayout.setVisibility(View.VISIBLE);
+        if (this.llRedditLayout.getVisibility() != View.VISIBLE)
+            this.llRedditLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
