@@ -29,8 +29,8 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainInteractorImpl implements MainInteractor {
 
-    private static int AMOUNT_OF_RETRIES = 10;
-    private static int DELAY_IN_SECONDS = 1;
+    private static int AMOUNT_OF_RETRIES = 3;
+    private static int DELAY_IN_SECONDS = 4;
 
     private Application application;
     private ForecastIOService forecastIOService;
