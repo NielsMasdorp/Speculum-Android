@@ -6,9 +6,11 @@ I had an old Nexus 7 (2012) lying around collecting dust and got the idea from [
 I started this project because I wanted to explore the MVP pattern for Android and Hannah's app did not have all the functionality I needed. Feel free to make this application look good on your own device (it was designed for the Nexus 7). Have any great ideas to make this more configurable or usable on more devices? 
 Submit a pull request!
 
-###Mirror
-
-![alt tag](http://nielsmasdorp.github.io/Speculum-Android/img/mirror_shot3.jpg)
+====
+###Mirror example
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_nnadMunSlc/0.jpg)](https://www.youtube.com/watch?v=_nnadMunSlc)
+====
+This is a setup by an user who combined Speculum with a motion detector app to turn the mirror on when you enter the room.
 
 ###Application screens
 
