@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!--darksky.net API key -->
+    <string name="forecast_api_key" translatable="false">your forecast darksky api key</string>
+	<!-- Google Static Maps API -->
+    <string name="static_maps_api_key" translatable="false">your static maps api key</string>
+</resources>
+
