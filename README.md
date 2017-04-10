@@ -20,7 +20,7 @@ Features
 ====
 * Date and time
 * Switch between two custom layouts (Verbose and Simple)
-* Weather powered by Forecast.IO
+* Weather powered by Dark Sky
   * Metric or Imperial
   * Wind information
     * Temperature
@@ -40,9 +40,9 @@ How do I get started
 1. Clone project in Android Studio
 2. Select JDK8 in Project Settings
 3. Make nescessary adjustments for your device
-4. Go to [Forecast.io](https://developer.forecast.io/) and register
+4. Go to [darksky.net/dev](https://darksky.net/dev/) and register
 5. Go to [Google Static Maps API](https://developers.google.com/maps/documentation/static-maps/) and register for a browser key (this is optional, only do this if you want to have the mirror show a maps view of your home on command)
-6. Create a `keys.xml` file in `/res/values/` (sample found below these steps)
+6. Rename the `keys-sample.xml` file in `/res/values/` to `keys.xml` (sample found below these steps)
 7. Run on device or generate .APK
 8. Turn on "Stay Awake" in Developer Options on your device
 9. If you turned on voice recognition change the Text to Speech language to English in the language options on your device
@@ -53,7 +53,7 @@ Example `keys.xml`
 ```java
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="forecast_api_key">your forecast io api key</string>
+    <string name="forecast_api_key">your Dark Sky api key</string>
     <string name="static_maps_api_key">your static maps api key</string>
 </resources>
 ```
